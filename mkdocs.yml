@@ -1,5 +1,5 @@
 site_name: neuro-handbook
-site_description: An open reference for neuroimaging fundamentals, data engineering, and AI/ML.
+site_description: An open reference for neuroimaging fundamentals, BIDS, analysis, data engineering, AI/ML, computing, and the landmark work that shaped the field.
 site_url: https://phindagijimana.github.io/neuro_handbook/
 repo_url: https://github.com/phindagijimana/neuro_handbook
 repo_name: phindagijimana/neuro_handbook
@@ -9,24 +9,20 @@ theme:
   name: material
   features:
     - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.sections
     - navigation.indexes
+    - navigation.path
     - navigation.top
     - navigation.footer
     - search.suggest
     - search.highlight
+    - search.share
     - content.code.copy
     - content.code.annotate
     - content.action.edit
     - toc.follow
   palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      primary: indigo
-      accent: deep purple
-      toggle:
-        icon: material/weather-night
-        name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: indigo
@@ -34,6 +30,16 @@ theme:
       toggle:
         icon: material/weather-sunny
         name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+  font:
+    text: Inter
+    code: JetBrains Mono
   icon:
     repo: fontawesome/brands/github
 
@@ -74,6 +80,22 @@ nav:
       - Coordinate systems: fundamentals/coordinate-systems.md
       - File formats: fundamentals/file-formats.md
       - Preprocessing overview: fundamentals/preprocessing.md
+  - BIDS toolkit:
+      - bids/index.md
+      - Validating a dataset: bids/validation.md
+      - DICOM to BIDS: bids/dicom-to-bids.md
+      - Querying with PyBIDS: bids/pybids.md
+      - Derivatives layout: bids/derivatives.md
+      - Versioning with DataLad: bids/datalad.md
+      - Common pitfalls: bids/pitfalls.md
+  - Analysis:
+      - analysis/index.md
+      - Structural morphometry: analysis/structural.md
+      - Diffusion & tractography: analysis/diffusion.md
+      - Functional connectivity: analysis/functional.md
+      - Surface-based analysis: analysis/surface.md
+      - Group-level statistics: analysis/group-stats.md
+      - Multiple comparisons: analysis/multiple-comparisons.md
   - Data engineering:
       - data-engineering/index.md
       - Foundations: data-engineering/foundations.md
@@ -122,6 +144,23 @@ nav:
       - Deep learning for imaging: ai/deep-learning.md
       - Foundation models: ai/foundation-models.md
       - Evaluation pitfalls: ai/evaluation.md
+  - Computing:
+      - computing/index.md
+      - Python scientific stack: computing/python-stack.md
+      - Containers (Docker, Apptainer): computing/containers.md
+      - HPC and Slurm: computing/hpc-slurm.md
+      - Cloud (AWS, GCP, Azure): computing/cloud.md
+      - GPUs and accelerators: computing/gpus.md
+      - Editor and IDE setup: computing/editor.md
+      - Dependency management: computing/dependencies.md
+      - Reproducibility checklist: computing/reproducibility.md
+  - Landmark work:
+      - landmark/index.md
+      - Foundational papers: landmark/papers.md
+      - Reference datasets: landmark/datasets.md
+      - Major pipelines: landmark/pipelines.md
+      - BIDS-app workflows: landmark/bids-apps.md
+      - Atlases and templates: landmark/atlases.md
   - Tools:
       - tools/index.md
   - Glossary: glossary.md

@@ -1,6 +1,12 @@
+---
+hide:
+  - navigation
+  - toc
+---
+
 # neuro-handbook
 
-> An open reference for working with neuroimaging data — fundamentals, data engineering, and AI/ML.
+> An open reference for working with neuroimaging data — fundamentals, BIDS, analysis, data engineering, AI/ML, computing, and the landmark work that shaped the field.
 
 This handbook is written for **people getting started** in neuroimaging research, neuroscience research, and the engineering that supports them: graduate students, postdocs, research software engineers, data engineers from outside the medical-imaging world, and developers building neuro-AI products.
 
@@ -8,33 +14,73 @@ It tries to be the document we wish we had when we first walked into the field.
 
 ---
 
-## What's covered
+## Browse by topic
 
 <div class="grid cards" markdown>
 
--   :material-school: **[Fundamentals](fundamentals/index.md)**
+-   :material-school:{ .lg .middle } **Fundamentals**
 
     ---
 
-    What a "neuroimaging dataset" actually is. Acquisition basics for MRI, DWI, fMRI, PET, and EEG. Coordinate systems (RAS / LPS / MNI), file formats (DICOM, NIfTI, GIFTI/CIFTI), and the BIDS standard.
+    What a "neuroimaging dataset" actually is. MRI, DWI, fMRI, PET, EEG; DICOM, NIfTI, BIDS; coordinate systems and preprocessing.
 
--   :material-pipe: **[Data engineering](data-engineering/index.md)**
+    [:octicons-arrow-right-24: Start here](fundamentals/index.md)
 
-    ---
-
-    DAGs, pipelines, idempotency, observability, testing, and scale — taught against a real diffusion-MRI pipeline (QSIPrep → Recon → QSIRecon → connectome). Goes from "first script" all the way to lakehouses, streaming, and FinOps.
-
--   :material-brain: **[AI / ML](ai/index.md)**
+-   :material-file-tree:{ .lg .middle } **BIDS toolkit**
 
     ---
 
-    Classical ML on volumetric features, CNNs and U-Nets for segmentation, transformer and diffusion models, foundation models for medical imaging, and the evaluation pitfalls that bite neuroimaging projects specifically.
+    Validate, convert from DICOM, query with PyBIDS, lay out derivatives, version with DataLad, dodge the common pitfalls.
 
--   :material-tools: **[Tools landscape](tools/index.md)**
+    [:octicons-arrow-right-24: Open the toolkit](bids/index.md)
+
+-   :material-chart-line:{ .lg .middle } **Analysis**
 
     ---
 
-    Opinionated map of the workflow orchestrators, storage layers, transformation engines, and observability stacks you'll bump into. Pointers, not exhaustive lists.
+    Structural morphometry, diffusion tractography, functional connectivity, surface-based analysis, group statistics, multiple-comparison correction.
+
+    [:octicons-arrow-right-24: Analyse data](analysis/index.md)
+
+-   :material-pipe:{ .lg .middle } **Data engineering**
+
+    ---
+
+    DAGs, pipelines, idempotency, observability, testing — taught against a real DWI pipeline. Plus 25 advanced chapters on Spark, Kafka, dbt, MLOps, FinOps.
+
+    [:octicons-arrow-right-24: Build pipelines](data-engineering/index.md)
+
+-   :material-brain:{ .lg .middle } **AI / ML**
+
+    ---
+
+    Classical ML on volumetrics, deep learning architectures, foundation models, and the evaluation pitfalls that bite neuroimaging projects specifically.
+
+    [:octicons-arrow-right-24: Train models](ai/index.md)
+
+-   :material-server:{ .lg .middle } **Computing**
+
+    ---
+
+    Python scientific stack, containers, HPC + Slurm, cloud, GPUs, IDE setup, dependency management, the reproducibility checklist.
+
+    [:octicons-arrow-right-24: Set up your env](computing/index.md)
+
+-   :material-bookshelf:{ .lg .middle } **Landmark work**
+
+    ---
+
+    Foundational papers, reference datasets (HCP, UK Biobank, ABCD, ADNI), major pipelines (FreeSurfer, fMRIPrep, QSIPrep), atlases, BIDS-app workflows.
+
+    [:octicons-arrow-right-24: Read the field](landmark/index.md)
+
+-   :material-tools:{ .lg .middle } **Tools landscape**
+
+    ---
+
+    Opinionated map of orchestrators, storage, transformation, observability — pointers, not exhaustive lists.
+
+    [:octicons-arrow-right-24: Pick a tool](tools/index.md)
 
 </div>
 
@@ -42,17 +88,20 @@ It tries to be the document we wish we had when we first walked into the field.
 
 ## How to read it
 
-- **Linear**: read top-to-bottom once to build a mental map. Each chapter assumes you've read the previous one in its section but not across sections.
-- **As reference**: jump to a topic. Every page is self-contained enough to be useful on its own, and links liberally to neighbours.
-- **As exercises**: most chapters end with "try this" tasks against a tiny sample dataset shipped under `fixtures/sub-tiny/`. Pair them with the code in `examples/`.
+Pick the entry point that matches your background:
 
-If you're brand new to neuroimaging, start with [Fundamentals → Modalities](fundamentals/modalities.md). If you're a data engineer or software engineer coming in from outside, start with [Fundamentals → File formats](fundamentals/file-formats.md) and then go straight to [Data engineering → Foundations](data-engineering/foundations.md).
+- **New to neuroimaging?** Start with [Fundamentals → Modalities](fundamentals/modalities.md). Then [BIDS toolkit](bids/index.md) and [Computing](computing/index.md).
+- **Software / data engineer coming in from outside?** Jump to [Fundamentals → File formats](fundamentals/file-formats.md), then go straight to [Data engineering → Foundations](data-engineering/foundations.md).
+- **Neuroscientist who needs to scale a pipeline?** [Data engineering → Portfolio roadmap](data-engineering/portfolio-roadmap.md) is the action item.
+- **Looking up something specific?** Use search (top bar) or the [Glossary](glossary.md).
 
 ## Companion code
 
 This site is generated from a repository that also ships a small Python package, `neuro_handbook`, plus runnable examples:
 
 ```bash
+git clone https://github.com/phindagijimana/neuro_handbook.git
+cd neuro_handbook
 pip install -e ".[docs,dev,neuro]"
 python examples/01_walk_bids.py fixtures/sub-tiny
 mkdocs serve  # preview this site locally
