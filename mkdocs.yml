@@ -104,6 +104,13 @@ nav:
           - Mathematics: fundamentals/foundations/mathematics.md
           - Medical imaging physics: fundamentals/foundations/physics.md
           - Neuroscience & neurology: fundamentals/foundations/neuroscience.md
+      - Medical imaging:
+          - fundamentals/medical-imaging/index.md
+          - Acquisition: fundamentals/medical-imaging/acquisition.md
+          - Reconstruction: fundamentals/medical-imaging/reconstruction.md
+          - Segmentation: fundamentals/medical-imaging/segmentation.md
+          - Registration: fundamentals/medical-imaging/registration.md
+          - Enhancement & quality: fundamentals/medical-imaging/enhancement.md
   - BIDS toolkit:
       - bids/index.md
       - Validating a dataset: bids/validation.md

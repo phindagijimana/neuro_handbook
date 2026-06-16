@@ -17,7 +17,11 @@ If you've never touched neuroimaging data before, this is where to start. The se
 
 ## Layer 3 — The toolkit to think with
 
-6. **[Computational & math foundations](foundations/index.md)** — Python, Bash & CLI, MATLAB, statistics, mathematics, physics. The programming languages, the inferential machinery, the math vocabulary, and the MR physics you need to *think* about neuroimaging at PhD level.
+6. **[Computational & math foundations](foundations/index.md)** — Python, Bash & CLI, MATLAB, data analysis, statistics, mathematics, medical imaging physics, neuroscience & neurology. The programming languages, the inferential machinery, the math vocabulary, the cross-modality physics, and the brain biology you need to *think* about neuroimaging at PhD level.
+
+## Layer 4 — The image-processing engineering layer
+
+7. **[Medical imaging](medical-imaging/index.md)** — acquisition, reconstruction, segmentation, registration, enhancement & quality. The methodological pipeline that turns raw measurements into the volumes, surfaces, and labels every downstream analysis depends on. Each chapter is structured as *Theory → Mathematics → Steps → Practical example → References*.
 
 By the end of this section you'll be able to look at a folder you've never seen, identify what's inside, choose tools for it, and reason quantitatively about every step that produced it.
 
