@@ -81,3 +81,14 @@ To make this section consistent and reviewable each chapter follows the same fiv
 ## Aim
 
 The aim is to take a PhD-level reader from "I can run fMRIPrep" to "I can read the original methods papers, evaluate them critically, and modify the underlying algorithms when my data needs it" — across every imaging modality a neuroimaging cohort might contain.
+
+## Visual references
+
+Curated, openly-licensed image galleries that complement the chapters in this section:
+
+- **MRtrix3 figure gallery.** [https://mrtrix.readthedocs.io/en/latest/](https://mrtrix.readthedocs.io/en/latest/) — diffusion-MRI reconstruction and tractography illustrated.
+- **MONAI tutorials gallery.** [https://github.com/Project-MONAI/tutorials](https://github.com/Project-MONAI/tutorials) — segmentation, registration, generative-model notebooks with rendered figures.
+- **The fastMRI dataset.** [https://fastmri.med.nyu.edu](https://fastmri.med.nyu.edu) — under-sampled k-space + reconstructed images, with publication-grade visualisations.
+- **ITK examples.** [https://itk.org/ITKExamples/](https://itk.org/ITKExamples/) — registration and segmentation walkthroughs with sample volumes and rendered output.
+- **Radiopaedia case library.** [https://radiopaedia.org/articles](https://radiopaedia.org/articles) — clinical example cases with all modalities labelled.
+- **3D Slicer training portal.** [https://www.slicer.org/wiki/Documentation/Nightly/Training](https://www.slicer.org/wiki/Documentation/Nightly/Training) — interactive segmentation / registration screencasts.

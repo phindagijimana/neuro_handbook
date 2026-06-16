@@ -15,3 +15,26 @@ These chapters are the physics layer underneath [Modalities](../modalities.md). 
 - [**Spin echo**](spin-echo.md) — the original refocused contrast; foundation for FLAIR, TSE, and DWI prepulses.
 
 Each chapter ends with a peer-reviewed reference list so you can dig into the original physics literature.
+
+## How a generic MR sequence is built
+
+```mermaid
+flowchart LR
+    RF["RF excitation<br/>(flip angle α)"] --> SS["Slice-select gradient<br/>G_z"]
+    SS --> PE["Phase-encode<br/>G_y blip"]
+    PE --> RO["Frequency-encode readout<br/>G_x"]
+    RO --> AD["ADC samples<br/>one k_x line"]
+    AD --> NEXT{Next TR?}
+    NEXT -->|yes| RF
+    NEXT -->|no| FFT["Inverse FFT → image"]
+    style RF fill:#fff,stroke:#888
+    style FFT fill:#e0e0ff,stroke:#444
+```
+
+*<small>The building blocks every MR sequence shares. Each chapter below tells you how a specific sequence customises this skeleton. Original figure.</small>*
+
+## Visual references
+
+- **MRI Questions** (Allen D. Elster). [https://mriquestions.com](https://mriquestions.com) — illustrated primer covering every pulse-sequence type.
+- **FreeSurfer recommended acquisitions.** [https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStability](https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStability) — vendor-protocol comparisons for structural MRI.
+- **Vendor pulse-sequence atlases** (Siemens MAGNETOM, Philips, GE) — sequence diagrams ship with each scanner's protocol manual; always archive a copy with your study.

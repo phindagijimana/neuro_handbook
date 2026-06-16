@@ -87,6 +87,29 @@ where $L$ is a differential operator (e.g. $L = (I - \alpha \nabla^2)^k$) contro
 
 Almost every classical registration uses a pyramid: start at coarse resolution to escape local minima, refine to native resolution. Gaussian pyramids with `[8 4 2 1]` voxel-smoothing schedules are standard.
 
+```mermaid
+flowchart LR
+    M0[Moving<br/>8× smooth] --> M1[Moving<br/>4× smooth]
+    M1 --> M2[Moving<br/>2× smooth]
+    M2 --> M3[Moving<br/>native]
+    F0[Fixed<br/>8× smooth] --> F1[Fixed<br/>4× smooth]
+    F1 --> F2[Fixed<br/>2× smooth]
+    F2 --> F3[Fixed<br/>native]
+    M0 --> R0[Rigid → affine]
+    F0 --> R0
+    R0 --> R1[Affine] --> R2[Deformable<br/>coarse] --> R3[Deformable<br/>fine]
+    M1 --> R1
+    F1 --> R1
+    M2 --> R2
+    F2 --> R2
+    M3 --> R3
+    F3 --> R3
+    R3 --> T[Final transform T]
+    style T fill:#e0e0ff,stroke:#444
+```
+
+*<small>The coarse-to-fine pyramid in classical registration. Solves the local-minimum problem at coarse scales and refines accuracy at fine scales. Original figure.</small>*
+
 ## 3. Steps — generic registration pipeline
 
 1. **Preprocess** both images: bias correction, intensity normalisation, skull strip (if appropriate).

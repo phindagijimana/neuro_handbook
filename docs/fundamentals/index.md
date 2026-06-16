@@ -2,7 +2,21 @@
 
 > What a "neuroimaging dataset" actually is, and how it gets onto your disk.
 
-If you've never touched neuroimaging data before, this is where to start. The section is in three layers:
+```mermaid
+flowchart LR
+    A[Subject in scanner] -->|raw scanner output| B[DICOM]
+    B -->|dcm2niix| C[NIfTI + JSON sidecar]
+    C -->|organise| D[BIDS dataset]
+    D -->|BIDS app<br/>fMRIPrep / QSIPrep| E[derivatives/]
+    E -->|extract features<br/>register, segment| F[Analysis-ready data]
+    F --> G[Statistics / ML / Figure]
+    style A fill:#fff,stroke:#888
+    style G fill:#e0e0ff,stroke:#444
+```
+
+*<small>The neuroimaging-data lifecycle these chapters cover. Original figure.</small>*
+
+If you've never touched neuroimaging data before, this is where to start. The section is in four layers:
 
 ## Layer 1 — What the data is
 

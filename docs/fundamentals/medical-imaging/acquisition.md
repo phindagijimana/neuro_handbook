@@ -6,6 +6,16 @@
 
 ### The universal forward model
 
+```mermaid
+flowchart LR
+    X["Tissue property x<br/>(magnetisation,<br/>attenuation, activity,<br/>reflectivity, ...)"] -->|measurement operator A<br/>physics of modality| Y["Measurement y<br/>(k-space, sinogram,<br/>LOR, RF echo, ...)"]
+    Y -->|+ noise n| Z["Recorded data"]
+    style X fill:#fff,stroke:#888
+    style Z fill:#e0e0ff,stroke:#444
+```
+
+*<small>The universal forward model y = Ax + n shared by every medical imaging modality. Original figure.</small>*
+
 Every modality can be written as
 
 $$

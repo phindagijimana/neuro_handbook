@@ -60,20 +60,25 @@ CIFTI files are technically NIfTI-2 files with a special intent code; tools that
 
 1. **A folder layout.**
 
-    ```text
-    dataset/
-    ├── dataset_description.json
-    ├── participants.tsv
-    └── sub-001/
-        ├── anat/
-        │   ├── sub-001_T1w.nii.gz
-        │   └── sub-001_T1w.json
-        └── dwi/
-            ├── sub-001_dwi.nii.gz
-            ├── sub-001_dwi.json
-            ├── sub-001_dwi.bval
-            └── sub-001_dwi.bvec
+    ```mermaid
+    flowchart TD
+        D["dataset/"] --> DD["dataset_description.json"]
+        D --> P["participants.tsv"]
+        D --> S1["sub-001/"]
+        D --> S2["sub-002/"]
+        D --> DV["derivatives/"]
+        S1 --> A1["anat/"]
+        S1 --> W1["dwi/"]
+        S1 --> F1["func/"]
+        A1 --> A1F["sub-001_T1w.nii.gz<br/>+ sub-001_T1w.json"]
+        W1 --> W1F["sub-001_dwi.nii.gz<br/>+ .json + .bval + .bvec"]
+        F1 --> F1F["sub-001_task-rest_bold.nii.gz<br/>+ .json"]
+        DV --> DVF["fmriprep/<br/>qsiprep/<br/>freesurfer/<br/>..."]
+        style D fill:#e0e0ff,stroke:#444
+        style DV fill:#fff3cd,stroke:#888
     ```
+
+    *<small>The canonical BIDS folder shape. Original figure based on the BIDS specification.</small>*
 
 2. **A filename grammar.** Each filename is a chain of `key-value` **entities** joined by underscores: `sub-001_ses-01_task-rest_run-01_bold.nii.gz`. Order matters; the spec defines it.
 
@@ -100,6 +105,14 @@ If you're starting a new project, start with BIDS. The walker in this repo (`neu
 - Sessions with branching acquisitions where the BIDS naming can't express the relationship.
 
 For these, BIDS-derivatives or the BIDS extensions in development are usually the answer. Stay close to the spec; don't invent ad-hoc folder schemes.
+
+## Visual references
+
+- **BIDS specification (illustrated).** [https://bids-specification.readthedocs.io/en/stable/](https://bids-specification.readthedocs.io/en/stable/) — official folder-layout diagrams and worked examples.
+- **BIDS Starter Kit tutorial dataset.** [https://github.com/bids-standard/bids-starter-kit](https://github.com/bids-standard/bids-starter-kit) — browsable example BIDS folder with images.
+- **NiBabel example NIfTI gallery.** [https://nipy.org/nibabel/gettingstarted.html](https://nipy.org/nibabel/gettingstarted.html) — voxel arrays and affines rendered alongside code.
+- **HCP Connectome Workbench.** [https://www.humanconnectome.org/software/connectome-workbench](https://www.humanconnectome.org/software/connectome-workbench) — interactive CIFTI/GIFTI viewer with example data.
+- **DICOM standard browser (Innolitics).** [https://dicom.innolitics.com/ciods](https://dicom.innolitics.com/ciods) — searchable, illustrated walk of every DICOM tag.
 
 ## References
 

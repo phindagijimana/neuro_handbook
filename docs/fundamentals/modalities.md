@@ -59,6 +59,38 @@ Unlike imaging modalities, EEG raw files do not contain spatial information by d
 | 3D or 4D NIfTI in a `pet/` folder + tracer sidecar | PET |
 | `.edf` / `.vhdr` / `.set` + channels sidecar | EEG |
 
+## Modality decision tree
+
+```mermaid
+flowchart TD
+    Q{What question<br/>are you asking?} --> A[Anatomy / volumes]
+    Q --> B[Brain function]
+    Q --> C[White-matter pathways]
+    Q --> D[Molecular / metabolic]
+    Q --> E[Neural dynamics]
+    A --> A1[T1w MPRAGE<br/>FreeSurfer recon-all]
+    A --> A2[T2w / FLAIR<br/>lesion mapping]
+    B --> B1[Task fMRI<br/>BOLD GLM]
+    B --> B2[Resting-state fMRI<br/>connectivity]
+    C --> C1[DWI<br/>DTI / CSD / tractography]
+    D --> D1[PET<br/>FDG / amyloid / tau]
+    D --> D2[MRS<br/>NAA / Cho / Cr / GABA]
+    E --> E1[EEG / MEG<br/>ERP / source localisation]
+    style Q fill:#e0e0ff,stroke:#444
+```
+
+*<small>Picking a modality from the research question. Original figure.</small>*
+
+## Visual references
+
+Authoritative galleries to compare what each modality looks like on real data:
+
+- **Radiopaedia — MRI sequence atlas.** [https://radiopaedia.org/articles/mri-sequences-overview](https://radiopaedia.org/articles/mri-sequences-overview) — side-by-side T1, T2, FLAIR, DWI, SWI examples curated by radiologists.
+- **OpenNeuro example datasets.** [https://openneuro.org](https://openneuro.org) — every modality in BIDS-organised real data.
+- **HCP visualisation gallery.** [https://www.humanconnectome.org/study/hcp-young-adult/data-releases](https://www.humanconnectome.org/study/hcp-young-adult/data-releases) — high-quality multimodal references.
+- **MRI Questions illustrated primers.** [https://mriquestions.com](https://mriquestions.com) — pulse-sequence diagrams, k-space, contrast mechanisms.
+- **NIH NIMH Healthy Volunteer Dataset** (open). [https://nda.nih.gov/edit_collection.html?id=2914](https://nda.nih.gov/edit_collection.html?id=2914)
+
 ## Where to next
 
 [Coordinate systems](coordinate-systems.md) — how voxel indices, scanner space, and standard templates relate.

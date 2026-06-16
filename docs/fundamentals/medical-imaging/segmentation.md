@@ -78,6 +78,26 @@ Fusion rules: majority voting, locally-weighted (similarity-weighted), STAPLE ([
 
 The **U-Net** ([Ronneberger et al., 2015](https://doi.org/10.1007/978-3-319-24574-4_28); 3D extension [Çiçek et al., 2016](https://doi.org/10.1007/978-3-319-46723-8_49)) is an encoder-decoder with skip connections. The output is a per-voxel softmax over classes.
 
+```mermaid
+flowchart LR
+    I[Input volume] --> E1[Conv block 1<br/>16 ch]
+    E1 --> D1[↓ down] --> E2[Conv block 2<br/>32 ch]
+    E2 --> D2[↓ down] --> E3[Conv block 3<br/>64 ch]
+    E3 --> D3[↓ down] --> B[Bottleneck<br/>128 ch]
+    B --> U3[↑ up + skip] --> R3[Conv block 3<br/>64 ch]
+    R3 --> U2[↑ up + skip] --> R2[Conv block 2<br/>32 ch]
+    R2 --> U1[↑ up + skip] --> R1[Conv block 1<br/>16 ch]
+    R1 --> O[Per-voxel softmax]
+    E3 -.skip.-> R3
+    E2 -.skip.-> R2
+    E1 -.skip.-> R1
+    style I fill:#fff,stroke:#888
+    style O fill:#e0e0ff,stroke:#444
+    style B fill:#fff3cd,stroke:#888
+```
+
+*<small>Schematic of the U-Net encoder-decoder with skip connections. After Ronneberger et al., 2015. Original figure.</small>*
+
 Loss functions:
 
 - **Cross-entropy** — pixelwise; weak under class imbalance.

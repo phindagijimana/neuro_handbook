@@ -209,3 +209,25 @@ These are not raw DICOM; they are what pipelines produce after preprocessing (na
 ### Closing
 
 Your scanner PDF protocol and physicist sign-off override generic numbers here. Always archive sequence parameters in BIDS sidecars.
+
+## EPI k-space trajectory
+
+```mermaid
+flowchart LR
+    RF["90° RF excitation"] --> RO["Frequency-encode<br/>readout (alternating)"]
+    PE["Phase-encode<br/>blip (small step)"] --> RO
+    RO --> S["Sample one k_y line"]
+    S --> BL{More k_y lines?}
+    BL -->|yes| PE
+    BL -->|no| IF["Inverse FFT → image"]
+    style RF fill:#fff,stroke:#888
+    style IF fill:#e0e0ff,stroke:#444
+```
+
+*<small>EPI fills k-space in a single zigzag readout after one excitation: frequency-encode gradient reverses each line, small phase-encode blips step k_y. Original figure.</small>*
+
+## Visual references
+
+- **MRI Questions — EPI explainer.** [https://mriquestions.com/echo-planar-imaging.html](https://mriquestions.com/echo-planar-imaging.html) — animated k-space trajectories and pulse-sequence diagrams.
+- **FSL `topup` tutorial figures.** [https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/topup/TopupUsersGuide](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/topup/TopupUsersGuide) — side-by-side AP / PA distortion correction.
+- **fastMRI gallery.** [https://fastmri.med.nyu.edu](https://fastmri.med.nyu.edu) — under-sampled k-space + reconstruction comparisons.

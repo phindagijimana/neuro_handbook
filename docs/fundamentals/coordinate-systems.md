@@ -4,6 +4,17 @@
 
 Three spaces matter:
 
+```mermaid
+flowchart LR
+    V["Voxel space<br/>(i, j, k) integers"] -->|affine A| W["World / scanner space<br/>(x, y, z) mm, RAS"]
+    W -->|nonlinear warp ϕ| T["Standard / template space<br/>e.g. MNI152NLin2009cAsym"]
+    style V fill:#fff,stroke:#888
+    style W fill:#fff,stroke:#888
+    style T fill:#e0e0ff,stroke:#444
+```
+
+*<small>The three coordinate frames of a neuroimaging volume and the maps between them. Original figure.</small>*
+
 1. **Voxel space** — the integer indices into the data array, `(i, j, k)`.
 2. **World / scanner space** — millimetres relative to a fixed origin (often the scanner isocentre).
 3. **Standard / template space** — millimetres in a published atlas (MNI152, fsaverage, fsLR).
@@ -24,6 +35,24 @@ The top-left 3×3 encodes rotation, scaling, and (when present) shear. The right
 ## RAS vs LPS
 
 Two opposite conventions for what positive `x`, `y`, `z` mean:
+
+```mermaid
+flowchart LR
+    subgraph RAS
+        direction TB
+        R1[+x → R] --- A1[+y → A] --- S1[+z → S]
+    end
+    subgraph LPS
+        direction TB
+        L1[+x → L] --- P1[+y → P] --- S2[+z → S]
+    end
+    RAS -.NIfTI, FreeSurfer,<br/>MRtrix, Nilearn.-> X((  ))
+    LPS -.DICOM, ITK, ANTs.-> Y((  ))
+    style X fill:#fff,stroke:#fff
+    style Y fill:#fff,stroke:#fff
+```
+
+*<small>The two axis conventions, and which ecosystems use each. Original figure.</small>*
 
 - **RAS** — positive axes point toward the subject's **R**ight, **A**nterior, **S**uperior. Used by NIfTI, FreeSurfer, MRtrix, Nilearn.
 - **LPS** — positive axes point toward the subject's **L**eft, **P**osterior, **S**uperior. Used by DICOM, ITK, ANTs.
@@ -64,6 +93,13 @@ Templates themselves get updated. `MNI152NLin6Asym` and `MNI152NLin2009cAsym` ar
 ## References
 
 [^templateflow]: Ciric R, Thompson WH, Lorenz R, et al. TemplateFlow: FAIR-sharing of multi-scale, multi-species brain models. *Nat Methods.* 2022;19(12):1568-1571. [doi:10.1038/s41592-022-01681-2](https://doi.org/10.1038/s41592-022-01681-2)
+
+## Visual references
+
+- **NIfTI orientation primer.** [https://nipy.org/nibabel/coordinate_systems.html](https://nipy.org/nibabel/coordinate_systems.html) — official NiBabel illustrated explainer with affine diagrams and figures.
+- **TemplateFlow browser.** [https://www.templateflow.org/browse/](https://www.templateflow.org/browse/) — see the actual MNI152, fsaverage, fsLR templates rendered in 3D.
+- **3D Slicer coordinate-system documentation.** [https://slicer.readthedocs.io/en/latest/user_guide/coordinate_systems.html](https://slicer.readthedocs.io/en/latest/user_guide/coordinate_systems.html) — illustrated guide with worked examples.
+- **MNE-Python coordinate frames page.** [https://mne.tools/stable/auto_tutorials/forward/20_source_alignment.html](https://mne.tools/stable/auto_tutorials/forward/20_source_alignment.html) — figures showing scanner / surface / device frames in one diagram.
 
 ## Where to next
 

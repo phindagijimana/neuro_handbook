@@ -8,6 +8,25 @@ A pipeline that computes the right number against the wrong region is still wron
 
 The brain has a small set of structural landmarks worth knowing cold.
 
+```mermaid
+flowchart TB
+    BR["Cerebrum"] --> FR["Frontal lobe<br/>(motor, executive,<br/>Broca's language)"]
+    BR --> PA["Parietal lobe<br/>(sensory, spatial)"]
+    BR --> TE["Temporal lobe<br/>(auditory, memory,<br/>Wernicke's language)"]
+    BR --> OC["Occipital lobe<br/>(vision V1)"]
+    BR --> INS["Insula<br/>(interoception)"]
+    SUB["Subcortex"] --> TH["Thalamus<br/>(relay hub)"]
+    SUB --> BG["Basal ganglia<br/>(action selection)"]
+    SUB --> HI["Hippocampus<br/>(declarative memory)"]
+    SUB --> AM["Amygdala<br/>(threat, salience)"]
+    CB["Cerebellum<br/>(coordination)"]
+    BS["Brainstem<br/>(arousal, cardiorespiratory)"]
+    style BR fill:#e0e0ff,stroke:#444
+    style SUB fill:#fff3cd,stroke:#888
+```
+
+*<small>Macroscale brain organisation at a glance. Original schematic.</small>*
+
 ### Lobes and major sulci
 
 - **Frontal** — anterior of the central sulcus. Motor (precentral gyrus), executive (prefrontal), language production (Broca, BA 44/45 left-lateralised).
@@ -221,6 +240,17 @@ See [Landmark → Atlases](../../landmark/atlases.md) for the full bibliographic
 10. **Bakas S, Akbari H, Sotiras A, et al.** Advancing The Cancer Genome Atlas glioma MRI collections with expert segmentation labels and radiomic features. *Sci Data.* 2017;4:170117. [doi:10.1038/sdata.2017.117](https://doi.org/10.1038/sdata.2017.117) — BraTS.
 11. **Allen Brain Atlas.** Free online: [https://atlas.brain-map.org](https://atlas.brain-map.org)
 12. **The Human Brain Atlas (Sandra Witelson)** — open online resources at [https://www.brainmuseum.org](https://www.brainmuseum.org).
+
+## Visual references — credible image galleries
+
+- **Allen Human Brain Atlas.** [https://atlas.brain-map.org/atlas?atlas=265297126](https://atlas.brain-map.org/atlas?atlas=265297126) — interactive 3D-navigable brain with high-resolution sections and gene-expression overlays.
+- **BrainMaps.org** (Mikula et al., UC Davis). [https://brainmaps.org](https://brainmaps.org) — comparative whole-brain image sets across species.
+- **HCP atlas viewer.** [https://balsa.wustl.edu](https://balsa.wustl.edu) — explore HCP-MMP1, Yeo networks, Schaefer parcels on the fsLR surface.
+- **TemplateFlow browser.** [https://www.templateflow.org/browse/](https://www.templateflow.org/browse/) — every standard template rendered.
+- **The Cambridge Atlas Project (white matter).** [https://www.natbrainlab.co.uk/atlas-maps](https://www.natbrainlab.co.uk/atlas-maps) — Catani & Thiebaut de Schotten figures of major fibre bundles.
+- **MS Lesion Atlas (Filippi group).** [https://radiopaedia.org/articles/multiple-sclerosis](https://radiopaedia.org/articles/multiple-sclerosis) — illustrated radiological examples of MS plaques on FLAIR.
+- **Wikimedia Commons — Brain category.** [https://commons.wikimedia.org/wiki/Category:Human_brain](https://commons.wikimedia.org/wiki/Category:Human_brain) — CC-BY / CC0 anatomical illustrations (including Patrick J. Lynch's Yale Medical Art Library set).
+- **Visible Human Project (NLM).** [https://www.nlm.nih.gov/research/visible/visible_human.html](https://www.nlm.nih.gov/research/visible/visible_human.html) — full-body anatomical cross-sections including head.
 
 ## Where to next
 

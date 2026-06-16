@@ -44,6 +44,19 @@ $$
 
 Multi-coil data are combined either by **root-sum-of-squares** (no phase) or **SENSE / GRAPPA** unfolding when k-space is under-sampled.
 
+### k-space → image (Cartesian MR) at a glance
+
+```mermaid
+flowchart LR
+    K["Sampled k-space S(kx, ky)<br/>(Fourier domain)"] -->|inverse FFT| I["Image M(x, y)<br/>(spatial domain)"]
+    C["Multi-coil k-space<br/>S₁, S₂, ..., S_n"] -->|SENSE / GRAPPA<br/>unfolding| K
+    style K fill:#fff,stroke:#888
+    style I fill:#e0e0ff,stroke:#444
+    style C fill:#fff,stroke:#888
+```
+
+*<small>The MRI reconstruction shortcut: when k-space is fully sampled, the image is just an inverse FFT; parallel imaging recovers under-sampled data using coil sensitivity profiles. Original figure.</small>*
+
 ### Iterative — MLEM / OSEM for PET
 
 PET measurements follow $y_i \sim \text{Poisson}(\sum_j A_{ij} x_j)$. Maximum-likelihood expectation-maximisation gives:

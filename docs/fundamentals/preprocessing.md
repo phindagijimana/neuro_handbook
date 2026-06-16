@@ -2,6 +2,25 @@
 
 Raw MRI volumes are not analysis-ready. A handful of preprocessing steps are nearly universal, and most labs no longer hand-roll them — they delegate to a community BIDS-app.
 
+```mermaid
+flowchart LR
+    R[Raw NIfTI] --> Q[Format + QC check]
+    Q --> D[Denoising +<br/>bias correction]
+    D --> M[Motion correction<br/>4D only]
+    M --> DC[Distortion correction<br/>EPI only]
+    DC --> BX[Brain extraction]
+    BX --> CR[Cross-modal<br/>coregistration]
+    CR --> SN[Spatial<br/>normalisation]
+    SN --> TS[Tissue segmentation]
+    SN --> SR[Surface reconstruction]
+    TS --> A[Analysis-ready<br/>BIDS derivatives]
+    SR --> A
+    style R fill:#fff,stroke:#888
+    style A fill:#e0e0ff,stroke:#444
+```
+
+*<small>The universal MRI preprocessing pipeline. Each block has many implementations; BIDS apps standardise the chain. Original figure.</small>*
+
 ## The universal steps
 
 | Step | What it does | When |
@@ -58,6 +77,14 @@ That covers four of the five pillars from [Data engineering → The five pillars
 - **FreeSurfer license.** `recon-all` (and anything that wraps it) needs a `license.txt`. Free, but you have to request it from the FreeSurfer site.
 - **Long runtimes.** `recon-all` is ~10 h per subject on CPU. FastSurfer is the DL-accelerated drop-in if your throughput matters.
 - **Resource sizing.** fMRIPrep peaks at ~16 GB RAM and uses many cores; QSIPrep is heavier still. Look at the docs before sizing Slurm requests.
+
+## Visual references
+
+- **fMRIPrep workflow diagram (official).** [https://fmriprep.org/en/stable/workflows.html](https://fmriprep.org/en/stable/workflows.html) — annotated per-step pipeline figures published with the tool.
+- **QSIPrep workflow diagram.** [https://qsiprep.readthedocs.io/en/latest/preprocessing.html](https://qsiprep.readthedocs.io/en/latest/preprocessing.html) — diffusion-specific preprocessing chain with illustrations.
+- **MRIQC group report examples.** [https://mriqc.readthedocs.io/en/stable/reports.html](https://mriqc.readthedocs.io/en/stable/reports.html) — what the per-subject and cohort QC reports look like.
+- **FreeSurfer surface-reconstruction wiki.** [https://surfer.nmr.mgh.harvard.edu/fswiki/recon-all](https://surfer.nmr.mgh.harvard.edu/fswiki/recon-all) — figures of every `recon-all` stage.
+- **ANTs registration tutorial.** [https://github.com/ANTsX/ANTs/wiki/Anatomy-of-an-antsRegistration-call](https://github.com/ANTsX/ANTs/wiki/Anatomy-of-an-antsRegistration-call) — illustrated step-through.
 
 ## References
 
