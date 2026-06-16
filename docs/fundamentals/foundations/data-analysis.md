@@ -239,6 +239,17 @@ Before sending an analysis to a co-author, run this checklist:
 - [ ] The container / lockfile is documented.
 - [ ] A `methods.md` paragraph summarising what was done is up to date.
 
+## Exercises
+
+1. **Missing-data audit.** Read `participants.tsv`. Print the percentage missing per column, sorted descending; classify each column as likely MCAR, MAR, or MNAR with one sentence each.
+2. **Group K-Fold.** Using `sklearn.model_selection.GroupKFold`, set up a 5-fold split on a synthetic DataFrame with 50 subjects across 3 sites. Verify no subject ID appears in train and test of the same fold.
+3. **ComBat sanity check.** After harmonisation, compute the F-statistic for `site` predicting each harmonised feature. Report what changed vs raw.
+
+??? success "Solutions"
+    1. `df.isna().mean().sort_values(ascending=False) * 100`; reason from domain knowledge.
+    2. `gkf = GroupKFold(5); for tr, te in gkf.split(X, y, groups=df['subject_id']): assert set(df.iloc[tr]['subject_id']) & set(df.iloc[te]['subject_id']) == set()`.
+    3. Use `scipy.stats.f_oneway` per feature, comparing pre/post; per-feature F values should drop substantially.
+
 ## References
 
 1. **McKinney W.** *Python for Data Analysis.* 3rd ed. O'Reilly; 2022. ISBN 978-1098104030. Free online: [https://wesmckinney.com/book/](https://wesmckinney.com/book/)

@@ -16,6 +16,20 @@ Found something missing, wrong, or out of date? We'd love to know — every page
 
 ---
 
+## New to neuroimaging? Start here
+
+<div class="grid cards" markdown>
+
+-   :material-rocket-launch: **[Getting started](getting-started/index.md)** — the 30-minute on-ramp. Install environment, load your first NIfTI, run your first BIDS app, render your first figure.
+
+-   :material-map-marker-path: **[Reading paths](paths/index.md)** — four named paths through the handbook for new researchers, software engineers pivoting in, clinicians, and ML engineers.
+
+-   :material-school-outline: **[Tutorials](tutorials/index.md)** — five end-to-end walkthroughs from data to figure, including a synthesis capstone.
+
+</div>
+
+---
+
 ## Browse by topic
 
 <div class="grid cards" markdown>

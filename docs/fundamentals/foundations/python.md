@@ -224,6 +224,17 @@ Run with `pytest -q`. See [Data engineering → Testing](../../data-engineering/
 - **`np.array(list_of_arrays)`** when the inner shapes differ — produces an object array. Use `np.stack` or `np.concatenate`.
 - **Off-by-one between voxel indices and world coordinates** — see [Coordinate systems](../coordinate-systems.md).
 
+## Exercises
+
+1. **Write `zscore_safe(x, axis)`** that returns z-scores along `axis`, ignoring NaNs and returning `0` when std is 0. Test with `np.array([1, 2, 3, np.nan, 5])`.
+2. **Walk a BIDS dataset.** Using only `pathlib`, list every `sub-*/anat/sub-*_T1w.nii.gz` in `fixtures/sub-tiny/`. Don't use globs; use `iterdir` and pattern matching.
+3. **Atomically merge two DataFrames.** Read `participants.tsv` and a synthetic `qc.csv`, join one-to-one, save as Parquet, and verify with `pyarrow.parquet.read_metadata` that the schema matches your expectation.
+
+??? success "Solutions"
+    1. `def zscore_safe(x, axis): mu=np.nanmean(x,axis,keepdims=True); sd=np.nanstd(x,axis,keepdims=True,ddof=1); return np.where(sd>0,(x-mu)/sd,0.0)`
+    2. `for p in Path(root).iterdir(): if p.name.startswith('sub-'): for f in (p/'anat').iterdir(): if f.name.endswith('_T1w.nii.gz'): print(f)`
+    3. Use `df.merge(qc, on='subject_id', how='left', validate='one_to_one')` then `df.to_parquet('out.parquet')`.
+
 ## References
 
 1. **VanderPlas J.** *Python Data Science Handbook.* 2nd ed. O'Reilly; 2022. ISBN 978-1098121228. Free online: [https://jakevdp.github.io/PythonDataScienceHandbook/](https://jakevdp.github.io/PythonDataScienceHandbook/)

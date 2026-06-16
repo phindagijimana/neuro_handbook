@@ -226,6 +226,17 @@ See [Landmark → Atlases](../../landmark/atlases.md) for the full bibliographic
 - **Edema** — fluid accumulation, T2/FLAIR-bright.
 - **Stenosis** — vessel narrowing.
 
+## Exercises
+
+1. **Lobe identification.** On a sagittal T1w slice (lateral view), name the lobe under each of: precentral gyrus, calcarine sulcus, superior temporal gyrus, paracentral lobule.
+2. **Network → cognitive function.** Match each network to one canonical function: DMN, salience, dorsal attention, frontoparietal control.
+3. **Diagnostic clues.** What sequence + finding is the front-line acute-stroke evaluation? What about Alzheimer's biomarkers in the AT(N) framework?
+
+??? success "Solutions"
+    1. Frontal (precentral), occipital (calcarine), temporal (sup. temporal), frontal/parietal medially (paracentral).
+    2. DMN: self-referential / mind-wandering. Salience: switching between networks. Dorsal attention: top-down spatial. Frontoparietal: cognitive control.
+    3. Acute stroke: DWI + ADC (restricted diffusion). AT(N): amyloid-PET (A) + tau-PET (T) + structural atrophy / FDG / CSF NfL (N).
+
 ## References
 
 1. **Kandel ER, Schwartz JH, Jessell TM, et al.** *Principles of Neural Science.* 6th ed. McGraw-Hill; 2021. ISBN 978-1259642234. — the canonical textbook.

@@ -196,6 +196,17 @@ matlab -batch "addpath('src'); run_analysis('sub-001')"
 
 When to *stay*: SPM-based workflows where the heavy lifting is in SPM batches; EEGLAB ICA pipelines; collaborators who write MATLAB only.
 
+## Exercises
+
+1. **Logical indexing.** Given `x = randn(1000, 1)`, replace any value with `|x| > 3` by NaN without a loop.
+2. **Table groupby.** Load `participants.tsv` as a `table`. Compute mean age per (`site`, `diagnosis`) using `groupsummary`.
+3. **Paired t-test.** Read two same-length numeric vectors from `pre.csv` and `post.csv`; run a paired t-test and print the t-stat, degrees of freedom, and 95% CI.
+
+??? success "Solutions"
+    1. `x(abs(x) > 3) = NaN;`.
+    2. `T = readtable('participants.tsv','FileType','text','Delimiter','\t'); G = groupsummary(T,{'site','diagnosis'},'mean','age');`.
+    3. `[h,p,ci,stats] = ttest(pre, post); fprintf('t=%.2f df=%d CI=[%.3f, %.3f]\n', stats.tstat, stats.df, ci(1), ci(2));`.
+
 ## References
 
 1. **Higham DJ, Higham NJ.** *MATLAB Guide.* 3rd ed. SIAM; 2017. ISBN 978-1611974652.

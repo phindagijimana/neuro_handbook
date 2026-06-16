@@ -188,6 +188,17 @@ Pair the table with a static HTML report (Quarto / Streamlit) and the lab has a 
 11. **Bastiani M, Cottaar M, Fitzgibbon SP, et al.** Automated quality control for within and between studies diffusion MRI data using a non-parametric framework for movement and distortion correction. *NeuroImage.* 2019;184:801-812. [doi:10.1016/j.neuroimage.2018.12.011](https://doi.org/10.1016/j.neuroimage.2018.12.011) — eddy QUAD.
 12. **Lehtinen J, Munkberg J, Hasselgren J, et al.** Noise2Noise: learning image restoration without clean data. *ICML.* 2018. [arXiv:1803.04189](https://doi.org/10.48550/arXiv.1803.04189)
 
+## Exercises
+
+1. **MP-PCA threshold.** Explain why a uniform-noise patch SVD's spectrum should match the Marchenko-Pastur distribution. What does deviation indicate?
+2. **NORDIC vs NLM.** When would you choose each for fMRI denoising? Name one scan parameter that flips the answer.
+3. **Cohort QC outlier policy.** Design an automated outlier-flagging rule combining at least two IQMs; describe a sensitivity analysis to defend the threshold.
+
+??? success "Solutions"
+    1. Pure noise eigenvalues follow MP. Signal contributes additional large eigenvalues above the MP edge; keep those, discard the rest.
+    2. NORDIC if magnitude+phase data available; NLM for magnitude-only data. Flips when phase reconstruction is unavailable or unstable.
+    3. e.g. flag if FD_mean > 0.5 mm AND CNR < 5th percentile; sensitivity = sweep both thresholds, show flagging rate is monotonic and stable around chosen values.
+
 ## Where to next
 
 That closes the Medical Imaging sub-section. From here:

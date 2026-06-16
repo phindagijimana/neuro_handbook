@@ -462,6 +462,17 @@ Persist by editing `~/.bashrc` (interactive shells) or `~/.bash_profile` (login 
 7. **Linux Documentation Project.** *Bash Guide for Beginners.* [https://tldp.org/LDP/Bash-Beginners-Guide/html/](https://tldp.org/LDP/Bash-Beginners-Guide/html/)
 8. **AWS CLI User Guide.** [https://docs.aws.amazon.com/cli/latest/userguide/](https://docs.aws.amazon.com/cli/latest/userguide/)
 
+## Exercises
+
+1. **Find the disk hogs.** In `~/`, print the 10 largest files. (Hint: combine `find`, `du`, `sort`, `tail`.)
+2. **Resumable backup.** Write the `rsync` command that copies `~/work/study/` to `user@cluster:/backup/study/`, resumes if interrupted, excludes `__pycache__/`, and dry-runs first.
+3. **Process pruning.** Find every `python` process owned by you and print PID + command, sorted by memory.
+
+??? success "Solutions"
+    1. `find ~ -type f -exec du -h {} + | sort -h | tail -10`.
+    2. `rsync -avP --exclude='__pycache__' --dry-run ~/work/study/ user@cluster:/backup/study/` (drop `--dry-run` for real).
+    3. `ps -u $USER -o pid,rss,cmd | grep '[p]ython' | sort -k2 -n`.
+
 ## Where to next
 
 [MATLAB](matlab.md) — the second-most-common neuroimaging-analysis language, especially on the SPM / EEGLAB / FieldTrip side.

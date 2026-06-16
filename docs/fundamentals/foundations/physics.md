@@ -218,6 +218,17 @@ Same hardware as MRI, but the readout is in the *spectral* dimension: a 1H-MRS v
 
 If any of these are unknown when you process the data later, the methods section can't be written honestly.
 
+## Exercises
+
+1. **Larmor frequency.** What's the proton Larmor frequency at 3 T? At 7 T?
+2. **b-value back-of-envelope.** A DTI protocol at b=1000 s/mm² and ADC=0.7×10⁻³ mm²/s — what's the expected `S/S₀`?
+3. **EPI distortion.** A 64-line EPI with 0.55 ms echo spacing has what total readout time? Why does that determine the magnitude of susceptibility-induced distortion?
+
+??? success "Solutions"
+    1. ω₀ = γ B₀; γ/2π = 42.58 MHz/T → 3 T = 127.7 MHz; 7 T = 298 MHz.
+    2. `exp(-b·ADC) = exp(-0.7) ≈ 0.50`.
+    3. ~35 ms; distortion scales with readout duration / EPI echo train length divided by the local field gradient.
+
 ## References
 
 1. **Haacke EM, Brown RW, Thompson MR, Venkatesan R.** *Magnetic Resonance Imaging: Physical Principles and Sequence Design.* 2nd ed. Wiley-Liss; 2014. ISBN 978-0471720850.

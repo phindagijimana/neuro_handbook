@@ -229,6 +229,17 @@ JLF ([Wang et al., 2013](https://doi.org/10.1109/TPAMI.2012.143)) remains highly
 13. **Billot B, Greve DN, Puonti O, et al.** SynthSeg: domain randomisation for segmentation of brain scans of any contrast and resolution. *Med Image Anal.* 2023;86:102789. [doi:10.1016/j.media.2023.102789](https://doi.org/10.1016/j.media.2023.102789)
 14. **Hatamizadeh A, Nath V, Tang Y, Yang D, Roth HR, Xu D.** Swin UNETR. *arXiv:2201.01266.* 2022. [doi:10.48550/arXiv.2201.01266](https://doi.org/10.48550/arXiv.2201.01266)
 
+## Exercises
+
+1. **Dice limitations.** Construct two binary masks where Dice ≥ 0.9 but a small clinically-critical structure is completely missed. Propose a complementary metric.
+2. **Class-balanced patch sampling.** Sketch a 3D U-Net training loop that ensures every batch contains at least one foreground patch per class.
+3. **Cross-site evaluation.** Why does within-site CV typically overstate generalisation? Design a held-out site experiment.
+
+??? success "Solutions"
+    1. A 100-voxel structure missed in a 100k-voxel volume: missing it drops Dice by ~0.001. Pair Dice with per-class sensitivity at fixed volume thresholds, or HD95.
+    2. Use `RandCropByPosNegLabeld(pos=1, neg=1)` from MONAI; concatenate per-class samplers when N classes > 2.
+    3. Within-site CV shares scanner / protocol / population biases; leave-one-site-out is the honest test.
+
 ## Where to next
 
 [Registration](registration.md) — aligning segmentations across subjects and modalities.

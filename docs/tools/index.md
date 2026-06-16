@@ -1,8 +1,8 @@
 # Tools landscape
 
-> Opinionated map of the tools you'll meet — what they do and when to reach for each.
+> Opinionated map of the tools you'll meet — what they do and when to reach for each, with **official documentation links** so you can jump straight to the source.
 
-This page is a quick index, organised by what the tool *does* rather than where it sits in the stack. Each row links to a deeper treatment elsewhere in the handbook when one exists.
+This page is a quick index organised by what the tool *does* rather than where it sits in the stack. Each row links to the canonical documentation and (where one exists) to a deeper treatment elsewhere in the handbook.
 
 ## Neuroimaging-specific
 

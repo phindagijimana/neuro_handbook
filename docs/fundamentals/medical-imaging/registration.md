@@ -228,6 +228,17 @@ VoxelMorph ([Balakrishnan et al., 2019](https://doi.org/10.1109/TMI.2019.2897538
 11. **Chen J, Frey EC, He Y, et al.** TransMorph: transformer for unsupervised medical image registration. *Med Image Anal.* 2022;82:102615. [doi:10.1016/j.media.2022.102615](https://doi.org/10.1016/j.media.2022.102615)
 12. **Klein A, Andersson J, Ardekani BA, et al.** Evaluation of 14 nonlinear deformation algorithms applied to human brain MRI registration. *NeuroImage.* 2009;46(3):786-802. [doi:10.1016/j.neuroimage.2008.12.037](https://doi.org/10.1016/j.neuroimage.2008.12.037) — landmark benchmarking paper.
 
+## Exercises
+
+1. **Pick a similarity metric.** Which is best for: (a) T1w ↔ T1w within subject, (b) T1w ↔ DWI b=0, (c) longitudinal T1w → halfway template? Justify.
+2. **TRE vs Dice.** What does TRE measure that Dice does not? Why is TRE the "gold standard" when landmarks are available?
+3. **Pyramid debugging.** A SyN registration gives a great affine fit but a poor deformable refinement. List four diagnostic checks.
+
+??? success "Solutions"
+    1. (a) SSD or NCC — same contrast. (b) MI — multi-modal. (c) NCC or MI — small contrast shifts across time, robust to drift.
+    2. TRE: physical mm error at known landmarks. Dice rewards overlap area; can miss boundary-shift errors that TRE catches directly.
+    3. Check bias-field correction; check skull-stripping mismatch; check pyramid smoothing schedule (too coarse at finest level?); check Jacobian for folding (negative det J).
+
 ## Where to next
 
 [Enhancement & quality](enhancement.md) — improving images before, during, or after registration.

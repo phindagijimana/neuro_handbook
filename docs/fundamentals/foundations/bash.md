@@ -321,6 +321,17 @@ Strict mode, usage helper, per-subject logging, fail-soft on individual subjects
 6. **Aaron Maxwell.** Use the Unofficial Bash Strict Mode (Unless You Looove Debugging). [http://redsymbol.net/articles/unofficial-bash-strict-mode/](http://redsymbol.net/articles/unofficial-bash-strict-mode/)
 7. **POSIX Shell Standard.** IEEE Std 1003.1-2017. [https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html)
 
+## Exercises
+
+1. **Strict-mode debugging.** Write a script that fails when a variable is unset; explain why `set -u` catches the bug `set -e` doesn't.
+2. **Parameter expansion.** Given `SUB="sub-001_T1w.nii.gz"`, use parameter expansion (no external tools) to print `001`.
+3. **Subject array job.** Write a Slurm array script that reads `subjects.txt` (one subject per line) and runs `process_subject "$sub"` on the indexed entry.
+
+??? success "Solutions"
+    1. `set -u`: `echo "${UNDEFINED}"` fails immediately; under `set -e` only, `false || echo ok` would silently mask it.
+    2. `tmp=${SUB#sub-}; tmp=${tmp%_T1w*}; echo "$tmp"`.
+    3. `subjects=($(cat subjects.txt)); sub=${subjects[$SLURM_ARRAY_TASK_ID - 1]}; process_subject "$sub"`.
+
 ## Where to next
 
 [CLI commands](cli.md) — the individual programs your Bash scripts will orchestrate (`ls`, `rsync`, `ssh`, `find`, `grep`, …).

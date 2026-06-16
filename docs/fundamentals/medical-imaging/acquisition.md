@@ -203,6 +203,17 @@ The acquisition step *cannot* be fully undone downstream. Spend time getting it 
 8. **Hämäläinen M, Hari R, Ilmoniemi RJ, Knuutila J, Lounasmaa OV.** Magnetoencephalography: theory, instrumentation, and applications to noninvasive studies of the working human brain. *Rev Mod Phys.* 1993;65(2):413-497. [doi:10.1103/RevModPhys.65.413](https://doi.org/10.1103/RevModPhys.65.413)
 9. **Webb A.** *Introduction to Biomedical Imaging.* 2nd ed. Wiley; 2022. ISBN 978-1119867704.
 
+## Exercises
+
+1. **Identify the forward operator.** For a 64-channel cartesian MR, write out the components of $A$ (Fourier + coil-sensitivity multiplication + sampling mask).
+2. **CT dose vs SNR.** Halving tube current changes Poisson photon counts by what factor; SNR by what factor?
+3. **PET attenuation correction.** Why is a μ-map required for quantitative PET? What replaces it on PET/MR where there's no CT?
+
+??? success "Solutions"
+    1. `A = M ∘ F ∘ S_c`: per-coil sensitivity multiplication, FFT to k-space, mask sampling pattern.
+    2. Counts: × 0.5; SNR: × 1/√2 ≈ 0.71.
+    3. AC removes the exponential attenuation along each LOR. On PET/MR: UTE/Dixon-based μ-map or DL-based estimation (e.g. atlas-based, ZTE-MR).
+
 ## Where to next
 
 [Reconstruction](reconstruction.md) — turning the measurements you just acquired into an image.

@@ -249,6 +249,17 @@ estimated as a Gaussian-process or Bayesian-neural-network regression ([Marquand
 - **KL divergence** $D_{KL}(p \| q)$ — directional dissimilarity between distributions. Underlies variational inference, model evaluation.
 - **Mutual information** $I(X; Y) = D_{KL}(p(x,y) \| p(x)p(y))$ — non-linear dependence. Used as a registration similarity metric ([Mattes et al., 2003](https://doi.org/10.1117/12.481048)).
 
+## Exercises
+
+1. **SVD low-rank approximation.** Generate a 100×50 matrix with rank ~5 plus noise. Reconstruct from the top 5 singular values; report Frobenius error.
+2. **Gradient check.** For `f(x) = ||Ax - b||²`, derive the gradient analytically and verify numerically via finite differences.
+3. **Mutual information.** Estimate MI between two N(0,1) variables with correlation 0.5; compare against the analytic answer `-0.5 * log(1 - ρ²)`.
+
+??? success "Solutions"
+    1. `U,S,Vt = np.linalg.svd(A,full_matrices=False); A5 = U[:,:5] @ np.diag(S[:5]) @ Vt[:5]; np.linalg.norm(A - A5,'fro')`.
+    2. `∇f = 2A^T(Ax - b)`; FD: `(f(x+ε e_i) - f(x-ε e_i)) / (2ε)` for each i.
+    3. MI ≈ 0.144 nats; verify with `from sklearn.feature_selection import mutual_info_regression`.
+
 ## References
 
 1. **Strang G.** *Introduction to Linear Algebra.* 6th ed. Wellesley-Cambridge Press; 2023. ISBN 978-1733146678.

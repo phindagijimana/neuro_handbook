@@ -150,6 +150,17 @@ Bayesian credibility intervals are intuitive (95% credibility = "I believe 95% p
 - [ ] Code + data available, or a justification for why not.
 - [ ] Sensitivity analysis showing the conclusion is robust to reasonable analytic choices.
 
+## Exercises
+
+1. **GLM by hand.** With `X` (n×p) and `y` (n,), implement OLS via `np.linalg.lstsq` and via the normal equation `(X^T X)^(-1) X^T y`. Compare results.
+2. **Permutation test.** Two independent samples; write a 1000-iteration permutation test for the difference in means.
+3. **Power analysis.** What sample size does an independent-samples t-test need to detect Cohen's d = 0.4 at α = 0.05 and power = 0.8?
+
+??? success "Solutions"
+    1. `beta1, *_ = np.linalg.lstsq(X, y, rcond=None); beta2 = np.linalg.inv(X.T @ X) @ X.T @ y; np.allclose(beta1, beta2)` should be True.
+    2. `obs = a.mean()-b.mean(); pool = np.concatenate([a,b]); cnt = sum(np.abs(np.random.permutation(pool)[:len(a)].mean()-np.random.permutation(pool)[len(a):].mean()) >= abs(obs) for _ in range(1000))/1000`.
+    3. ~99 per group via `TTestIndPower().solve_power(effect_size=0.4, alpha=0.05, power=0.8)`.
+
 ## References
 
 1. **Gelman A, Carlin JB, Stern HS, Dunson DB, Vehtari A, Rubin DB.** *Bayesian Data Analysis.* 3rd ed. CRC Press; 2013. ISBN 978-1439840955. Free online: [http://www.stat.columbia.edu/~gelman/book/](http://www.stat.columbia.edu/~gelman/book/)

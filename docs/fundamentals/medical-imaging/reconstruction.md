@@ -193,6 +193,17 @@ Three traps in evaluation:
 9. **Wang Z, Bovik AC, Sheikh HR, Simoncelli EP.** Image quality assessment: from error visibility to structural similarity. *IEEE Trans Image Process.* 2004;13(4):600-612. [doi:10.1109/TIP.2003.819861](https://doi.org/10.1109/TIP.2003.819861)
 10. **Boyd S, Parikh N, Chu E, Peleato B, Eckstein J.** Distributed optimization and statistical learning via the alternating direction method of multipliers. *Found Trends Mach Learn.* 2011;3(1):1-122. [doi:10.1561/2200000016](https://doi.org/10.1561/2200000016) — ADMM.
 
+## Exercises
+
+1. **Inverse-crime detection.** Why is evaluating a recon by simulating data with the same $A$ used in recovery an over-optimistic metric? Propose a fix.
+2. **FISTA convergence.** For a regularised reconstruction, show that the Lipschitz constant $L$ of the gradient sets the step size. What does a too-aggressive step do?
+3. **Hallucination guard.** Design a sanity-check that catches deep-learning recon hallucinations on out-of-distribution test data.
+
+??? success "Solutions"
+    1. Use a higher-resolution / different physics model when synthesising test data; or use phantom data with independently measured ground truth.
+    2. Step ≤ 1/L for convergence guarantee; larger step causes divergence / oscillation.
+    3. Compare DL recon against a classical recon (e.g. SENSE) on the same under-sampled data; flag voxels where they disagree beyond a threshold for human review.
+
 ## Where to next
 
 [Enhancement & quality](enhancement.md) — denoising, bias correction, and artifact removal on the reconstructed image.
