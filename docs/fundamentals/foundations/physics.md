@@ -1,8 +1,8 @@
-# Physics
+# Medical imaging physics
 
-> Why a magnetic field and some radio pulses produce a brain image — and what every acquisition parameter is really doing.
+> Why a magnetic field, an X-ray beam, a positron tracer, an ultrasound pulse, or a near-infrared photon produces a brain image — and what every acquisition parameter is really doing.
 
-You don't need to derive the Bloch equations from Maxwell's, but you do need a working physical model so that a "TE = 35 ms" or "b = 1000 s/mm²" line in a methods section actually tells you something. This page is that working model.
+You don't need to derive the Bloch equations from Maxwell's, but you do need a working physical model for every modality you might encounter. MRI is the deep core of this page (it dominates research neuroimaging); CT, PET, ultrasound, optical, and EEG/MEG biophysics get their own treatment because you'll meet all of them in multimodal cohorts.
 
 ## The phenomenon — nuclear magnetic resonance
 
@@ -119,13 +119,93 @@ $$
 
 with the canonical "two-gamma" form used in SPM and FSL.
 
-## PET physics in one paragraph
+## Computed tomography (CT)
 
-A positron-emitting radiotracer (FDG, amyloid-PET ligands) is injected; positrons annihilate with electrons to produce two 511 keV photons in opposite directions; the scanner detects coincidences along lines of response; reconstruction (OSEM, MLEM) produces a 3D tracer-concentration map. Quantitative PET uses arterial input function or reference-region models to estimate kinetic parameters (Ki for FDG glucose uptake, SUVR for binding).
+CT measures X-ray attenuation through the head from many angles, then reconstructs a 3D map of attenuation coefficients $\mu(\vec r)$ via filtered back-projection or iterative reconstruction (OSEM, model-based). The output is in **Hounsfield units (HU)**:
 
-## EEG / MEG physics in one paragraph
+$$
+\mathrm{HU} = 1000 \cdot \frac{\mu - \mu_{water}}{\mu_{water} - \mu_{air}}
+$$
 
-Neuronal pyramidal cells generate dipolar currents. Their summed activity produces measurable electric potentials on the scalp (EEG, ~10 µV) and magnetic fields outside the head (MEG, ~10 fT — 8 orders of magnitude below Earth's field, requiring a magnetically shielded room and SQUID sensors). Spatial resolution is poor (~cm) because of head-tissue conductivity; temporal resolution is excellent (~ms).
+with $\mathrm{HU}(\text{water})=0$, $\mathrm{HU}(\text{air})=-1000$, $\mathrm{HU}(\text{bone})\approx 1000+$. Fresh blood is ~60-80 HU (hyperdense, bright); acute infarcts are slightly hypodense.
+
+CT is the front-line modality for **acute stroke / haemorrhage** because of sub-minute scan times and exquisite sensitivity to fresh blood. **Dose** is the trade-off: a head CT is ~2 mSv (about a year of natural background). CT angiography (CTA) and perfusion CT (CTP) add iodinated contrast for vascular and tissue-perfusion maps.
+
+For research, CT shows up in: skull / bone analyses (cranioplasty planning, PET-MR attenuation correction proxies), older multi-modal cohorts that pre-date MRI, and intracranial-electrode localisation (CT/MR fusion).
+
+## Positron emission tomography (PET)
+
+A positron-emitting radiotracer is injected; positrons travel a short distance, annihilate with electrons, and produce two **511 keV photons** in nearly opposite directions. The scanner detects coincident photon pairs along lines of response (LORs); reconstruction (OSEM, MLEM, time-of-flight) yields a 3D tracer-concentration map.
+
+Common tracers and what they probe:
+
+| Tracer | Target | Half-life | Use |
+|---|---|---|---|
+| **[¹⁸F]FDG** | Glucose metabolism | 110 min | Tumour, dementia, epilepsy |
+| **[¹⁸F]florbetaben / florbetapir / flutemetamol** | Amyloid-β plaques | 110 min | Alzheimer's |
+| **[¹⁸F]flortaucipir** | Tau tangles | 110 min | Alzheimer's, CTE |
+| **[¹⁸F]FET / [¹¹C]MET** | Amino-acid uptake | 110 / 20 min | Glioma |
+| **[¹¹C]PiB** | Amyloid-β | 20 min | Alzheimer's (research) |
+| **[¹⁸F]FDOPA / [¹¹C]raclopride / [¹²³I]DAT-SPECT** | Dopamine system | varies | Parkinson's, addiction |
+
+Quantitative PET uses **kinetic modelling**:
+
+- **SUV / SUVR** — semi-quantitative ratio; common in clinical practice.
+- **Patlak / Logan graphical methods** — slope = irreversible / reversible binding rate.
+- **Two-tissue compartment model** — full kinetics; requires arterial input function or reference region.
+
+Spatial resolution: ~3-5 mm FWHM. Quantitative accuracy needs **attenuation correction**; in PET/MR, that's done from a UTE / Dixon MR sequence or DL-based estimation.
+
+## Ultrasound
+
+Ultrasound transmits high-frequency sound waves (1-15 MHz) and times the echoes. The **speed of sound in tissue is ~1540 m/s**; round-trip time × half = depth. Pulse-echo amplitude maps tissue interfaces; Doppler shift maps flow velocity.
+
+Brain ultrasound is limited by the **skull** which absorbs and scatters the beam. Practical use cases:
+
+- **Neonatal transfontanelle** — the open fontanelle allows imaging through it; bedside, no radiation.
+- **Intra-operative** — direct insonation after craniotomy.
+- **Functional ultrasound (fUS)** — high-frame-rate plane-wave imaging tracks cerebral blood-volume changes at high spatial-temporal resolution in animal models and increasingly in humans.
+- **Focused ultrasound (FUS)** — therapeutic; thermal ablation (essential tremor), transient BBB opening, neuromodulation.
+
+For an engineer entering this space, [Bercoff et al., 2004](https://doi.org/10.1109/TUFFC.2004.1295425) (transient elastography) and [Macé et al., 2011](https://doi.org/10.1038/nmeth.1641) (functional ultrasound) are the landmark methods papers.
+
+## Optical: NIRS and OCT
+
+### Near-infrared spectroscopy (NIRS / fNIRS)
+
+Two wavelengths of near-infrared light (~700-900 nm) penetrate ~1-3 cm of tissue and are absorbed differently by **oxy- and deoxy-haemoglobin**. Source-detector pairs on the scalp produce a map of cortical haemodynamic changes — a BOLD-like signal at lower spatial resolution but without a scanner.
+
+Strengths: portable, tolerant of motion, infant-friendly. Limitations: only superficial cortex; skin/skull absorbance dominates.
+
+### Optical coherence tomography (OCT)
+
+Uses low-coherence interferometry to image micron-scale structure ~1-2 mm deep. In neuro-research, OCT is the workhorse for the **retina** — retinal-nerve-fibre-layer thinning is a biomarker for MS, glaucoma, and increasingly Alzheimer's.
+
+## EEG and MEG biophysics
+
+Neuronal **pyramidal cells** in cortex are spatially aligned perpendicular to the cortical surface. Their post-synaptic potentials sum into dipolar currents that produce measurable electric potentials on the scalp (EEG, ~10 µV) and magnetic fields outside the head (MEG, ~10 fT — 8 orders of magnitude below Earth's field, requiring a magnetically shielded room and SQUID or OPM sensors).
+
+Some key physical facts:
+
+- **EEG** sees both radial and tangential dipoles, but is severely distorted by skull conductivity (~1/80 of brain).
+- **MEG** sees primarily *tangential* dipoles (sulcal walls); is unaffected by skull conductivity because magnetic permeability is uniform.
+- **Spatial resolution** — EEG ~ centimetres; MEG ~ millimetres in optimal conditions.
+- **Temporal resolution** — milliseconds; the only non-invasive method that resolves real neural timescales.
+- **Source localisation** is an *inverse problem* — many cortical dipole configurations explain the same sensor data. Beamformer (LCMV), MNE / dSPM, and Bayesian (Champagne) algorithms regularise it differently.
+
+For methods see [Hämäläinen et al., 1993](https://doi.org/10.1103/RevModPhys.65.413) (MEG physics review) and the [MNE-Python docs](https://mne.tools/).
+
+## MRS — magnetic resonance spectroscopy
+
+Same hardware as MRI, but the readout is in the *spectral* dimension: a 1H-MRS voxel-of-interest produces a chemical-shift spectrum (NAA, creatine, choline, lactate, glutamate, GABA peaks). Concentrations reported in mmol/kg. Useful for biochemistry of tumours, epilepsy, neurodegeneration. Modern implementations (MEGA-PRESS, J-PRESS) edit out water and resolve GABA / glutamate.
+
+## What every modality has in common
+
+- **Forward model** — physics maps `source → signal`.
+- **Inverse problem** — algorithm maps `signal → image / source estimate`.
+- **Noise sources** — modality-specific (thermal in MR, photon-counting in PET/CT, dipole-mismodel in EEG/MEG).
+- **Resolution-SNR-time trade-off** — pick two.
+- **Quantitative bias** — every modality has a systematic offset somewhere; always sanity-check the absolute values.
 
 ## A practical mental checklist before any acquisition
 
@@ -149,6 +229,14 @@ If any of these are unknown when you process the data later, the methods section
 7. **Buxton RB, Wong EC, Frank LR.** Dynamics of blood flow and oxygenation changes during brain activation: the balloon model. *Magn Reson Med.* 1998;39(6):855-864. [doi:10.1002/mrm.1910390602](https://doi.org/10.1002/mrm.1910390602)
 8. **Pruessmann KP, Weiger M, Scheidegger MB, Boesiger P.** SENSE: sensitivity encoding for fast MRI. *Magn Reson Med.* 1999;42(5):952-962. [doi:10.1002/(SICI)1522-2594(199911)42:5<952::AID-MRM16>3.0.CO;2-S](https://doi.org/10.1002/(SICI)1522-2594(199911)42:5%3C952::AID-MRM16%3E3.0.CO;2-S)
 9. **MR-Tip and MRI Questions** — online primers: [MRI Questions](https://mriquestions.com), [Allen D. Elster's resource](https://mriquestions.com/index.html).
+10. **Bushberg JT, Seibert JA, Leidholdt EM Jr, Boone JM.** *The Essential Physics of Medical Imaging.* 4th ed. Lippincott Williams & Wilkins; 2020. ISBN 978-1496386427. — the cross-modality reference textbook.
+11. **Kak AC, Slaney M.** *Principles of Computerized Tomographic Imaging.* SIAM; 2001. ISBN 978-0898714944. Free online: [https://engineering.purdue.edu/~malcolm/pct/CTI_Ch00.pdf](https://engineering.purdue.edu/~malcolm/pct/CTI_Ch00.pdf)
+12. **Phelps ME.** *PET: Physics, Instrumentation, and Scanners.* Springer; 2006. ISBN 978-0387321288.
+13. **Innis RB, Cunningham VJ, Delforge J, et al.** Consensus nomenclature for in vivo imaging of reversibly binding radioligands. *J Cereb Blood Flow Metab.* 2007;27(9):1533-1539. [doi:10.1038/sj.jcbfm.9600493](https://doi.org/10.1038/sj.jcbfm.9600493) — PET kinetic-modelling conventions.
+14. **Macé E, Montaldo G, Cohen I, et al.** Functional ultrasound imaging of the brain. *Nat Methods.* 2011;8:662-664. [doi:10.1038/nmeth.1641](https://doi.org/10.1038/nmeth.1641)
+15. **Boas DA, Elwell CE, Ferrari M, Taga G.** Twenty years of functional near-infrared spectroscopy: introduction for the special issue. *NeuroImage.* 2014;85(1):1-5. [doi:10.1016/j.neuroimage.2013.11.033](https://doi.org/10.1016/j.neuroimage.2013.11.033)
+16. **Hämäläinen M, Hari R, Ilmoniemi RJ, Knuutila J, Lounasmaa OV.** Magnetoencephalography — theory, instrumentation, and applications to noninvasive studies of the working human brain. *Rev Mod Phys.* 1993;65(2):413-497. [doi:10.1103/RevModPhys.65.413](https://doi.org/10.1103/RevModPhys.65.413)
+17. **Gross J.** Magnetoencephalography in cognitive neuroscience: a primer. *Neuron.* 2019;104(2):189-204. [doi:10.1016/j.neuron.2019.07.001](https://doi.org/10.1016/j.neuron.2019.07.001)
 
 ## Where to next
 

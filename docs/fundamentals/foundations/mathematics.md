@@ -158,6 +158,91 @@ Image registration finds a diffeomorphism $\phi: \mathbb{R}^3 \to \mathbb{R}^3$ 
 
 DTI tensors and functional connectomes live on the manifold of symmetric positive-definite matrices. Standard Euclidean metrics misbehave; affine-invariant and log-Euclidean metrics (Arsigny et al., 2007) are the principled choice for averaging and statistics.
 
+## Mathematics for neuroimaging AI
+
+Modern neuroimaging ML stretches the math layer in specific directions.
+
+### Backprop, automatic differentiation
+
+Deep networks parametrise a function $f_\theta(x)$; training minimises a loss $L$ via gradient descent on $\theta$. Backprop is the chain rule applied to the **computational graph**: at every node, the framework caches the forward value and the local Jacobian; the backward pass multiplies them.
+
+For a layer $z = Wx + b$, the gradients are:
+
+$$
+\frac{\partial L}{\partial W} = \frac{\partial L}{\partial z}\, x^T, \qquad
+\frac{\partial L}{\partial x} = W^T\, \frac{\partial L}{\partial z}
+$$
+
+PyTorch / JAX implement this as **reverse-mode AD**; you almost never write the gradients yourself.
+
+### Convolutions in 2D / 3D
+
+A 3D convolution layer with kernel $K \in \mathbb{R}^{c_{out} \times c_{in} \times k \times k \times k}$ acts on a volume $X$ as:
+
+$$
+Y[o, x, y, z] = \sum_{c} \sum_{i,j,k} K[o, c, i, j, k] \cdot X[c, x+i, y+j, z+k]
+$$
+
+Cost: $O(c_{in} c_{out} k^3 \cdot H W D)$. This is why 3D U-Nets are memory-hungry; gradient checkpointing and mixed precision are essential.
+
+### Self-attention — the modern primitive
+
+Given query / key / value matrices $Q, K, V \in \mathbb{R}^{n \times d}$:
+
+$$
+\text{Attention}(Q, K, V) = \mathrm{softmax}\!\left(\frac{QK^T}{\sqrt{d}}\right) V
+$$
+
+Cost $O(n^2 d)$ — quadratic in sequence length $n$. For a 256³ volume tokenised into 16³ patches, $n=4096$, $n^2 = 1.7 \times 10^7$, manageable on an A100. For voxel-level attention, use windowed (Swin), linear (Performer), or memory-efficient (FlashAttention) variants.
+
+### Diffusion models
+
+Score-based diffusion ([Ho et al., 2020](https://doi.org/10.48550/arXiv.2006.11239)) trains a network $\varepsilon_\theta(x_t, t)$ to predict noise from a noisy image; sampling iteratively denoises from Gaussian. The forward process:
+
+$$
+q(x_t \mid x_0) = \mathcal{N}\!\left(\sqrt{\bar\alpha_t}\,x_0,\, (1 - \bar\alpha_t) I\right)
+$$
+
+Loss is simply:
+
+$$
+L = \mathbb{E}_{x_0, t, \varepsilon} \left[ \| \varepsilon - \varepsilon_\theta(x_t, t) \|^2 \right]
+$$
+
+In neuroimaging: image generation, super-resolution, unconditional sampling, inverse-problem MRI reconstruction.
+
+### Geometric deep learning on surfaces and graphs
+
+The cortex is a graph (mesh) and the connectome is a graph; standard CNNs assume a Euclidean grid. **Graph convolutional networks** (GCN, GAT) operate on adjacency matrices:
+
+$$
+H^{(\ell+1)} = \sigma\!\left( \tilde D^{-\frac{1}{2}} \tilde A \tilde D^{-\frac{1}{2}} H^{(\ell)} W^{(\ell)} \right)
+$$
+
+where $\tilde A = A + I$ is the adjacency + self-loops and $\tilde D$ is its degree matrix.
+
+For mesh CNNs ([MoNet, MeshCNN, SphericalCNN](https://geometricdeeplearning.com)), the analogous operation generalises convolution to non-Euclidean domains. **Equivariance** to rotations / surface diffeomorphisms is the active research direction.
+
+### Variational autoencoders — generative + representation
+
+VAEs ([Kingma & Welling, 2014](https://doi.org/10.48550/arXiv.1312.6114)) optimise the **evidence lower bound (ELBO)**:
+
+$$
+\log p(x) \ge \mathbb{E}_{q_\phi(z|x)}[\log p_\theta(x|z)] - D_{\mathrm{KL}}\!\left(q_\phi(z|x) \,\|\, p(z)\right)
+$$
+
+The encoder $q_\phi$ produces a Gaussian latent; the decoder $p_\theta$ reconstructs. Used in neuroimaging for anomaly detection, normative modelling, harmonisation.
+
+### Normative modelling
+
+Treats brain measurements as a function of age, sex, site:
+
+$$
+y_i = f(\text{age}_i, \text{sex}_i, \text{site}_i) + \varepsilon_i
+$$
+
+estimated as a Gaussian-process or Bayesian-neural-network regression ([Marquand et al., 2016](https://doi.org/10.1016/j.biopsych.2015.12.023)). Each subject's deviation from the cohort norm becomes a per-region z-score. Strong framework for psychiatric heterogeneity.
+
 ## Information theory snippets
 
 - **Entropy** $H(X) = -\sum p(x) \log p(x)$ — uncertainty of a distribution.
@@ -175,6 +260,13 @@ DTI tensors and functional connectomes live on the manifold of symmetric positiv
 7. **Bishop CM.** *Pattern Recognition and Machine Learning.* Springer; 2006. ISBN 978-0387310732.
 8. **Arsigny V, Fillard P, Pennec X, Ayache N.** Geometric means in a novel vector space structure on symmetric positive-definite matrices. *SIAM J Matrix Anal Appl.* 2007;29(1):328-347. [doi:10.1137/050637996](https://doi.org/10.1137/050637996)
 9. **Avants BB, Epstein CL, Grossman M, Gee JC.** Symmetric diffeomorphic image registration with cross-correlation: evaluating automated labeling of elderly and neurodegenerative brain. *Med Image Anal.* 2008;12(1):26-41. [doi:10.1016/j.media.2007.06.004](https://doi.org/10.1016/j.media.2007.06.004) — SyN.
+10. **Goodfellow I, Bengio Y, Courville A.** *Deep Learning.* MIT Press; 2016. ISBN 978-0262035613. Free online: [https://www.deeplearningbook.org/](https://www.deeplearningbook.org/)
+11. **Vaswani A, Shazeer N, Parmar N, et al.** Attention is all you need. *NeurIPS.* 2017. [arXiv:1706.03762](https://doi.org/10.48550/arXiv.1706.03762)
+12. **Ho J, Jain A, Abbeel P.** Denoising diffusion probabilistic models. *NeurIPS.* 2020. [arXiv:2006.11239](https://doi.org/10.48550/arXiv.2006.11239)
+13. **Kingma DP, Welling M.** Auto-encoding variational Bayes. *ICLR.* 2014. [arXiv:1312.6114](https://doi.org/10.48550/arXiv.1312.6114)
+14. **Bronstein MM, Bruna J, Cohen T, Veličković P.** Geometric deep learning: grids, groups, graphs, geodesics, and gauges. *arXiv.* 2021. [arXiv:2104.13478](https://doi.org/10.48550/arXiv.2104.13478)
+15. **Marquand AF, Rezek I, Buitelaar J, Beckmann CF.** Understanding heterogeneity in clinical cohorts using normative models: beyond case-control studies. *Biol Psychiatry.* 2016;80(7):552-561. [doi:10.1016/j.biopsych.2015.12.023](https://doi.org/10.1016/j.biopsych.2015.12.023)
+16. **Dao T, Fu DY, Ermon S, et al.** FlashAttention: fast and memory-efficient exact attention with IO-awareness. *NeurIPS.* 2022. [arXiv:2205.14135](https://doi.org/10.48550/arXiv.2205.14135)
 
 ## Where to next
 

@@ -28,6 +28,12 @@ Each page is written for a PhD-level newcomer — someone who knows *some* progr
 
     Arrays, scripts vs functions, tables, statistics, SPM / EEGLAB / FieldTrip ecosystem, and when to leave MATLAB for Python.
 
+-   :material-table-search: **[Data analysis](data-analysis.md)**
+
+    ---
+
+    Cohort tables, EDA, missing data, ComBat harmonisation, confound regression, paper-ready figure recipes, reproducibility audit.
+
 -   :material-chart-bell-curve-cumulative: **[Statistics](statistics.md)**
 
     ---
@@ -38,18 +44,24 @@ Each page is written for a PhD-level newcomer — someone who knows *some* progr
 
     ---
 
-    Linear algebra, calculus, optimisation, signal processing, Fourier transforms, geometry of the brain.
+    Linear algebra, calculus, optimisation, signal processing, Fourier transforms, geometry of the brain, and the math underneath neuroimaging AI (backprop, attention, diffusion models, graph nets).
 
--   :material-atom: **[Physics](physics.md)**
+-   :material-atom: **[Medical imaging physics](physics.md)**
 
     ---
 
-    MRI physics from Bloch equations to k-space; relaxation, gradients, RF, SNR; what the scanner is really measuring.
+    MRI Bloch / k-space deep dive, plus CT, PET kinetic modelling, ultrasound, NIRS / OCT, EEG/MEG biophysics, MRS — every modality you'll meet.
+
+-   :material-brain: **[Neuroscience & neurology](neuroscience.md)**
+
+    ---
+
+    Macroscale anatomy, cells and circuits, large-scale functional networks, the clinical conditions neuroimaging studies (stroke, AD, PD, MS, epilepsy, TBI, tumours, psychiatric, paediatric), atlases.
 
 </div>
 
 ## How to read this section
 
-Pick the page that matches the gap you feel. Each is self-contained. If you're brand new, the natural sequence is **Mathematics → Physics → Statistics → Python → Bash & CLI → MATLAB** — every later page assumes the earlier ones. But for an experienced engineer arriving from outside neuroimaging, **Physics → MATLAB ↔ Python** is usually the right shortcut.
+Pick the page that matches the gap you feel. Each is self-contained. If you're brand new, the natural sequence is **Neuroscience → Medical imaging physics → Mathematics → Statistics → Data analysis → Python → Bash & CLI → MATLAB** — every later page assumes the earlier ones. But for an experienced engineer arriving from outside neuroimaging, **Neuroscience → Medical imaging physics → MATLAB ↔ Python ↔ Data analysis** is usually the right shortcut.
 
 Each page ends with a references block of canonical textbooks (with ISBN) and primary papers (with DOI). Treat the references as the next mile after the chapter.

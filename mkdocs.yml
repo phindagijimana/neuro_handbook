@@ -99,9 +99,11 @@ nav:
           - Python: fundamentals/foundations/python.md
           - Bash & CLI: fundamentals/foundations/bash-cli.md
           - MATLAB: fundamentals/foundations/matlab.md
+          - Data analysis: fundamentals/foundations/data-analysis.md
           - Statistics: fundamentals/foundations/statistics.md
           - Mathematics: fundamentals/foundations/mathematics.md
-          - Physics: fundamentals/foundations/physics.md
+          - Medical imaging physics: fundamentals/foundations/physics.md
+          - Neuroscience & neurology: fundamentals/foundations/neuroscience.md
   - BIDS toolkit:
       - bids/index.md
       - Validating a dataset: bids/validation.md
