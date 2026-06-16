@@ -12,7 +12,7 @@ A DICOM file looks like:
 - Optional **pixel data** (the image itself).
 - Series-level grouping: one *study* contains many *series*; one *series* contains many *instances* (slices or frames).
 
-**For research**, you almost always convert DICOM to NIfTI on ingestion using `dcm2niix`. The conversion drops DICOM-specific metadata you don't need and produces:
+**For research**, you almost always convert DICOM to NIfTI on ingestion using `dcm2niix` [Li et al., 2016](https://doi.org/10.1016/j.jneumeth.2016.03.001)[^dcm2niix]. The conversion drops DICOM-specific metadata you don't need and produces:
 
 - A `.nii.gz` volume.
 - A `.json` sidecar that preserves the parameters you *do* need (TR, TE, sequence name, etc.).
@@ -56,7 +56,7 @@ CIFTI files are technically NIfTI-2 files with a special intent code; tools that
 
 ## BIDS — the standard
 
-**BIDS** (Brain Imaging Data Structure) prescribes:
+**BIDS** (Brain Imaging Data Structure) [Gorgolewski et al., 2016](https://doi.org/10.1038/sdata.2016.44)[^bids] prescribes:
 
 1. **A folder layout.**
 
@@ -100,6 +100,11 @@ If you're starting a new project, start with BIDS. The walker in this repo (`neu
 - Sessions with branching acquisitions where the BIDS naming can't express the relationship.
 
 For these, BIDS-derivatives or the BIDS extensions in development are usually the answer. Stay close to the spec; don't invent ad-hoc folder schemes.
+
+## References
+
+[^bids]: Gorgolewski KJ, Auer T, Calhoun VD, et al. The brain imaging data structure, a format for organizing and describing outputs of neuroimaging experiments. *Sci Data.* 2016;3:160044. [doi:10.1038/sdata.2016.44](https://doi.org/10.1038/sdata.2016.44)
+[^dcm2niix]: Li X, Morgan PS, Ashburner J, Smith J, Rorden C. The first step for neuroimaging data analysis: DICOM to NIfTI conversion. *J Neurosci Methods.* 2016;264:47-56. [doi:10.1016/j.jneumeth.2016.03.001](https://doi.org/10.1016/j.jneumeth.2016.03.001)
 
 ## Where to next
 

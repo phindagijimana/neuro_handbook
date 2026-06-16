@@ -8,6 +8,8 @@ The scanner gives you DICOM. BIDS apps want NIfTI in a strict layout. Two tools 
 
 ### `dcm2niix` — the DICOM → NIfTI step
 
+The canonical conversion tool [Li et al., 2016](https://doi.org/10.1016/j.jneumeth.2016.03.001)[^dcm2niix].
+
 You almost never call `dcm2niix` directly when building a BIDS dataset, but every higher-level tool wraps it. The wrapper in this repo lives at `neuro_handbook.dicom.dicom_to_nifti` and is a thin shell around the binary.
 
 ```python
@@ -23,6 +25,8 @@ for nii in result.nifti_files:
 ```
 
 ### HeuDiConv — opinionated, reproducible
+
+[Halchenko et al., 2024](https://doi.org/10.21105/joss.05839)[^heudiconv].
 
 HeuDiConv takes a folder of DICOMs and a **heuristics file** (Python) describing how to map series to BIDS filenames. Once the heuristics file is written, every new subject converts identically.
 
@@ -95,6 +99,11 @@ Never commit:
 - PHI of any form.
 
 If the conversion is part of a published pipeline, the heuristics file is part of the reproducibility story — pin it like code.
+
+## References
+
+[^dcm2niix]: Li X, Morgan PS, Ashburner J, Smith J, Rorden C. The first step for neuroimaging data analysis: DICOM to NIfTI conversion. *J Neurosci Methods.* 2016;264:47-56. [doi:10.1016/j.jneumeth.2016.03.001](https://doi.org/10.1016/j.jneumeth.2016.03.001)
+[^heudiconv]: Halchenko Y, Goncalves M, Velasco PF, et al. HeuDiConv — flexible DICOM converter for organizing brain imaging data into structured directory layouts. *J Open Source Softw.* 2024;9(99):5839. [doi:10.21105/joss.05839](https://doi.org/10.21105/joss.05839)
 
 ## Where to next
 

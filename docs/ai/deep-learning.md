@@ -16,13 +16,13 @@ A common pattern: a 2.5D model on full volumes for rough localisation, then a 3D
 
 ## Segmentation: U-Net and its descendants
 
-The 3D U-Net is the workhorse for medical segmentation. Skip connections preserve fine detail; the bottleneck enforces context.
+The 3D U-Net [Ronneberger et al., 2015](https://doi.org/10.1007/978-3-319-24574-4_28)[^unet]; [Çiçek et al., 2016](https://doi.org/10.1007/978-3-319-46723-8_49)[^unet3d] is the workhorse for medical segmentation. Skip connections preserve fine detail; the bottleneck enforces context.
 
-**nnU-Net** is the reference implementation — it auto-configures architecture, patch size, normalisation, and training schedule from the dataset. Start there. Beat it before you build your own.
+**nnU-Net** [Isensee et al., 2021](https://doi.org/10.1038/s41592-020-01008-z)[^nnunet] is the reference implementation — it auto-configures architecture, patch size, normalisation, and training schedule from the dataset. Start there. Beat it before you build your own.
 
 ## Volume transformers
 
-For larger datasets and richer tasks (multi-class segmentation, captioning), transformer-based architectures (Swin UNETR, UNETR, MedSegMamba) are now competitive with — and often beat — pure CNN U-Nets.
+For larger datasets and richer tasks (multi-class segmentation, captioning), transformer-based architectures (Swin UNETR [Hatamizadeh et al., 2022](https://doi.org/10.48550/arXiv.2201.01266)[^swinunetr], UNETR [Hatamizadeh et al., 2021](https://doi.org/10.1109/WACV51458.2022.00181)[^unetr]) are now competitive with — and often beat — pure CNN U-Nets.
 
 Key idea: tokenise the volume into patches, attend across patches, decode back to voxel space. Memory cost is quadratic in number of tokens, so patch size and stride matter enormously.
 
@@ -35,7 +35,7 @@ Key idea: tokenise the volume into patches, attend across patches, decode back t
 - **Gradient accumulation.** When a single 3D patch fills the GPU, accumulate gradients over multiple patches before stepping the optimiser.
 - **Sliding-window inference.** At test time, run the model on overlapping patches and average the predictions. MONAI's `sliding_window_inference` handles this.
 
-## A minimal MONAI training loop
+## A minimal MONAI training loop [Cardoso et al., 2022](https://doi.org/10.48550/arXiv.2211.02701)[^monai]
 
 ```python
 import torch
@@ -77,6 +77,15 @@ for batch in loader:
 ```
 
 This is intentionally simple. Real production code adds checkpointing, AMP scaling, distributed training, and learning-rate schedules — but the skeleton above is enough to *understand* what's happening.
+
+## References
+
+[^unet]: Ronneberger O, Fischer P, Brox T. U-Net: Convolutional Networks for Biomedical Image Segmentation. *MICCAI.* 2015. [doi:10.1007/978-3-319-24574-4_28](https://doi.org/10.1007/978-3-319-24574-4_28)
+[^unet3d]: Çiçek Ö, Abdulkadir A, Lienkamp SS, Brox T, Ronneberger O. 3D U-Net: learning dense volumetric segmentation from sparse annotation. *MICCAI.* 2016. [doi:10.1007/978-3-319-46723-8_49](https://doi.org/10.1007/978-3-319-46723-8_49)
+[^nnunet]: Isensee F, Jaeger PF, Kohl SAA, Petersen J, Maier-Hein KH. nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation. *Nat Methods.* 2021;18(2):203-211. [doi:10.1038/s41592-020-01008-z](https://doi.org/10.1038/s41592-020-01008-z)
+[^swinunetr]: Hatamizadeh A, Nath V, Tang Y, Yang D, Roth HR, Xu D. Swin UNETR. *arXiv:2201.01266.* 2022. [doi:10.48550/arXiv.2201.01266](https://doi.org/10.48550/arXiv.2201.01266)
+[^unetr]: Hatamizadeh A, Tang Y, Nath V, et al. UNETR: Transformers for 3D Medical Image Segmentation. *WACV.* 2022. [doi:10.1109/WACV51458.2022.00181](https://doi.org/10.1109/WACV51458.2022.00181)
+[^monai]: Cardoso MJ, Li W, Brown R, et al. MONAI: An open-source framework for deep learning in healthcare. *arXiv:2211.02701.* 2022. [doi:10.48550/arXiv.2211.02701](https://doi.org/10.48550/arXiv.2211.02701)
 
 ## Where to next
 

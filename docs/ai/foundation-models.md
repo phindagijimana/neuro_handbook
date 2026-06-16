@@ -16,11 +16,11 @@ The 2010s recipe — collect 200 labelled volumes, train a U-Net from scratch �
 
 | Model family | What it's pre-trained on | Strength |
 | --- | --- | --- |
-| **MONAI / SwinUNETR pre-trained checkpoints** | Multi-organ CT + MRI | Drop-in encoder for 3D segmentation |
-| **MedSAM** | 1M+ segmentation masks | Promptable segmentation, zero-shot or low-shot |
-| **BiomedCLIP** | Biomedical image–caption pairs | Image–text retrieval, report alignment |
+| **MONAI / SwinUNETR pre-trained checkpoints**[^monai_fm] | Multi-organ CT + MRI | Drop-in encoder for 3D segmentation |
+| **MedSAM**[^medsam] | 1M+ segmentation masks | Promptable segmentation, zero-shot or low-shot |
+| **BiomedCLIP**[^biomedclip] | Biomedical image–caption pairs | Image–text retrieval, report alignment |
 | **Brain-specific FMs** (BrainFM, BrainGPT-style) | ADNI, UK Biobank, OASIS, etc. | Brain-specific generalisation |
-| **General vision encoders** (DINOv2, SAM2) | Natural images | Surprisingly strong feature extractors, but require careful adaptation |
+| **General vision encoders** (DINOv2[^dinov2], SAM2[^sam]) | Natural images | Surprisingly strong feature extractors, but require careful adaptation |
 
 The landscape moves fast. The papers cited will be out of date; the principle — find the largest pre-trained model that's close to your modality, adapt it — is durable.
 
@@ -54,6 +54,14 @@ For research these are powerful summarisation tools. For anything clinical-decis
 - **Domain gap.** A model pre-trained on adult brain MRI does not magically work on paediatric or rodent brains. Verify on a held-out cohort from your population before believing the numbers.
 - **License terms.** Some weights are research-only; some forbid clinical use. Read the license before integrating.
 - **Compute.** Fine-tuning a 1B-parameter 3D encoder needs an A100 / H100, not a workstation. Budget accordingly.
+
+## References
+
+[^medsam]: Ma J, He Y, Li F, Han L, You C, Wang B. Segment Anything in Medical Images. *Nat Commun.* 2024;15:654. [doi:10.1038/s41467-024-44824-z](https://doi.org/10.1038/s41467-024-44824-z)
+[^biomedclip]: Zhang S, Xu Y, Usuyama N, et al. BiomedCLIP: a multimodal biomedical foundation model. *arXiv:2303.00915.* 2023. [doi:10.48550/arXiv.2303.00915](https://doi.org/10.48550/arXiv.2303.00915)
+[^monai_fm]: Cardoso MJ, Li W, Brown R, et al. MONAI. *arXiv:2211.02701.* 2022. [doi:10.48550/arXiv.2211.02701](https://doi.org/10.48550/arXiv.2211.02701)
+[^dinov2]: Oquab M, Darcet T, Moutakanni T, et al. DINOv2: Learning Robust Visual Features without Supervision. *arXiv:2304.07193.* 2023. [doi:10.48550/arXiv.2304.07193](https://doi.org/10.48550/arXiv.2304.07193)
+[^sam]: Kirillov A, Mintun E, Ravi N, et al. Segment Anything. *arXiv:2304.02643.* 2023. [doi:10.48550/arXiv.2304.02643](https://doi.org/10.48550/arXiv.2304.02643)
 
 ## Where to next
 

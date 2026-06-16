@@ -6,7 +6,7 @@
 
 A BIDS dataset is a folder of (often large) files. You want to track every change — what got added, when, by whom — but `git add my_dwi.nii.gz` chokes on a 200 MB blob and `git status` over a 100 GB tree takes minutes.
 
-**DataLad** solves this by combining `git` (for the small text files and the structure) with `git-annex` (for the large binary files).
+**DataLad** [Halchenko et al., 2021](https://doi.org/10.21105/joss.03262)[^datalad] solves this by combining `git` (for the small text files and the structure) with `git-annex` (for the large binary files).
 
 ## Mental model
 
@@ -52,6 +52,10 @@ datalad get sub-01   # fetch one subject's bytes
 - You're working alone for one paper → probably skip unless you already know DataLad.
 
 DataLad has a learning curve. Most labs adopt it once they've been burned by "what changed between v1 and v2?" once. The official handbook (<https://handbook.datalad.org>) is excellent and worth a full day of reading before you commit to a project.
+
+## References
+
+[^datalad]: Halchenko YO, Meyer K, Poldrack B, et al. DataLad: distributed system for joint management of code, data, and their relationship. *J Open Source Softw.* 2021;6(63):3262. [doi:10.21105/joss.03262](https://doi.org/10.21105/joss.03262)
 
 ## Where to next
 

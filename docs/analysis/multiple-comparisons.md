@@ -35,13 +35,13 @@ For modern neuroimaging, prefer permutation FWE over RFT FWE.
 Threshold the statistical map at a lenient voxel-wise threshold (e.g., p < 0.001), then keep only spatially contiguous clusters larger than a critical size. The cluster size threshold is calibrated to control FWE.
 
 - Very high sensitivity for spatially extended effects.
-- Notoriously sensitive to the cluster-forming threshold. **AFNI's 2017 retraction crisis** (Eklund et al.) traced back to cluster correction with p = 0.01 thresholds inflating FWE to > 70%. Use p ≤ 0.001 cluster-forming.
+- Notoriously sensitive to the cluster-forming threshold. **The Eklund 2016 wake-up call** [Eklund et al., 2016](https://doi.org/10.1073/pnas.1602413113)[^eklund] traced back to cluster correction with p = 0.01 thresholds inflating FWE to > 70%. Use p ≤ 0.001 cluster-forming.
 
-### TFCE (Threshold-Free Cluster Enhancement)
+### TFCE (Threshold-Free Cluster Enhancement) [Smith & Nichols, 2009](https://doi.org/10.1016/j.neuroimage.2008.03.061)[^tfce]
 
 Combines cluster extent and peak intensity into a single statistic that doesn't require a cluster-forming threshold. Then a permutation distribution gives FWE-corrected p-values. **The current default for voxel-wise neuroimaging.**
 
-FSL `randomise -T` and PALM `-T` both implement it.
+FSL `randomise -T` and PALM [Winkler et al., 2014](https://doi.org/10.1016/j.neuroimage.2014.01.060)[^palm] `-T` both implement it.
 
 ## Picking one
 
@@ -62,6 +62,12 @@ Whatever you pick, **report it explicitly**:
 - The smoothing kernel — corrections that assume smoothness depend on it.
 
 If your figures show uncorrected maps with a label like "p < 0.001 uncorrected", say so loudly in the legend. There's nothing wrong with showing exploratory maps; there's something wrong with hiding that they're exploratory.
+
+## References
+
+[^eklund]: Eklund A, Nichols TE, Knutsson H. Cluster failure: why fMRI inferences for spatial extent have inflated false-positive rates. *PNAS.* 2016;113(28):7900-7905. [doi:10.1073/pnas.1602413113](https://doi.org/10.1073/pnas.1602413113)
+[^tfce]: Smith SM, Nichols TE. Threshold-free cluster enhancement. *NeuroImage.* 2009;44(1):83-98. [doi:10.1016/j.neuroimage.2008.03.061](https://doi.org/10.1016/j.neuroimage.2008.03.061)
+[^palm]: Winkler AM, Ridgway GR, Webster MA, Smith SM, Nichols TE. Permutation inference for the general linear model. *NeuroImage.* 2014;92:381-397. [doi:10.1016/j.neuroimage.2014.01.060](https://doi.org/10.1016/j.neuroimage.2014.01.060)
 
 ## Where to next
 

@@ -11,7 +11,7 @@
 5. **Compute connectivity** — typically Pearson correlation, partial correlation, or tangent-space embedding.
 6. **Threshold or weight** the resulting matrix; analyse.
 
-## Nilearn — the Python workhorse
+## Nilearn — the Python workhorse [Abraham et al., 2014](https://doi.org/10.3389/fninf.2014.00014)[^nilearn]
 
 Nilearn (<https://nilearn.github.io>) wraps the preprocessing-to-connectivity pipeline for fMRI in a scikit-learn-style API:
 
@@ -65,7 +65,7 @@ A common pattern: stack each subject's connectivity matrix into a 3D array `(n_s
 
 - **Edge-wise tests** — `n_regions * (n_regions - 1) / 2` mass-univariate tests. Multiple-comparison correction is essential.
 - **Network-level summaries** — within-network connectivity, modularity, degree.
-- **NBS (Network-Based Statistics)** — clusters of connected significant edges; usually more powerful than edge-wise FDR.
+- **NBS — Network-Based Statistics** [Zalesky et al., 2010](https://doi.org/10.1016/j.neuroimage.2010.06.041)[^nbs] — clusters of connected significant edges; usually more powerful than edge-wise FDR.
 
 See [Multiple comparisons](multiple-comparisons.md) before believing any p-value.
 
@@ -74,6 +74,11 @@ See [Multiple comparisons](multiple-comparisons.md) before believing any p-value
 - **Motion is the dominant confound.** A "group difference" between movers and non-movers is what you'll find if you don't censor or regress motion properly.
 - **Global signal regression is contentious.** Removes some real signal along with the noise. Document whether you did or didn't.
 - **Atlas choice matters.** Schaefer-400 is not equivalent to Power-264 is not equivalent to Yeo-7. Stick with one per study.
+
+## References
+
+[^nilearn]: Abraham A, Pedregosa F, Eickenberg M, et al. Machine learning for neuroimaging with scikit-learn. *Front Neuroinform.* 2014;8:14. [doi:10.3389/fninf.2014.00014](https://doi.org/10.3389/fninf.2014.00014)
+[^nbs]: Zalesky A, Fornito A, Bullmore ET. Network-based statistic: identifying differences in brain networks. *NeuroImage.* 2010;53(4):1197-1207. [doi:10.1016/j.neuroimage.2010.06.041](https://doi.org/10.1016/j.neuroimage.2010.06.041)
 
 ## Where to next
 

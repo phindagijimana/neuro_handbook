@@ -16,14 +16,14 @@ A subject's two timepoints, two sessions, or augmented copies must never straddl
 
 A `GroupKFold` keyed on `subject_id` is the minimum. `StratifiedGroupKFold` is better when classes are imbalanced.
 
-## 2. Site / scanner effects
+## 2. Site / scanner effects [Fortin et al., 2018](https://doi.org/10.1016/j.neuroimage.2017.11.024)[^combat]
 
 A model trained on Siemens 3T data at Site A often falls over on GE 1.5T data at Site B. Site differences (field strength, coil, sequence, vendor) can dwarf biological signal.
 
 **Approaches:**
 
 - **Hold out a whole site as a test set.** This is the only honest measure of cross-site generalisation. Within-site k-fold accuracy can be wildly optimistic.
-- **Harmonise with ComBat** (or its variants: longitudinal ComBat, neuroHarmonize). ComBat models site as a fixed effect on each feature. Powerful for tabular features; trickier for raw volumes.
+- **Harmonise with ComBat** [Johnson et al., 2007](https://doi.org/10.1093/biostatistics/kxj037)[^combat_origin]; [Fortin et al., 2018](https://doi.org/10.1016/j.neuroimage.2017.11.024)[^combat] (or its variants: longitudinal ComBat, neuroHarmonize). ComBat models site as a fixed effect on each feature. Powerful for tabular features; trickier for raw volumes.
 - **Train on multi-site data.** A model trained on 5 sites usually generalises to a 6th better than a model trained on the largest single site.
 - **Domain adaptation / adversarial training** when labels exist on source but not target.
 
@@ -48,7 +48,7 @@ A model that's 90% confident should be right 90% of the time. Deep networks are 
 
 ## 5. The "tiny cohort, big claim" trap
 
-`p < 0.05` on n=30 means very little. A 2-point Dice improvement on a 50-subject test set means even less. Specific defences:
+`p < 0.05` on n=30 means very little [Marek et al., 2022](https://doi.org/10.1038/s41586-022-04492-9)[^marek]; a single dataset analysed by 70 teams will yield 70 different conclusions [Botvinik-Nezer et al., 2020](https://doi.org/10.1038/s41586-020-2314-9)[^botvinik]. A 2-point Dice improvement on a 50-subject test set means even less. Specific defences:
 
 - **Effect sizes**, not just p-values.
 - **Confidence intervals** on every metric — bootstrap is fine, cheap, and honest.
@@ -71,6 +71,13 @@ A model that's 90% confident should be right 90% of the time. Deep networks are 
 - [ ] Documented why this model + dataset is *not* yet ready for clinical use.
 
 If all six are true, you're already in the top decile of published medical-imaging-ML papers.
+
+## References
+
+[^combat]: Fortin J-P, Cullen N, Sheline YI, et al. Harmonization of cortical thickness measurements across scanners and sites. *NeuroImage.* 2018;167:104-120. [doi:10.1016/j.neuroimage.2017.11.024](https://doi.org/10.1016/j.neuroimage.2017.11.024)
+[^combat_origin]: Johnson WE, Li C, Rabinovic A. Adjusting batch effects in microarray expression data using empirical Bayes methods. *Biostatistics.* 2007;8(1):118-127. [doi:10.1093/biostatistics/kxj037](https://doi.org/10.1093/biostatistics/kxj037)
+[^marek]: Marek S, Tervo-Clemmens B, Calabro FJ, et al. Reproducible brain-wide association studies require thousands of individuals. *Nature.* 2022;603(7902):654-660. [doi:10.1038/s41586-022-04492-9](https://doi.org/10.1038/s41586-022-04492-9)
+[^botvinik]: Botvinik-Nezer R, Holzmeister F, Camerer CF, et al. Variability in the analysis of a single neuroimaging dataset by many teams. *Nature.* 2020;582(7810):84-88. [doi:10.1038/s41586-020-2314-9](https://doi.org/10.1038/s41586-020-2314-9)
 
 ## Where to next
 

@@ -10,7 +10,7 @@ The bash habit of `find dataset -name '*T1w.nii.gz'` works on day 1 and breaks o
 - Someone runs the dataset through a defacing tool → there are now `*_desc-defaced_T1w.nii.gz` files too.
 - A fmap is added → the glob doesn't see it but your pipeline needs it.
 
-PyBIDS reads the spec and gives you typed queries.
+PyBIDS [Yarkoni et al., 2019](https://doi.org/10.21105/joss.01294)[^pybids] reads the spec and gives you typed queries.
 
 ## The 5-minute API
 
@@ -83,6 +83,10 @@ PyBIDS reads metadata into memory. For datasets with >10 k subjects you'll feel 
 - **Cache the layout** — `layout = BIDSLayout(..., database_file="layout.sqlite")` writes a SQLite index that subsequent runs load instantly.
 - **Pre-compute a manifest** — emit a small CSV or Parquet with the file paths and entities you need; query that.
 - **Roll your own walker** — the repo ships a tiny one at `neuro_handbook.bids.walk_bids` for teaching purposes; PyBIDS-equivalent for the common cases.
+
+## References
+
+[^pybids]: Yarkoni T, Markiewicz CJ, de la Vega A, et al. PyBIDS: Python tools for BIDS datasets. *J Open Source Softw.* 2019;4(40):1294. [doi:10.21105/joss.01294](https://doi.org/10.21105/joss.01294)
 
 ## Where to next
 

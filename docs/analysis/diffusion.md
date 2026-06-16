@@ -4,7 +4,7 @@
 
 ## Stages
 
-1. **Preprocess** with QSIPrep (denoising, motion + distortion correction, registration to T1).
+1. **Preprocess** with QSIPrep [Cieslak et al., 2021](https://doi.org/10.1038/s41592-021-01185-5)[^qsiprep] (denoising, motion + distortion correction, registration to T1).
 2. **Model** the local diffusion: tensor (single-shell), CSD or NODDI (multi-shell).
 3. **Track** fibres through the model field: deterministic (FACT, EuDX) or probabilistic (iFOD2, PFT).
 4. **Filter** the streamlines: SIFT / SIFT2 / COMMIT corrects for the over-representation of streamlines in dense regions.
@@ -19,9 +19,9 @@
 | **NODDI** | Multi-shell, microstructure indices | AMICO, NODDI Matlab toolbox |
 | **DSI / DKI** | Specific high-end protocols | MRtrix3, DIPY |
 
-For a typical research-grade multi-shell acquisition, MRtrix3 CSD is the default. DIPY (Python) is the right choice for prototyping new models.
+For a typical research-grade multi-shell acquisition, MRtrix3 CSD is the default. DIPY (Python) is the right choice for prototyping new models [Garyfallidis et al., 2014](https://doi.org/10.3389/fninf.2014.00008)[^dipy].
 
-## Tractography in MRtrix3
+## Tractography in MRtrix3 [Tournier et al., 2019](https://doi.org/10.1016/j.neuroimage.2019.116137)[^mrtrix]
 
 A minimal pipeline:
 
@@ -67,6 +67,12 @@ Always state which one. A "DK connectome" with no specification is ambiguous.
 - **b-vector flips.** A swapped axis in `.bvec` mirrors your tractogram. Check by running a known commissural seed (corpus callosum) — streamlines should cross.
 - **5TT segmentation errors.** Bad cortical / WM boundaries cause streamlines to terminate prematurely. Visualise 5TT before tractography.
 - **Over-interpretation.** A streamline is a *modelling artifact*, not a real axon. "There's a connection between A and B" is a hypothesis, not a measurement.
+
+## References
+
+[^mrtrix]: Tournier J-D, Smith R, Raffelt D, et al. MRtrix3. *NeuroImage.* 2019;202:116137. [doi:10.1016/j.neuroimage.2019.116137](https://doi.org/10.1016/j.neuroimage.2019.116137)
+[^qsiprep]: Cieslak M, Cook PA, He X, et al. QSIPrep. *Nat Methods.* 2021;18(7):775-778. [doi:10.1038/s41592-021-01185-5](https://doi.org/10.1038/s41592-021-01185-5)
+[^dipy]: Garyfallidis E, Brett M, Amirbekian B, et al. DIPY, a library for the analysis of diffusion MRI data. *Front Neuroinform.* 2014;8:8. [doi:10.3389/fninf.2014.00008](https://doi.org/10.3389/fninf.2014.00008)
 
 ## Where to next
 

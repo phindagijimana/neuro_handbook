@@ -42,7 +42,7 @@ When subjects contribute different numbers of timepoints (longitudinal data), or
 
 Always sketch the design matrix on paper before you trust the output of any tool.
 
-## Permutation testing — the safe default
+## Permutation testing — the safe default [Winkler et al., 2014](https://doi.org/10.1016/j.neuroimage.2014.01.060)[^palm]
 
 Parametric GLM p-values assume normality, independence, and the right model. For neuroimaging — small samples, heavy-tailed errors, spatial correlation — permutation tests are usually more honest:
 
@@ -60,6 +60,10 @@ A `p < 0.05` map says where the effect is unlikely-to-be-noise; it does not say 
 - **Confidence intervals** on the effect, not just on the test statistic.
 
 A reviewer can't tell a Cohen's d = 0.05 result from a d = 1.5 result from a thresholded map alone. Show both.
+
+## References
+
+[^palm]: Winkler AM, Ridgway GR, Webster MA, Smith SM, Nichols TE. Permutation inference for the general linear model. *NeuroImage.* 2014;92:381-397. [doi:10.1016/j.neuroimage.2014.01.060](https://doi.org/10.1016/j.neuroimage.2014.01.060)
 
 ## Where to next
 
