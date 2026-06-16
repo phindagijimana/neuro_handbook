@@ -71,6 +71,11 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
 nav:
   - Home: index.md
@@ -89,6 +94,14 @@ nav:
           - GRE: fundamentals/sequences/gre.md
           - SWI: fundamentals/sequences/swi.md
           - Spin echo: fundamentals/sequences/spin-echo.md
+      - Computational & math foundations:
+          - fundamentals/foundations/index.md
+          - Python: fundamentals/foundations/python.md
+          - Bash & CLI: fundamentals/foundations/bash-cli.md
+          - MATLAB: fundamentals/foundations/matlab.md
+          - Statistics: fundamentals/foundations/statistics.md
+          - Mathematics: fundamentals/foundations/mathematics.md
+          - Physics: fundamentals/foundations/physics.md
   - BIDS toolkit:
       - bids/index.md
       - Validating a dataset: bids/validation.md
