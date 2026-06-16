@@ -16,11 +16,17 @@ Each page is written for a PhD-level newcomer — someone who knows *some* progr
 
     The default glue language: NumPy, pandas, Matplotlib, `pathlib`, argparse, logging, and the neuroimaging stack (NIfTI, BIDS, fMRIPrep derivatives).
 
--   :material-console-line: **[Bash & CLI](bash-cli.md)**
+-   :material-bash: **[Bash](bash.md)**
 
     ---
 
-    Shell, pipes, `awk` / `sed`, `find`, `rsync`, `grep`, strict-mode scripts, Slurm patterns, container invocation.
+    Bash as a programming language: strict mode, variables, control flow, functions, arrays, traps, Slurm script patterns, when to stop.
+
+-   :material-console-line: **[CLI commands](cli.md)**
+
+    ---
+
+    The command reference: `ls`, `pwd`, `cp`, `find`, `grep`, `chmod`, `ps`. Local↔remote transfers (`scp`, `rsync`, `ssh`, `sftp`, `aws s3`). Text processing (`awk`, `sed`).
 
 -   :material-language-matlab: **[MATLAB](matlab.md)**
 
@@ -62,6 +68,6 @@ Each page is written for a PhD-level newcomer — someone who knows *some* progr
 
 ## How to read this section
 
-Pick the page that matches the gap you feel. Each is self-contained. If you're brand new, the natural sequence is **Neuroscience → Medical imaging physics → Mathematics → Statistics → Data analysis → Python → Bash & CLI → MATLAB** — every later page assumes the earlier ones. But for an experienced engineer arriving from outside neuroimaging, **Neuroscience → Medical imaging physics → MATLAB ↔ Python ↔ Data analysis** is usually the right shortcut.
+Pick the page that matches the gap you feel. Each is self-contained. If you're brand new, the natural sequence is **Neuroscience → Medical imaging physics → Mathematics → Statistics → Data analysis → Python → Bash → CLI commands → MATLAB** — every later page assumes the earlier ones. But for an experienced engineer arriving from outside neuroimaging, **Neuroscience → Medical imaging physics → MATLAB ↔ Python ↔ Data analysis** is usually the right shortcut.
 
 Each page ends with a references block of canonical textbooks (with ISBN) and primary papers (with DOI). Treat the references as the next mile after the chapter.

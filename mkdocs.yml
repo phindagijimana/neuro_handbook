@@ -97,7 +97,8 @@ nav:
       - Computational & math foundations:
           - fundamentals/foundations/index.md
           - Python: fundamentals/foundations/python.md
-          - Bash & CLI: fundamentals/foundations/bash-cli.md
+          - Bash: fundamentals/foundations/bash.md
+          - CLI commands: fundamentals/foundations/cli.md
           - MATLAB: fundamentals/foundations/matlab.md
           - Data analysis: fundamentals/foundations/data-analysis.md
           - Statistics: fundamentals/foundations/statistics.md

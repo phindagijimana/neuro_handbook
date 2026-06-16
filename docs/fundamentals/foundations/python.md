@@ -235,4 +235,4 @@ Run with `pytest -q`. See [Data engineering → Testing](../../data-engineering/
 
 ## Where to next
 
-[Bash & CLI](bash-cli.md) — the shell that orchestrates the Python you just wrote.
+[Bash](bash.md) — the scripting language that orchestrates the Python you just wrote, followed by [CLI commands](cli.md) for the individual tools.

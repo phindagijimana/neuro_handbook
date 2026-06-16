@@ -17,7 +17,7 @@ If you've never touched neuroimaging data before, this is where to start. The se
 
 ## Layer 3 — The toolkit to think with
 
-6. **[Computational & math foundations](foundations/index.md)** — Python, Bash & CLI, MATLAB, data analysis, statistics, mathematics, medical imaging physics, neuroscience & neurology. The programming languages, the inferential machinery, the math vocabulary, the cross-modality physics, and the brain biology you need to *think* about neuroimaging at PhD level.
+6. **[Computational & math foundations](foundations/index.md)** — Python, Bash, CLI commands, MATLAB, data analysis, statistics, mathematics, medical imaging physics, neuroscience & neurology. The programming languages, the command toolbox, the inferential machinery, the math vocabulary, the cross-modality physics, and the brain biology you need to *think* about neuroimaging at PhD level.
 
 ## Layer 4 — The image-processing engineering layer
 
