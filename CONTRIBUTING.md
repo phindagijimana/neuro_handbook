@@ -1,6 +1,6 @@
-# Contributing
+# Contributing to NeuroStack
 
-Thanks for being interested. The handbook grows by accretion — small additions, corrections, and worked examples are exactly what makes it useful.
+Thanks for being interested. **NeuroStack** grows by accretion — small additions, corrections, and worked examples are exactly what makes it useful.
 
 ## Quick start
 

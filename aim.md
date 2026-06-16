@@ -4,7 +4,7 @@
 
 ## What we're aiming for
 
-The neuro-handbook exists to take **someone who is brand new to neuroimaging** all the way to **senior Research engineer / Data engineer / AI engineer in neuroimaging at a PhD level**.
+**NeuroStack** (the rendered handbook; repo slug `neuro_handbook`) exists to take **someone who is brand new to neuroimaging** all the way to **senior Research engineer / Data engineer / AI engineer in neuroimaging at a PhD level**.
 
 In practice that means a reader who works through the handbook end-to-end should be able to:
 

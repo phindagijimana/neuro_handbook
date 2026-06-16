@@ -5,11 +5,11 @@ build-backend = "hatchling.build"
 [project]
 name = "neuro-handbook"
 version = "0.1.0"
-description = "An open reference for neuroimaging fundamentals, data engineering, and AI/ML."
+description = "NeuroStack — the open neuroimaging handbook. Fundamentals, BIDS, analysis, data engineering, AI/ML, computing."
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.10"
-authors = [{ name = "neuro-handbook contributors" }]
+authors = [{ name = "NeuroStack contributors" }]
 keywords = ["neuroimaging", "bids", "dicom", "nifti", "data-engineering", "mri"]
 classifiers = [
     "Development Status :: 3 - Alpha",

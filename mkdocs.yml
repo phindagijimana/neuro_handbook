@@ -1,5 +1,5 @@
-site_name: neuro-handbook
-site_description: An open reference for neuroimaging fundamentals, BIDS, analysis, data engineering, AI/ML, computing, and the landmark work that shaped the field.
+site_name: NeuroStack
+site_description: NeuroStack — the open neuroimaging handbook. Fundamentals, BIDS, analysis, data engineering, AI/ML, computing, and the landmark work that shaped the field.
 site_url: https://phindagijimana.github.io/neuro_handbook/
 repo_url: https://github.com/phindagijimana/neuro_handbook
 repo_name: phindagijimana/neuro_handbook

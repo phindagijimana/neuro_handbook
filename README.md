@@ -1,6 +1,10 @@
-# neuro-handbook
+# NeuroStack
 
-An open reference for working with neuroimaging data — fundamentals, data engineering, and AI/ML — written for people who are getting started in neuroimaging research, neuroscience research, and the development that supports them.
+> *The open neuroimaging handbook.*
+
+**NeuroStack** is an open reference for working with neuroimaging data — fundamentals, BIDS, analysis, data engineering, AI / ML, computing — written for people who are getting started in neuroimaging research, neuroscience research, and the development that supports them.
+
+The site lives at **https://phindagijimana.github.io/neuro_handbook/** (the GitHub repo slug stays `neuro_handbook` so existing URLs and the `neuro_handbook` Python package keep working).
 
 This repo is **both** a documentation site and a small Python package of reusable utilities. The site is hosted on GitHub Pages; the package ships the code that appears in the worked examples.
 
