@@ -1,0 +1,134 @@
+site_name: neuro-handbook
+site_description: An open reference for neuroimaging fundamentals, data engineering, and AI/ML.
+site_url: https://phindagijimana.github.io/neuro_handbook/
+repo_url: https://github.com/phindagijimana/neuro_handbook
+repo_name: phindagijimana/neuro_handbook
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+    - content.action.edit
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - Home: index.md
+  - Fundamentals:
+      - fundamentals/index.md
+      - Modalities: fundamentals/modalities.md
+      - Coordinate systems: fundamentals/coordinate-systems.md
+      - File formats: fundamentals/file-formats.md
+      - Preprocessing overview: fundamentals/preprocessing.md
+  - Data engineering:
+      - data-engineering/index.md
+      - Foundations: data-engineering/foundations.md
+      - The DAG mental model: data-engineering/dag.md
+      - The five pillars: data-engineering/five-pillars.md
+      - DWI case study: data-engineering/dwi-case-study.md
+      - Concepts in depth: data-engineering/concepts.md
+      - Tooling landscape: data-engineering/tooling.md
+      - Reliability & operations: data-engineering/reliability.md
+      - Performance & scale: data-engineering/performance.md
+      - Testing pipelines: data-engineering/testing.md
+      - CI/CD: data-engineering/cicd.md
+      - HPC → industry: data-engineering/hpc-to-industry.md
+      - Portfolio roadmap: data-engineering/portfolio-roadmap.md
+      - Exercises: data-engineering/exercises.md
+      - Advanced:
+          - data-engineering/advanced/index.md
+          - Data modeling: data-engineering/advanced/data-modeling.md
+          - Lakehouse internals: data-engineering/advanced/lakehouse.md
+          - SQL beyond SELECT: data-engineering/advanced/sql.md
+          - Distributed systems: data-engineering/advanced/distributed-systems.md
+          - Spark: data-engineering/advanced/spark.md
+          - Streaming: data-engineering/advanced/streaming.md
+          - dbt: data-engineering/advanced/dbt.md
+          - Data contracts: data-engineering/advanced/data-contracts.md
+          - Security & governance: data-engineering/advanced/security.md
+          - Infrastructure as code: data-engineering/advanced/iac.md
+          - FinOps: data-engineering/advanced/finops.md
+          - Performance deep-dive: data-engineering/advanced/performance.md
+          - Concurrency: data-engineering/advanced/concurrency.md
+          - Data quality: data-engineering/advanced/data-quality.md
+          - Catalogs & lineage: data-engineering/advanced/catalogs.md
+          - Real-time analytics: data-engineering/advanced/real-time.md
+          - Ingestion patterns: data-engineering/advanced/ingestion.md
+          - Event-driven architectures: data-engineering/advanced/event-driven.md
+          - MLOps overlap: data-engineering/advanced/mlops.md
+          - Disaster recovery: data-engineering/advanced/disaster-recovery.md
+          - Incident management: data-engineering/advanced/incident-management.md
+          - Versioning everything: data-engineering/advanced/versioning.md
+          - Networking essentials: data-engineering/advanced/networking.md
+          - Org-level DE: data-engineering/advanced/org.md
+          - Interview prep: data-engineering/advanced/interviewing.md
+  - AI / ML:
+      - ai/index.md
+      - Classical ML on volumetrics: ai/classical-ml.md
+      - Deep learning for imaging: ai/deep-learning.md
+      - Foundation models: ai/foundation-models.md
+      - Evaluation pitfalls: ai/evaluation.md
+  - Tools:
+      - tools/index.md
+  - Glossary: glossary.md
+  - Further reading: further-reading.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/phindagijimana/neuro_handbook
+  generator: false

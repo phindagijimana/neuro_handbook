@@ -1,0 +1,7 @@
+{
+  "Name": "neuro-handbook tiny fixture",
+  "BIDSVersion": "1.8.0",
+  "DatasetType": "raw",
+  "License": "MIT",
+  "Authors": ["neuro-handbook contributors"]
+}
