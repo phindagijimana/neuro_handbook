@@ -12,7 +12,7 @@ Here you'll find a tour of the **fundamentals** (modalities, file formats, MRI p
 
 NeuroStack is written for **people getting started** in neuroimaging research, neuroscience research, and the engineering that supports them: graduate students, postdocs, research software engineers, data engineers arriving from outside the medical-imaging world, and developers building neuro-AI products. It tries to be the document we wish we had when we first walked into the field.
 
-Found something missing, wrong, or out of date? We'd love to know — every page has an *edit-on-GitHub* link in the top right, and you can also open an issue or pull request on the [repo](https://github.com/phindagijimana/neuro_handbook). Suggestions, corrections, and contributions are all welcome.
+Found something missing, wrong, or out of date? We'd love to know — every page has an *edit-on-GitHub* link in the top right, and you can also open an issue or pull request on the [repo](https://github.com/phindagijimana/neuro_stack). Suggestions, corrections, and contributions are all welcome.
 
 ---
 
@@ -116,7 +116,7 @@ Pick the entry point that matches your background:
 This site is generated from a repository that also ships a small Python package, `neuro_handbook`, plus runnable examples:
 
 ```bash
-git clone https://github.com/phindagijimana/neuro_handbook.git
+git clone https://github.com/phindagijimana/neuro_stack.git
 cd neuro_handbook
 pip install -e ".[docs,dev,neuro]"
 python examples/01_walk_bids.py fixtures/sub-tiny
@@ -127,8 +127,8 @@ The code is intentionally small and readable. If a page on this site refers to a
 
 ## Contributing
 
-This is a community reference. The DWI-focused parts reflect one team's experience; broader coverage is welcome. See the [repo](https://github.com/phindagijimana/neuro_handbook) for how to file issues and open PRs.
+This is a community reference. The DWI-focused parts reflect one team's experience; broader coverage is welcome. See the [repo](https://github.com/phindagijimana/neuro_stack) for how to file issues and open PRs.
 
 ## License
 
-Content and code are released under the [MIT license](https://github.com/phindagijimana/neuro_handbook/blob/main/LICENSE).
+Content and code are released under the [MIT license](https://github.com/phindagijimana/neuro_stack/blob/main/LICENSE).

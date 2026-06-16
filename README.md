@@ -2,9 +2,18 @@
 
 > *The open neuroimaging handbook.*
 
+### 🌐 Read it online → **[https://phindagijimana.github.io/neuro_stack/](https://phindagijimana.github.io/neuro_stack/)**
+
+[![Site](https://img.shields.io/badge/site-NeuroStack-6f42c1?logo=readthedocs&logoColor=white)](https://phindagijimana.github.io/neuro_stack/)
+[![GitHub](https://img.shields.io/badge/github-phindagijimana%2Fneuro__stack-181717?logo=github)](https://github.com/phindagijimana/neuro_stack)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](pyproject.toml)
+
+---
+
 **NeuroStack** is an open reference for working with neuroimaging data — fundamentals, BIDS, analysis, data engineering, AI / ML, computing — written for people who are getting started in neuroimaging research, neuroscience research, and the development that supports them.
 
-The site lives at **https://phindagijimana.github.io/neuro_handbook/** (the GitHub repo slug stays `neuro_handbook` so existing URLs and the `neuro_handbook` Python package keep working).
+The Python package keeps its existing import name (`neuro_handbook`) so old `pip install -e .` and `import neuro_handbook` calls keep working.
 
 This repo is **both** a documentation site and a small Python package of reusable utilities. The site is hosted on GitHub Pages; the package ships the code that appears in the worked examples.
 

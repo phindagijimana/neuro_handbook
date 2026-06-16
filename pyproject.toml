@@ -42,9 +42,9 @@ neuro = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/phindagijimana/neuro_handbook"
-Documentation = "https://phindagijimana.github.io/neuro_handbook/"
-Source = "https://github.com/phindagijimana/neuro_handbook"
+Homepage = "https://github.com/phindagijimana/neuro_stack"
+Documentation = "https://phindagijimana.github.io/neuro_stack/"
+Source = "https://github.com/phindagijimana/neuro_stack"
 
 [project.scripts]
 neuro-handbook = "neuro_handbook.cli:main"

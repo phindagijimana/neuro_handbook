@@ -25,7 +25,7 @@ brew install python@3.12
 ## 2. Clone the handbook repo
 
 ```bash
-git clone https://github.com/phindagijimana/neuro_handbook.git
+git clone https://github.com/phindagijimana/neuro_stack.git
 cd neuro_handbook
 ```
 
