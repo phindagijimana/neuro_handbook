@@ -104,6 +104,9 @@ A pre-registration is a time-stamped commitment to the design and analysis plan,
 - **OSF Registries** (<https://osf.io/registries>) — flexible templates; the de facto standard in cognitive neuroscience.
 - **AsPredicted** (<https://aspredicted.org>) — short-form, eight questions; good for simple designs.
 - **Registered Reports** — protocol peer-reviewed before data collection; the journal commits to publishing the results regardless of outcome. *Cortex*, *NeuroImage*, *eLife*, *Royal Society Open Science* all accept them.
+- **[protocols.io](https://www.protocols.io)** — versioned, citable step-by-step research protocols; the right place for wet-lab and acquisition SOPs.
+- **[PROSPERO](https://www.crd.york.ac.uk/prospero)** — international systematic-review and meta-analysis registry; pre-register any review you plan to publish.
+- **[NeuroLibre](https://neurolibre.org)** — reproducible neuroscience preprints with executable code; complements OSF for the methods-and-figures layer.
 
 What to lock down: the hypothesis, the contrast, the threshold, inclusion / exclusion criteria, the stopping rule. What to leave flexible: clearly-labelled exploratory analyses.
 

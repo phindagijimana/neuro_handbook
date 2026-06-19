@@ -12,6 +12,7 @@
 | **OASIS-3** | Aging, longitudinal | ~1000 | Free + DUA | [LaMontagne et al., 2019](https://doi.org/10.1101/2019.12.13.19014902)[^4] |
 | **Cam-CAN** | Lifespan, 18–88 yr | ~700 | Open registration | [Shafto et al., 2014](https://doi.org/10.1186/s12883-014-0204-1)[^5] |
 | **MICA-MICs** | High-resolution structural + functional | ~50 | Open | [Royer et al., 2022](https://doi.org/10.1038/s41597-022-01682-y)[^6] |
+| **[IXI](https://brain-development.org/ixi-dataset)** | Healthy structural (T1 / T2 / PD / MRA / DWI) | ~600 | Open | Multi-centre, no clinical labels — common ML pretraining cohort. |
 
 ## Developmental
 
@@ -20,6 +21,8 @@
 | **ABCD** | Adolescent longitudinal, 10-year follow-up | 12 000+ | [Casey et al., 2018](https://doi.org/10.1016/j.dcn.2018.03.001)[^7] |
 | **HCP-Development** | 5–21 years | ~1500 | [Somerville et al., 2018](https://doi.org/10.1016/j.neuroimage.2018.04.038)[^8] |
 | **dHCP** | Neonatal | ~800 | [Edwards et al., 2022](https://doi.org/10.1016/j.neuroimage.2022.119085)[^9] |
+| **[HBCD](https://hbcdstudy.org)** | Healthy Brain and Child Development, birth to age 10 | 7 000+ | Sibling of ABCD covering the earlier age range. |
+| **[HBN](https://fcon_1000.projects.nitrc.org/indi/cmi_healthy_brain_network/)** | Healthy Brain Network pediatric (CMI) | 5 000+ | Transdiagnostic pediatric phenotyping. |
 
 ## Clinical
 
@@ -28,11 +31,14 @@
 | **ADNI** | Alzheimer's longitudinal | ~2000 | [Jack et al., 2008](https://doi.org/10.1002/jmri.21049)[^10] |
 | **PPMI** | Parkinson's longitudinal | ~1000+ | [Marek et al., 2011](https://doi.org/10.1016/j.pneurobio.2011.09.005)[^11] |
 | **ENIGMA cohorts** | Meta-analytic across disorders | varies | [Thompson et al., 2020](https://doi.org/10.1038/s41398-020-0705-1)[^12] |
+| **[ATLAS (stroke)](https://fcon_1000.projects.nitrc.org/indi/retro/atlas.html)** | Lesion-segmented stroke T1w | 1 453 | The reference cohort for stroke segmentation method development. |
 
 ## Open repositories
 
 - **OpenNeuro** ([portal](https://openneuro.org), [docs](https://docs.openneuro.org)) — open BIDS datasets, versioned, browser + CLI. [Markiewicz et al., 2021](https://doi.org/10.7554/eLife.71774)[^13]. <https://openneuro.org>
-- **NeuroVault** ([portal](https://neurovault.org)) — derived statistical maps and atlases. [Gorgolewski et al., 2015](https://doi.org/10.3389/fninf.2015.00008)[^14]. <https://neurovault.org>
+- **NeuroVault** ([portal](https://neurovault.org)) — repository for unthresholded statistical maps and atlases. [Gorgolewski et al., 2015](https://doi.org/10.3389/fninf.2015.00008)[^14]. <https://neurovault.org>
+- **[NeuroStore](https://neurostore.org)** — 30 000+ studies with pre-extracted activation coordinates; powers Neurosynth Compose meta-analyses.
+- **[BrainMap](https://www.brainmap.org)** — coordinate database powering GingerALE; the historical complement to Neurosynth.
 - **OpenfMRI** (legacy) — preceded OpenNeuro; most datasets migrated.
 
 ## Access patterns

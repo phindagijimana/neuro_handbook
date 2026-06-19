@@ -10,10 +10,10 @@ You need one heavyweight viewer for editing and labelling, one lightweight one f
 
 | Tool | Best at | Watch out for |
 | --- | --- | --- |
-| **ITK-SNAP** | Quick manual segmentation; semi-automatic snake tools | Older OpenGL on some clusters; X11 forwarding can crawl |
-| **3D Slicer** | Everything; extensions for DICOM, registration, ML | Heavy install; steep learning curve |
-| **FSLeyes** | Fast NIfTI / GIFTI / CIFTI overlay viewer | FSL-centric defaults; mind the colour-map gotchas |
-| **MRIcroGL** | One-shot screenshots; pretty 3D renders | Less suited for editing |
+| **[ITK-SNAP](http://www.itksnap.org/)** | Quick manual segmentation; semi-automatic snake tools | Older OpenGL on some clusters; X11 forwarding can crawl |
+| **[3D Slicer](https://www.slicer.org/)** | Everything; extensions for DICOM, registration, ML | Heavy install; steep learning curve |
+| **[FSLeyes](https://github.com/pauldmccarthy/fsleyes)** | Fast NIfTI / GIFTI / CIFTI overlay viewer | FSL-centric defaults; mind the colour-map gotchas |
+| **[MRIcroGL](https://github.com/rordenlab/MRIcroGL)** | One-shot screenshots; pretty 3D renders; GPU volume rendering | Less suited for editing |
 | **Freeview** | FreeSurfer outputs (surfaces + volumes together) | FreeSurfer install required |
 
 A practical layout most labs converge on:
@@ -36,10 +36,22 @@ The moment you leave volumetric space, the viewer list narrows to two real optio
 
 | Tool | Best at | Notes |
 | --- | --- | --- |
-| **Connectome Workbench (`wb_view`)** | CIFTI / GIFTI on fs_LR; HCP-style figures | The right answer for surface-based fMRI work |
+| **[Connectome Workbench (`wb_view`)](https://www.humanconnectome.org/software/connectome-workbench)** | CIFTI / GIFTI on fs_LR; HCP-style figures | The right answer for surface-based fMRI work |
 | **Freeview** | FreeSurfer's fsaverage / individual surfaces | Tighter integration with `recon-all` outputs |
+| **[ggseg](https://github.com/ggseg/ggseg)** | R/ggplot2 atlas visualisation | The right call when downstream stats are in R; supports DK / Schaefer / aseg. |
 
 Workbench is the more polished tool for figures and the harder one to install correctly. Freeview ships with FreeSurfer and is the path of least resistance if you're already running `recon-all`. See [Neuroimaging Analysis → Surface-based analysis](../analysis/surface.md) for the underlying space conventions.
+
+## Tractography viewers
+
+Streamlines and bundles need their own viewers — volumetric tools fudge them. Two real options for fibre work:
+
+| Tool | Best at | Notes |
+| --- | --- | --- |
+| **[TrackVis](https://trackvis.org)** | Fibre-tract visualisation | Reads `.trk` directly; the historical default for DTI streamlines. |
+| **[TractEdit](https://github.com/marcotag93/TractEdit)** | Virtual dissection / tractography refinement | Use it for ROI-based bundle editing on top of MRtrix3 / DSI Studio output. |
+
+For the upstream reconstruction tools, see [Diffusion](index.md#diffusion-extended).
 
 ## Programmatic plotting
 
@@ -106,6 +118,7 @@ QC is where viz tools meet pipelines. The choice is "use a standard report or bu
 | --- | --- | --- |
 | **MRIQC** | BIDS-app that computes ~100 QC metrics + per-subject HTML reports | Always, on every cohort, before any analysis |
 | **fMRIPrep reports** | Per-subject HTML emitted by fMRIPrep | Review every subject; don't trust group stats until you have |
+| **[NiReports](https://github.com/nipreps/nireports)** | QC HTML report generation (fMRIPrep / MRIQC use it) | Reach for it when you're writing a custom BIDS app and want fMRIPrep-style reports for free. |
 | **Custom Streamlit / Dash** | Cohort-level dashboards over derived metrics | When the standard reports don't slice the way you need |
 | **PyBIDS + Jupyter** | Ad-hoc cohort EDA notebooks | First-pass exploration; not a deliverable |
 
