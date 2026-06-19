@@ -34,3 +34,6 @@ site/
 *.gii
 derivatives/
 freesurfer_subjects/
+
+# ...but the empty test-fixture NIfTIs need to be tracked so CI can walk them.
+!fixtures/sub-tiny/**/*.nii.gz
