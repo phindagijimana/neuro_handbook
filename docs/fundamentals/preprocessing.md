@@ -172,6 +172,76 @@ flowchart LR
 
 The cost of "I just need to change one step" is rarely one step — it is one step plus a year of explaining why your derivatives differ from everyone else's.
 
+### Decision section — roll your own vs adopt a BIDS-app (PhD tier)
+
+The narrative above is the qualitative answer. Below is the decision you actually defend in a thesis committee or grant: numbers, trade-offs by axis, and a flowchart you can point at.
+
+**Speed — rough wall-clock per subject.** These are order-of-magnitude figures for a structural + single fMRI run + single-shell DWI session on a modern CPU with ~16 cores, no GPU acceleration of [FreeSurfer](https://surfer.nmr.mgh.harvard.edu).
+
+| Pipeline | Per-subject wall clock | Notes |
+| --- | --- | --- |
+| Hand-rolled [FSL](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki) + [ANTs](http://stnava.github.io/ANTs/) shell | 6-10 h | Dominated by `antsRegistrationSyN` (~2 h) and `recon-all` (~10 h CPU) |
+| [fMRIPrep](https://fmriprep.org) (T1w + 1 BOLD, with recon-all) | 10-14 h | recon-all is the long pole; `--fs-no-reconall` drops to ~3 h |
+| [fMRIPrep](https://fmriprep.org) (`--fs-no-reconall`, [FastSurfer](https://github.com/Deep-MI/FastSurfer) on GPU) | 1-2 h | The throughput config most cohorts now run |
+| [QSIPrep](https://qsiprep.readthedocs.io) (single-shell, [topup](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/topup) + [eddy](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/eddy)) | 3-6 h | `eddy_cuda` on GPU is ~3-5x faster than CPU `eddy` |
+| [sMRIPrep](https://www.nipreps.org/smriprep/) only (no fMRI/DWI) | 8-12 h | recon-all dominated; same FastSurfer caveat |
+
+The hand-rolled column is *not* faster on average. Where it wins is on a single sequence you can skip steps for (e.g. T1-only volumetry without surfaces ≈ 30 min). Where it loses is when you re-derive cross-modal registration, fieldmap selection, and confound regression by hand — those are the steps a BIDS-app already wrote for you and tested across thousands of sites.
+
+**Accuracy — when fMRIPrep's confounds actually beat hand-tuned.** The honest answer depends on the cohort and the downstream model.
+
+- **fMRIPrep wins** when the cohort is heterogeneous (multi-site, mixed scanners, mixed motion). The [aCompCor](https://doi.org/10.1016/j.neuroimage.2007.04.042) + 6-motion + global signal stack in the confounds TSV is competitive with cohort-specific tuning ([Ciric et al., 2017](https://doi.org/10.1016/j.neuroimage.2017.03.020)). When a reviewer asks "did you regress out the same thing as everyone else?", you can say yes.
+- **Hand-tuned wins** when you have prior knowledge the generic pipeline ignores: a known physiological-noise regressor (RETROICOR with recorded cardiac / respiratory), a custom ICA-AROMA variant trained on your scanner, or task-specific HRF modelling that needs the residuals from a particular nuisance model. The marginal gain over fMRIPrep's defaults on a single-site, low-motion adult cohort is usually small (1-3% variance explained).
+- **fMRIPrep loses** when the cohort is OOD for its training assumptions — neonates (use [NiBabies](https://www.nipreps.org/nibabies/)), severe pathology that breaks normalisation, novel acquisitions (multi-echo with non-standard echo counts, sub-millimetre 7T).
+
+[Bhagwat et al., 2021](https://doi.org/10.1371/journal.pcbi.1008979)[^bhagwat2021] is the canonical cross-pipeline harmonisation paper: different pipelines on the same data produce non-negligibly different volumes / thicknesses, and the disagreement is itself site-dependent. The takeaway is *not* "all pipelines are equally good"; it is "report your pipeline version and never mix derivatives across pipelines without a harmonisation step ([ComBat](https://github.com/Jfortin1/ComBatHarmonization), CovBat)."
+
+**Maintainability cost.** The expensive parts of running a BIDS-app are not the science — they are the engineering tail:
+
+- **Docker / Singularity pulls.** A pinned `nipreps/fmriprep:24.1.1` image is ~12 GB; QSIPrep is similar. Mirror it locally on HPC; rebuilding the upstream image with a different base layer is a non-starter mid-project.
+- **Version pinning.** Pin to a *minor* version (`24.1.x`) for a study, not `latest`. The [release notes](https://fmriprep.org/en/stable/changes.html) sometimes change defaults that move group statistics by 1-2%. Lock the version in your dataset's `dataset_description.json` GeneratedBy block.
+- **Atlas / template updates.** [TemplateFlow](https://www.templateflow.org/) versions drift; lock the resolution and version you use (`MNI152NLin2009cAsym:res-2`).
+- **FreeSurfer license.** Required, free, but expires per institution — keep it under config management.
+- **Re-running on container upgrades.** When you upgrade fMRIPrep mid-cohort, you re-run *everyone* or you mix derivatives. Budget for a full re-run when the major version bumps.
+
+Roll-your-own avoids the container-pull tax but pays it back in script maintenance, environment drift (`conda` solver churn), and an undocumented oral tradition.
+
+**When classical scripts still win.** Despite all of the above, there are real cases for not adopting a BIDS-app:
+
+- **Bespoke artifact correction** — a scanner-specific spike / RF-leak pattern that needs a custom filter before any BIDS-app step.
+- **Custom multi-band reconstruction** — vendor-proprietary `.dat` files, [Pulseq](https://pulseq.github.io/) sequences, or in-house GRAPPA recon.
+- **Novel sequences** — MR fingerprinting, multi-parametric mapping ([hMRI](https://hmri-group.github.io/hMRI-toolbox/)), spiral readouts, ZTE / UTE. The BIDS-app world does not yet have a canonical pipeline.
+- **Infants and severe pathology** — large lesions, hydrocephalus, post-surgical anatomy. [NiBabies](https://www.nipreps.org/nibabies/) and lesion-aware variants ([BIANCA](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/BIANCA), [LST](https://www.applied-statistics.de/lst.html)) help but often need wrapping in a custom workflow.
+- **Methods development** — if your paper *is* the preprocessing step, you cannot evaluate it inside an opinionated pipeline.
+
+```mermaid
+flowchart TD
+    Q1{N >= 50 subjects<br/>from a single site?}
+    Q2{Cohort matches BIDS-app<br/>training population?<br/>(adult, no severe pathology)}
+    Q3{Novel acquisition?<br/>(multi-echo, 7T, MRF,<br/>sub-mm, infants)}
+    Q4{Methodologist on staff<br/>+ time budget for<br/>maintenance?}
+    BA[Adopt BIDS-app default<br/>fMRIPrep / QSIPrep / sMRIPrep]
+    BF[BIDS-app with documented flags<br/>justify each flag in methods]
+    NP[nipype workflow<br/>or BIDS-app fork]
+    HR[Hand-rolled FSL/ANTs<br/>last resort, justify in thesis]
+    Q1 -->|yes| Q2
+    Q1 -->|no| Q3
+    Q2 -->|yes| BA
+    Q2 -->|no| Q3
+    Q3 -->|no| BF
+    Q3 -->|yes| Q4
+    Q4 -->|yes| NP
+    Q4 -->|no| HR
+    style BA fill:#e0ffe0,stroke:#4a4
+    style BF fill:#fff3cd,stroke:#a84
+    style NP fill:#ffe0cc,stroke:#a64
+    style HR fill:#ffe0e0,stroke:#a44
+```
+
+*<small>The decision the methods section has to defend. Single-site, in-distribution cohorts collapse to the green branch. Original figure.</small>*
+
+The default position is the green branch. Every step away from it costs reviewer goodwill and your own time; spend that cost on something the science requires, not on the satisfaction of rolling your own.
+
 ## Quality-control gates
 
 Preprocessing should *fail loudly* at gates and *warn quietly* elsewhere. A failure gate stops the pipeline and excludes the subject from downstream analysis; a warning is logged but the run continues.
@@ -213,12 +283,15 @@ A pipeline can be technically correct and still erase the signal you were paid t
 [^synthstrip]: Hoopes A, Mora JS, Dalca AV, Fischl B, Hoffmann M. SynthStrip: skull-stripping for any brain image. *NeuroImage.* 2022;260:119474. [doi:10.1016/j.neuroimage.2022.119474](https://doi.org/10.1016/j.neuroimage.2022.119474)
 [^hdbet]: Isensee F, Schell M, Pflueger I, et al. Automated brain extraction of multisequence MRI using artificial neural networks. *Hum Brain Mapp.* 2019;40(17):4952-4964. [doi:10.1002/hbm.24750](https://doi.org/10.1002/hbm.24750)
 [^power2014]: Power JD, Mitra A, Laumann TO, Snyder AZ, Schlaggar BL, Petersen SE. Methods to detect, characterize, and remove motion artifact in resting state fMRI. *NeuroImage.* 2014;84:320-341. [doi:10.1016/j.neuroimage.2013.08.048](https://doi.org/10.1016/j.neuroimage.2013.08.048)
+[^bhagwat2021]: Bhagwat N, Barry A, Dickie EW, et al. Understanding the impact of preprocessing pipelines on neuroimaging cortical surface analyses. *PLoS Comput Biol.* 2021;17(7):e1008979. [doi:10.1371/journal.pcbi.1008979](https://doi.org/10.1371/journal.pcbi.1008979)
 
 - **Schilling KG, Blaber J, Hansen C, et al.** Synthesized b0 for diffusion distortion correction (Synb0-DisCo). *Magn Reson Imaging.* 2020;64:62-70. [doi:10.1016/j.mri.2019.05.008](https://doi.org/10.1016/j.mri.2019.05.008)
 - **Andersson JLR, Skare S, Ashburner J.** How to correct susceptibility distortions in spin-echo echo-planar images: application to diffusion tensor imaging (`topup`). *NeuroImage.* 2003;20(2):870-888. [doi:10.1016/S1053-8119(03)00336-7](https://doi.org/10.1016/S1053-8119(03)00336-7)
 - **Henschel L, Conjeti S, Estrada S, Diers K, Fischl B, Reuter M.** FastSurfer — A fast and accurate deep learning based neuroimaging pipeline. *NeuroImage.* 2020;219:117012. [doi:10.1016/j.neuroimage.2020.117012](https://doi.org/10.1016/j.neuroimage.2020.117012)
 - **Spitzer H, Ripart M, Whitaker K, et al.** Interpretable surface-based detection of focal cortical dysplasias (MELD Graph). *Brain.* 2022;145(11):3859-3871. [doi:10.1093/brain/awac224](https://doi.org/10.1093/brain/awac224)
 - **NiBabies.** Neonatal preprocessing pipeline. [https://www.nipreps.org/nibabies/](https://www.nipreps.org/nibabies/)
+- **Ciric R, Wolf DH, Power JD, et al.** Benchmarking of participant-level confound regression strategies for the control of motion artifact in studies of functional connectivity. *NeuroImage.* 2017;154:174-187. [doi:10.1016/j.neuroimage.2017.03.020](https://doi.org/10.1016/j.neuroimage.2017.03.020)
+- **Behzadi Y, Restom K, Liau J, Liu TT.** A component based noise correction method (CompCor) for BOLD and perfusion based fMRI. *NeuroImage.* 2007;37(1):90-101. [doi:10.1016/j.neuroimage.2007.04.042](https://doi.org/10.1016/j.neuroimage.2007.04.042)
 
 ## Where to next
 

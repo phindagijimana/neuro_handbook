@@ -4,6 +4,42 @@
 
 You don't need to derive the Bloch equations from Maxwell's, but you do need a working physical model for every modality you might encounter. MRI is the deep core of this page (it dominates research neuroimaging); CT, PET, ultrasound, optical, and EEG/MEG biophysics get their own treatment because you'll meet all of them in multimodal cohorts.
 
+## MRI hardware in one page
+
+Before any physics, the scanner is four nested systems of coils inside a cryostat. Knowing which coil does what saves you from confusing acquisition artifacts with reconstruction bugs.
+
+**Main magnet — the $B_0$ field.** A **superconducting** solenoid wound from NbTi or Nb₃Sn, immersed in liquid helium (~4 K) inside a cryostat. Once energised (a slow ramp-up over hours), it stays on for years — superconducting means zero resistance, zero ohmic loss, no power input. The trade-offs across field strengths:
+
+| Field | Where you see it | What you get | What it costs |
+| --- | --- | --- | --- |
+| **1.5 T** | Most clinical, older multi-site cohorts | Robust, low artifact, cheap helium budget | Lower SNR, longer scans, weaker BOLD |
+| **3 T** | Modern clinical + research workhorse | ~2x SNR over 1.5 T, strong BOLD, good DWI | More susceptibility distortion, B1 inhomogeneity |
+| **7 T** | Research, increasingly clinical | ~2x SNR over 3 T, laminar fMRI possible, high-res QSM | Severe $T_2^*$ shortening, B1 dropouts, expensive shimming, restricted body coverage |
+
+The static field is a permanent hazard: ferromagnetic objects become projectiles, implanted devices may heat or fail, and there is no "off" switch short of a quench (rapid helium boil-off, ~$50k+ and a day of downtime). Field homogeneity is specified in parts per million over a defined imaging volume; a poorly shimmed 3 T system may have only ~0.5 ppm uniformity, which is enough to ruin EPI and MRS.
+
+**Gradient coils — spatial encoding.** Three orthogonal coils ($G_x, G_y, G_z$) sit inside the bore and produce *linear, switchable* magnetic-field perturbations on top of $B_0$. Because the Larmor frequency $\omega = \gamma B$ depends linearly on the field, a gradient makes the precession frequency a function of position. The sequence designer plays gradients in patterns that encode location into phase and frequency — see [Gradients and spatial encoding](#gradients-and-spatial-encoding) below for the math. Two hardware specs matter:
+
+- **Slew rate** (T/m/s) — how fast a gradient can ramp. Higher slew = shorter TE, faster EPI, sharper diffusion encoding. Modern clinical scanners do ~200 T/m/s; the [Human Connectome Project](https://www.humanconnectome.org/) "Connectom" gradient hits 300 mT/m amplitude with 200 T/m/s slew, enabling the b=10,000+ s/mm² shells that drive microstructure imaging.
+- **Peripheral nerve stimulation (PNS) limit** — fast switching gradients induce currents in tissue that can twitch nerves. Sequences are constrained by IEC safety limits; you'll see this as a hard wall when a sequence physicist tries to push slew further.
+
+**RF coils — transmit and receive.** Two jobs, often two different coils.
+
+- **Transmit (body coil)** — a large, fixed coil built into the bore that delivers spatially uniform $B_1^+$ excitation pulses. RF-pulse design is its own subfield ([Pauly et al., 1989](https://doi.org/10.1109/42.41121); see [John Pauly's Stanford RF pulse design notes](https://web.stanford.edu/class/ee469b/)) — Shinnar-Le Roux, adiabatic, parallel-transmit (pTx) pulses all live here.
+- **Receive (head coil array)** — a close-fitting helmet of small coil elements (e.g. 8, 20, **32**, or 64 channels). Each element sees only the region nearby with its own *coil sensitivity profile* $C_i(\vec r)$. SNR scales roughly with the number of elements close to the brain.
+
+Parallel imaging ([SENSE](https://doi.org/10.1002/(SICI)1522-2594(199911)42:5%3C952::AID-MRM16%3E3.0.CO;2-S), [GRAPPA](https://doi.org/10.1002/mrm.10171)) only works because each receive coil sees a different sensitivity profile. Undersample k-space along the phase-encode direction, get aliased images per channel, then invert the system of equations $y_i = C_i M$ to recover the unaliased image. No multiple sensitivity profiles → no parallel imaging → no acceleration → no modern fMRI / DWI throughput.
+
+**Shim coils.** $B_0$ is never perfectly uniform — patient anatomy itself distorts it (susceptibility at air-tissue interfaces). Shim coils add small correction fields:
+
+- **Passive shims** — iron pieces placed during installation. Fix the bulk inhomogeneity of the empty bore.
+- **Active first-order shims** — use the imaging gradients themselves to add linear corrections per scan.
+- **Active higher-order shims** (second-order: $x^2-y^2, xy, xz, yz, 2z^2-x^2-y^2$, and beyond) — dedicated coils. Higher field needs more shimming: a 7 T scanner with only first-order shims is unusable for EPI near the sinuses. Dynamic shimming (per-slice) and B0-shim-array systems are an active hardware research area.
+
+For the canonical hardware overview, the [ISMRM educational track on MR systems engineering](https://www.ismrm.org/online-education-program/) (annual meeting recordings, free for members) is the credible reference; [Hidalgo-Tobon, 2010](https://doi.org/10.1002/cmr.a.20162) is a readable review of gradient-coil design specifically.
+
+With the hardware in mind, the physics that lets it produce contrast is the rest of this page.
+
 ## The phenomenon — nuclear magnetic resonance
 
 A proton has a tiny intrinsic magnetic moment (spin-½). Placed in a strong static field $B_0$ (the scanner's main magnet, 1.5 T / 3 T / 7 T), spins precess at the **Larmor frequency**:
@@ -248,6 +284,11 @@ If any of these are unknown when you process the data later, the methods section
 15. **Boas DA, Elwell CE, Ferrari M, Taga G.** Twenty years of functional near-infrared spectroscopy: introduction for the special issue. *NeuroImage.* 2014;85(1):1-5. [doi:10.1016/j.neuroimage.2013.11.033](https://doi.org/10.1016/j.neuroimage.2013.11.033)
 16. **Hämäläinen M, Hari R, Ilmoniemi RJ, Knuutila J, Lounasmaa OV.** Magnetoencephalography — theory, instrumentation, and applications to noninvasive studies of the working human brain. *Rev Mod Phys.* 1993;65(2):413-497. [doi:10.1103/RevModPhys.65.413](https://doi.org/10.1103/RevModPhys.65.413)
 17. **Gross J.** Magnetoencephalography in cognitive neuroscience: a primer. *Neuron.* 2019;104(2):189-204. [doi:10.1016/j.neuron.2019.07.001](https://doi.org/10.1016/j.neuron.2019.07.001)
+18. **Pauly J, Le Roux P, Nishimura D, Macovski A.** Parameter relations for the Shinnar-Le Roux selective excitation pulse design algorithm. *IEEE Trans Med Imaging.* 1991;10(1):53-65. [doi:10.1109/42.75611](https://doi.org/10.1109/42.75611). Companion notes: [Stanford EE469B RF pulse design](https://web.stanford.edu/class/ee469b/).
+19. **Griswold MA, Jakob PM, Heidemann RM, et al.** Generalized autocalibrating partially parallel acquisitions (GRAPPA). *Magn Reson Med.* 2002;47(6):1202-1210. [doi:10.1002/mrm.10171](https://doi.org/10.1002/mrm.10171)
+20. **Hidalgo-Tobon SS.** Theory of gradient coil design methods for magnetic resonance imaging. *Concepts Magn Reson Part A.* 2010;36A(4):223-242. [doi:10.1002/cmr.a.20162](https://doi.org/10.1002/cmr.a.20162)
+21. **ISMRM educational program** — annual MR systems engineering tracks. [https://www.ismrm.org/online-education-program/](https://www.ismrm.org/online-education-program/)
+22. **Setsompop K, Kimmlingen R, Eberlein E, et al.** Pushing the limits of in vivo diffusion MRI for the Human Connectome Project. *NeuroImage.* 2013;80:220-233. [doi:10.1016/j.neuroimage.2013.05.078](https://doi.org/10.1016/j.neuroimage.2013.05.078) — Connectom gradient design.
 
 ## Where to next
 

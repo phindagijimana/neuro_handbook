@@ -4,6 +4,50 @@
 
 The scanner gives you DICOM. BIDS apps want NIfTI in a strict layout. Two tools do the conversion, and one heuristics file does most of the work.
 
+## Heuristics — the mental model
+
+Before you reach for any specific converter, internalise the shape of the job. About 80% of DICOM-to-BIDS work is a single pattern: read [DICOM metadata](https://www.dicomstandard.org/) fields off each series — `SeriesDescription`, `ProtocolName`, `EchoTime`, `RepetitionTime`, `ScanOptions`, sometimes `ImageType` — and decide which [BIDS filename](https://bids-specification.readthedocs.io/en/stable/02-common-principles.html#file-name-structure) the series should become, e.g. `sub-XX_ses-YY_task-ZZ_acq-AAA_bold.nii.gz`. Everything else is plumbing.
+
+The decision logic is almost always a tree of `if/elif`:
+
+```python
+def infer_bids_name(dicom_metadata):
+    desc = dicom_metadata["SeriesDescription"]
+    if "MPRAGE" in desc:
+        return "anat/sub-{subj}_T1w"
+    if "DWI" in desc and "TRACE" not in desc:
+        return "dwi/sub-{subj}_dwi"
+    if "RESTING" in desc:
+        return "func/sub-{subj}_task-rest_bold"
+    return None  # let user inspect
+```
+
+The three tools in this space each play a different role:
+
+- [`dcm2niix`](https://github.com/rordenlab/dcm2niix) is the raw DICOM → NIfTI engine. It does no BIDS routing; you call it when you want to control the conversion yourself.
+- [HeuDiConv](https://heudiconv.readthedocs.io/en/latest/) wraps `dcm2niix` and asks you to write the `if/elif` tree above in a Python heuristics module. Best when the same logic runs across many subjects.
+- [Dcm2Bids](https://unfmontreal.github.io/Dcm2Bids/) wraps `dcm2niix` and asks you to write the same tree as JSON match criteria. Best when you prefer declarative config to code.
+
+```mermaid
+flowchart LR
+    A[Incoming DICOM series] --> B[Extract metadata<br/>SeriesDescription,<br/>ProtocolName, TE, TR]
+    B --> C{Heuristic match?}
+    C -- yes --> D[Emit BIDS path<br/>sub-XX/.../*.nii.gz]
+    C -- no --> E[Quarantine for<br/>human review]
+    D --> F[BIDS dataset]
+    E --> G[Update heuristic<br/>then re-run]
+    G --> B
+```
+
+Common ways the heuristic breaks:
+
+- **Site-to-site drift.** `SeriesDescription` is set by whoever programmed the scanner protocol. The same sequence called `T1_MPRAGE_iso` at site A may arrive as `MPRAGE_PROMO` at site B. Write one heuristic per site, not one heuristic to rule them all.
+- **Vendor differences.** Siemens diffusion shows up as `ep2d_diff`; GE as `DWI_dir`; Philips as `DTI`. The same applies to fieldmaps, ASL, and BOLD. Inspect the actual `ProtocolName` values before writing rules.
+- **Localisers and calibration scans.** Three-plane localisers, scout runs, ASSET calibrations, and noise scans look like real series but should never enter BIDS. Add an explicit reject branch (`if "LOC" in desc or "SCOUT" in desc: return None`) rather than relying on omission.
+- **Repeated runs.** A subject who moves and gets a re-shot T1w produces two MPRAGE series. Decide upfront whether to keep both with `run-01`/`run-02` or take the last; have the heuristic do it deterministically.
+
+The heuristic file is the artefact you version, review, and reuse. The tools below differ mainly in how they want that file written.
+
 ## The tools
 
 ### `dcm2niix` ([source](https://github.com/rordenlab/dcm2niix)) — the DICOM → NIfTI step

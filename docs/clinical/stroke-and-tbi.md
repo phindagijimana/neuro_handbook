@@ -61,6 +61,44 @@ The trials that defined modern stroke workflow:
 
 The DAWN / DEFUSE-3 expansion of the thrombectomy window from 6 h to 24 h *based on imaging mismatch* is one of the most consequential imaging-driven trial results in neurology.
 
+### DWI/perfusion mismatch decision tree for thrombectomy windows
+
+The mismatch concept restated quickly: **DWI bright + ADC dark = irreversibly injured core**; **perfusion deficit (PWI Tmax > 6 s or CTP equivalent) = at-risk territory**; **perfusion deficit minus DWI = penumbra = the salvageable tissue thrombectomy is trying to rescue**. The treatment window is a function of how that mismatch evolves, not just the clock.
+
+```mermaid
+flowchart TD
+    START["Suspected acute<br/>ischemic stroke<br/>+ LVO on CTA"] --> ONSET{"Last-known-well<br/>time?"}
+    ONSET -->|Known, &lt; 4.5 h| EARLY["IV tPA<br/>+ thrombectomy<br/>if LVO"]
+    ONSET -->|Known, 4.5-6 h| HERMES_W["Thrombectomy<br/>(HERMES pooled,<br/>Goyal 2016)"]
+    ONSET -->|Known, 6-24 h| LATE{"Imaging<br/>mismatch?"}
+    ONSET -->|Unknown / wake-up| WAKEUP{"DWI/FLAIR<br/>mismatch?"}
+    LATE -->|DAWN criteria| DAWN["Clinical-core mismatch<br/>NIHSS ≥ 10 + core ≤ 31 mL (&lt; 80 y)<br/>NIHSS ≥ 20 + core ≤ 51 mL<br/>→ thrombectomy"]
+    LATE -->|DEFUSE-3 criteria| DEFUSE["Perfusion-core mismatch<br/>ratio ≥ 1.8<br/>core ≤ 70 mL<br/>mismatch volume ≥ 15 mL<br/>→ thrombectomy"]
+    LATE -->|Neither met| MED["Best medical therapy"]
+    WAKEUP -->|DWI+ / FLAIR-| WAKE_TX["IV tPA<br/>(WAKE-UP, Thomalla 2018)"]
+    WAKEUP -->|FLAIR+ or no LVO| MED
+    style EARLY fill:#c8e6c9,stroke:#1b5e20
+    style HERMES_W fill:#c8e6c9,stroke:#1b5e20
+    style DAWN fill:#fff9c4,stroke:#f57f17
+    style DEFUSE fill:#fff9c4,stroke:#f57f17
+    style WAKE_TX fill:#c8e6c9,stroke:#1b5e20
+    style MED fill:#ffcdd2,stroke:#b71c1c
+```
+
+*<small>Mismatch-driven thrombectomy / thrombolysis decision tree synthesising HERMES ([Goyal 2016](https://doi.org/10.1016/S0140-6736(16)00163-X)), DAWN ([Nogueira 2018](https://doi.org/10.1056/NEJMoa1706442)), DEFUSE-3 ([Albers 2018](https://doi.org/10.1056/NEJMoa1713973)), and WAKE-UP ([Thomalla 2018](https://doi.org/10.1056/NEJMoa1804355)).</small>*
+
+**Automated software in the loop.** The DAWN / DEFUSE-3 thresholds are not eyeballed off raw perfusion maps — they are produced by FDA-cleared post-processing. [RAPID](https://www.ischemaview.com/) (iSchemaView) was the software prescribed in both DEFUSE-3 and DAWN and remains the dominant CT-perfusion engine in US comprehensive stroke centres; [OleaSphere](https://www.olea-medical.com/) (Olea Medical) and [Brain-CTP / e-CTP](https://www.brainomix.com/) (Brainomix) are the main European alternatives. All of them ingest CTP or DSC source data, deconvolve to produce CBF / CBV / Tmax / MTT maps, and emit a *core* (typically rCBF < 30% of contralateral) and *Tmax > 6 s lesion* with volumes — which is what the trial thresholds operate on.
+
+**Edge cases and specialist concerns.**
+
+- **What Tmax > 6 s actually means.** Tmax is the time at which the deconvolved residue function peaks; it is sensitive to bolus dispersion and arterial-input-function selection. The 6 s threshold is an empirical compromise that approximates the upper bound of viable tissue in carotid-territory occlusions. It is not a physiological constant — it drifts with software vendor, AIF choice, and contrast dynamics.
+- **Posterior-circulation stroke.** Brainstem and cerebellar tissue tolerate ischaemia differently; Tmax > 6 s overestimates penumbra and core thresholds (rCBF < 30%) overestimate infarct. Trial selection criteria were derived in anterior-circulation cohorts. Posterior LVOs (basilar occlusion) are typically treated on clinical and CTA grounds rather than mismatch volumetry.
+- **Imaging selection vs clinical selection.** DAWN uses *clinical-core mismatch* (a large NIHSS in the face of a small DWI / CTP core); DEFUSE-3 uses *perfusion-core mismatch*. They are not interchangeable — DAWN's enrolment skewed toward larger deficits and smaller cores than DEFUSE-3 — but in practice a patient who meets either is offered thrombectomy.
+- **Ghost-core artifact.** Early CT-perfusion can overestimate core in the hyper-acute window when CBF is collapsed but tissue is not yet committed; reperfusion of those voxels shrinks the "core" on follow-up. The implication: a borderline-large core on a sub-2 h CTP may be a ghost, not a verdict.
+- **Malignant profile.** Large core (>100 mL) with small mismatch ratio (<1.4) is the canonical futile-recanalisation signature; recanalisation in this profile risks haemorrhagic transformation without functional benefit. The mismatch tree does not just select *for* treatment — it selects *against* it.
+
+For the underlying perfusion physics and where the deconvolution assumptions break, see [Fundamentals → ASL](../fundamentals/sequences/asl.md).
+
 ### Acute-stroke software
 
 Automated post-processing for core / penumbra is now standard of care.
@@ -171,6 +209,7 @@ The biggest clinical-imaging gap. Conventional MRI is almost always negative. Qu
 10. **Yue JK, Vassar MJ, Lingsma HF, et al.** Transforming Research and Clinical Knowledge in Traumatic Brain Injury (TRACK-TBI) pilot. *J Neurotrauma.* 2013;30(22):1831-1844. [doi:10.1089/neu.2012.2802](https://doi.org/10.1089/neu.2012.2802)
 11. **Maas AIR, Menon DK, Steyerberg EW, et al.** Collaborative European NeuroTrauma Effectiveness Research in Traumatic Brain Injury (CENTER-TBI). *Neurosurgery.* 2015;76(1):67-80. [doi:10.1227/NEU.0000000000000575](https://doi.org/10.1227/NEU.0000000000000575)
 12. **Pustina D, Coslett HB, Ungar L, et al.** Enhanced estimations of post-stroke aphasia severity using stacked multimodal predictions. *Hum Brain Mapp.* 2018;39(11):4267-4282. [doi:10.1002/hbm.23934](https://doi.org/10.1002/hbm.23934)
+13. **Goyal M, Menon BK, van Zwam WH, et al.** Endovascular thrombectomy after large-vessel ischaemic stroke: a meta-analysis of individual patient data from five randomised trials. *Lancet.* 2016;387(10029):1723-1731. [doi:10.1016/S0140-6736(16)00163-X](https://doi.org/10.1016/S0140-6736(16)00163-X) (HERMES)
 
 ## Where to next
 

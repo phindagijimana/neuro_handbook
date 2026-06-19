@@ -1,5 +1,30 @@
 # MP-RAGE (magnetization-prepared rapid gradient echo) — full course
 
+> The workhorse 3D T1-weighted structural scan. Every BIDS dataset has one because every downstream tool needs to know where grey matter is.
+
+## What MPRAGE actually is
+
+MP-RAGE = **M**agnetisation **P**repared **RA**pid **G**radient **E**cho. Two ideas glued together:
+
+1. **Inversion-recovery preparation** to maximise T1 contrast — same family idea as [FLAIR](flair.md), but the goal here is grey-matter / white-matter discrimination, not lesion conspicuity. A 180° inversion pulse flips magnetisation, and after a tuned inversion time TI different tissues have recovered to different points on their T1 curves. Pick TI well and GM, WM, and CSF separate cleanly.
+2. **A fast 3D spoiled gradient-echo readout** that captures the whole brain volume in ~5 min. Traditional spin-echo inversion-recovery for the same contrast and coverage would take ~20 min and be unusable for routine clinical or large-cohort research scans.
+
+The result is a high-contrast 3D T1-weighted volume, typically 1 mm isotropic, that is sharp enough for surface reconstruction and consistent enough across sites to anchor every other modality. It is the workhorse of structural neuroimaging — Mugler & Brookeman introduced it in [1990](https://doi.org/10.1002/mrm.1910150117) and it has barely been displaced since.
+
+For the physics building blocks underneath (inversion recovery, gradient echo, k-space), see [Foundations → Physics](../foundations/physics.md). For the contrast-engineering view across sequences, see the [Sequences index](index.md).
+
+## Why every BIDS dataset has a T1w
+
+Almost every downstream tool needs a T1w volume:
+
+- **Registration target** — [fMRI / BOLD EPI](epi.md), [DWI](dwi.md), and [PET](pet.md) volumes are coregistered to the T1w because the T1w has the structural detail those modalities lack. The T1w → MNI warp ([ANTs](http://stnava.github.io/ANTs/), [SPM](https://www.fil.ion.ucl.ac.uk/spm/), [FSL FNIRT](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FNIRT)) is what puts everything else in a common space.
+- **Atlas alignment** — applying any parcellation (Desikan-Killiany, HCP-MMP1, Schaefer; see [Foundations → Neuroscience](../foundations/neuroscience.md)) starts from the T1w-to-template transform.
+- **Surface reconstruction** — [FreeSurfer](https://surfer.nmr.mgh.harvard.edu) `recon-all` and [FastSurfer](https://github.com/Deep-MI/FastSurfer) consume the T1w to build the cortical mesh, generate `aparc+aseg`, and compute cortical thickness.
+- **Voxel-based morphometry** — any GM-density or volume analysis needs the T1w-derived tissue segmentation.
+- **Defacing and de-identification** — face-removal pipelines ([pydeface](https://github.com/poldracklab/pydeface), `mri_reface`) operate on the T1w.
+
+If you have one structural scan, you want it to be a T1w MPRAGE. Everything else assumes it exists. The BIDS spec ([Gorgolewski et al., 2016](https://doi.org/10.1038/sdata.2016.44)) makes this convention explicit: `sub-XX/anat/sub-XX_T1w.nii.gz` is the canonical anchor.
+
 Course map: Inversion prep → k-space ordering → TI / TD → contrast mechanism → MP2RAGE unified T1 → artifacts → analysis outputs (surfaces, thickness, volumes) → how outputs are used → examples → references.
 
 ## 1. Learning objectives
@@ -105,6 +130,8 @@ Course map: Inversion prep → k-space ordering → TI / TD → contrast mechani
 - Mugler & Brookeman — original MP-RAGE — https://doi.org/10.1002/mrm.1910150117
 
 - Marques et al. — MP2RAGE — https://doi.org/10.1016/j.neuroimage.2010.07.024
+
+- Gorgolewski KJ, Auer T, Calhoun VD, et al. The brain imaging data structure (BIDS), a format for organizing and describing outputs of neuroimaging experiments. *Sci Data.* 2016;3:160044. [doi:10.1038/sdata.2016.44](https://doi.org/10.1038/sdata.2016.44)
 
 - Vendor MPRAGE / MP2RAGE product manuals.
 

@@ -2,6 +2,10 @@
 
 > Why analysing BOLD or thickness on the cortical surface often beats analysing it in a volume.
 
+## Why surface at all (beginner orientation)
+
+The cortex is a crumpled 2D sheet ~3 mm thick. Two voxels 5 mm apart in 3D can sit on opposite banks of a sulcus — geodesically far along the cortical sheet, but Euclidean-close. Volumetric smoothing happily blends signal across that sulcus, and across the grey/white boundary, and calls it neighbourhood. Surface analysis instead reconstructs the cortical sheet as a triangulated mesh, then defines distance, smoothing, and group statistics *along the cortex*. Neighbours on the mesh are neighbours in cytoarchitecture, not just in millimetres. The price: surface reconstruction is slow ([FreeSurfer `recon-all`](https://surfer.nmr.mgh.harvard.edu/fswiki/recon-all) ~8 h CPU; [FastSurfer](https://deep-mi.org/research/fastsurfer/) ~1 h GPU), brittle in pathology, and locks you into a template — fsaverage, [fsLR](https://www.humanconnectome.org/study/hcp-young-adult/document/extensively-processed-fmri-data-documentation), or a ciftify hybrid. Commit to one early and don't drift.
+
 ## The motivation
 
 In a volumetric analysis, voxels on opposite banks of a sulcus are spatially close — millimetres apart — but functionally distant (different cytoarchitecture, different connectivity). A 6 mm smoothing kernel pools signal across the sulcus and blurs everything.

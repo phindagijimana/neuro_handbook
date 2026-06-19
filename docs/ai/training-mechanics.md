@@ -147,6 +147,91 @@ def load_ckpt():
 
 On clusters with pre-emption (spot, Slurm requeue), checkpoint *every epoch*. The cost is minimal; the cost of redoing 24 h is not.
 
+## GPU memory profiling and debugging
+
+Before the OOM hits, it helps to know what each component of training is actually costing you. The recipes above assume you already have a sense of the bill; this section makes that bill explicit.
+
+### What lives on the GPU during training
+
+Four things compete for VRAM during a forward + backward pass:
+
+| Component | Size in fp32 | Size in fp16/bf16 | Notes |
+| --- | --- | --- | --- |
+| **Model parameters** | `N × 4` bytes | `N × 2` bytes | `N` = parameter count |
+| **Gradients** | `N × 4` bytes | `N × 2` bytes | One per parameter, allocated on `.backward()` |
+| **Optimiser state** | `N × 8` bytes (Adam) | `N × 8` bytes (Adam in fp32 master) | Adam keeps `m` and `v`; SGD-momentum keeps one buffer |
+| **Activations** | proportional to `B × C × H × W × D × bytes_per_elem` | half that | Saved for backward; this is where 3D models hurt |
+
+Worked example — a 3D U-Net with ~5M parameters, batch size 2, patch `96³`, base channel 32:
+
+- Params (bf16): `5e6 × 2  ≈ 10 MB`
+- Grads  (bf16): `5e6 × 2  ≈ 10 MB`
+- Adam state (fp32 master copies of `m`, `v`, and an fp32 weight shadow): `5e6 × 12 ≈ 60 MB`
+- Activations (dominant cost): each encoder block holds a tensor of shape `[2, C, 96/s, 96/s, 96/s]`. The first block alone is `2 × 32 × 96³ × 2 bytes ≈ 113 MB`. Sum across ~10 saved tensors → **~1–2 GB**.
+
+Total: roughly **2–3 GB** for a small U-Net at `96³`. Double the patch to `128³` and activations grow `(128/96)³ ≈ 2.4×`. Triple-check that intuition before you blame [`torch.cuda`](https://docs.pytorch.org/docs/stable/cuda.html) for misbehaving — usually it's geometry.
+
+### Mixed-precision gotchas
+
+[`fp16`](https://docs.pytorch.org/docs/stable/amp.html) has a narrow exponent range (max ~65 504). Gradients can underflow to zero or overflow to `inf`; that's why `torch.amp.GradScaler` multiplies the loss by a large factor before backward and divides it back before the optimiser step. `GradScaler.update()` halves the scale every time it sees an `inf`/`NaN` gradient, and doubles it after a few clean steps. Two bugs to watch for:
+
+- **NaN losses immediately after `scaler.update()`** — the scale has collapsed to 1 (or below). Either your loss is genuinely diverging, or you're mixing precisions inside the optimiser state. Print `scaler.get_scale()` every step until you see the pattern.
+- **Optimiser state silently in fp16** — if you build the optimiser *after* casting the model to half precision, Adam's `m` and `v` will be fp16 and lose accumulator resolution. Always keep optimiser state in fp32 (the default in [`torch.cuda.amp`](https://docs.pytorch.org/docs/stable/amp.html) and `accelerate`).
+
+[`bfloat16`](https://docs.pytorch.org/docs/stable/tensors.html#torch.bfloat16) has the same exponent range as fp32 (8 bits) but only 7 mantissa bits. No loss scaling needed; just `autocast(dtype=torch.bfloat16)` and go. Prefer it on A100/H100/RTX 30+.
+
+### Profiling commands
+
+The everyday toolbox:
+
+- **[`nvidia-smi`](https://developer.nvidia.com/nvidia-system-management-interface)** — board-level view of utilisation and memory: `nvidia-smi --query-gpu=memory.used,memory.free,utilization.gpu --format=csv -l 1`.
+- **[`torch.cuda.memory_allocated()`](https://docs.pytorch.org/docs/stable/generated/torch.cuda.memory_allocated.html)** / **`memory_reserved()`** — what PyTorch currently holds and what it has cached from the allocator.
+- **[`torch.cuda.max_memory_allocated()`](https://docs.pytorch.org/docs/stable/generated/torch.cuda.max_memory_allocated.html)** + **`reset_peak_memory_stats()`** — the peak between two checkpoints. This is the number you actually care about.
+- **[`torch.cuda.memory_summary()`](https://docs.pytorch.org/docs/stable/generated/torch.cuda.memory_summary.html)** — a long-form dump of allocator buckets; useful when fragmentation is suspected.
+- **[`torch.profiler`](https://docs.pytorch.org/docs/stable/profiler.html)** — see the existing Profiling section below for a full trace.
+
+A 12-line probe you can drop around a forward + backward:
+
+```python
+import torch
+
+torch.cuda.reset_peak_memory_stats()
+x = batch["image"].to(device, non_blocking=True)
+y = batch["label"].to(device, non_blocking=True)
+
+with torch.autocast(device_type="cuda", dtype=torch.bfloat16):
+    pred = model(x)
+    loss = loss_fn(pred, y)
+loss.backward()
+
+print(f"peak alloc: {torch.cuda.max_memory_allocated() / 1e9:.2f} GB")
+print(f"reserved:   {torch.cuda.memory_reserved()      / 1e9:.2f} GB")
+```
+
+Run this once at the start of training, log the numbers, and compare against the table above.
+
+### Common bugs
+
+- **"Memory leak in the [`DataLoader`](https://docs.pytorch.org/docs/stable/data.html)"** — workers retain CUDA tensors across iterations when `persistent_workers=True` is combined with code that accidentally moves data to GPU inside the worker. Keep `.to(device)` in the main process; set `pin_memory=True` to get fast host→device copies; only enable `persistent_workers=True` if your dataset construction is genuinely expensive.
+- **Activation memory grows with depth** — encoder-decoder nets save every skip-connection tensor for backward. Wrap heavy blocks in [`torch.utils.checkpoint`](https://docs.pytorch.org/docs/stable/checkpoint.html) to trade compute for memory; activations are recomputed during backward.
+- **Peak memory fine at step 1, OOM at step 100** — allocator fragmentation. Set `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True` ([docs](https://docs.pytorch.org/docs/stable/notes/cuda.html#memory-management)) before launching Python; the allocator will grow segments instead of carving fixed-size blocks.
+- **Optimiser step OOMs but forward fits** — Adam allocates `m` and `v` lazily on the first `.step()`. Account for the extra `2 × N × 4` bytes when sizing the run.
+
+### Rule-of-thumb table
+
+For a 3D U-Net with `~5M` params, channel base 32, bf16 + Adam:
+
+| Patch | Batch | Approx. VRAM | Fits on |
+| --- | --- | --- | --- |
+| `64³` | 2 | ~1.5 GB | anything ≥ 8 GB |
+| `96³` | 2 | ~3 GB | RTX 3080 (10 GB) |
+| `96³` | 4 | ~5 GB | RTX 3090 / A4000 |
+| `128³` | 2 | ~7 GB | RTX 3090 (24 GB) |
+| `160³` | 2 | ~13 GB | A100 (40 GB) |
+| `192³` | 2 | ~22 GB | A100 (40 GB) |
+
+Numbers double for fp32, halve again if you turn on `torch.utils.checkpoint` everywhere. They are starting points, not contracts — always measure on your own model with the probe above.
+
 ## OOM debugging — the loop
 
 When you see `RuntimeError: CUDA out of memory`:
@@ -211,6 +296,10 @@ sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=len(loader)*200)
 3. **Loshchilov I, Hutter F.** Decoupled weight decay regularization (AdamW). *ICLR.* 2019. [arXiv:1711.05101](https://doi.org/10.48550/arXiv.1711.05101)
 4. **Dao T, Fu DY, Ermon S, et al.** FlashAttention. *NeurIPS.* 2022. [arXiv:2205.14135](https://doi.org/10.48550/arXiv.2205.14135)
 5. **Goyal P, Dollár P, Girshick R, et al.** Accurate, large minibatch SGD: training ImageNet in 1 hour. *arXiv:1706.02677.* 2017. [doi:10.48550/arXiv.1706.02677](https://doi.org/10.48550/arXiv.1706.02677)
+6. **Micikevicius P, Narang S, Alben J, et al.** Mixed precision training. *ICLR.* 2018. [arXiv:1710.03740](https://doi.org/10.48550/arXiv.1710.03740)
+7. **Chen T, Xu B, Zhang C, Guestrin C.** Training deep nets with sublinear memory cost. *arXiv:1604.06174.* 2016. [doi:10.48550/arXiv.1604.06174](https://doi.org/10.48550/arXiv.1604.06174) — the gradient-checkpointing paper.
+8. **PyTorch.** [CUDA semantics — memory management](https://docs.pytorch.org/docs/stable/notes/cuda.html#memory-management); [autograd profiler](https://docs.pytorch.org/docs/stable/profiler.html); [`torch.cuda` memory APIs](https://docs.pytorch.org/docs/stable/cuda.html#memory-management).
+9. **NVIDIA.** [`nvidia-smi` reference](https://developer.nvidia.com/nvidia-system-management-interface) and [NVML query keys](https://docs.nvidia.com/deploy/nvml-api/).
 
 ## Where to next
 

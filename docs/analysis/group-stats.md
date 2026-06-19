@@ -46,10 +46,28 @@ Always sketch the design matrix on paper before you trust the output of any tool
 
 Parametric GLM p-values assume normality, independence, and the right model. For neuroimaging — small samples, heavy-tailed errors, spatial correlation — permutation tests are usually more honest:
 
-- **PALM** (FSL) — voxel-wise or vertex-wise, supports arbitrary designs, including freedman-lane for confound regression.
+- **PALM** (FSL) — voxel-wise or vertex-wise, supports arbitrary designs, including freedman-lane for confound regression. See the [PALM repo](https://github.com/andersonwinkler/PALM).
+- **[FSL `randomise`](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/Randomise)** — the canonical permutation engine; PALM is its more flexible successor.
 - **`nilearn.mass_univariate.permuted_ols`** — simpler, Python-native.
 
 The cost is compute (~1000× a single GLM); the benefit is p-values that survive review.
+
+### Why permutation over parametric — and when each wins
+
+The parametric GLM assumes residuals are i.i.d. Gaussian. With typical neuroimaging $N$ (20–100 per group) and structured residuals — spatial autocorrelation, site effects, heteroscedastic motion — that assumption is routinely violated. Inference then leans on a $t$- or $F$-distribution that the data don't actually live on.
+
+Permutation drops the Gaussianity assumption entirely. It builds the null distribution by *shuffling labels* (group, condition, sign) under an exchangeability assumption, recomputing the test statistic, and comparing the observed value to that empirical null. Whatever distribution the noise actually has, the null inherits it.
+
+| Situation | Prefer |
+| --- | --- |
+| $N>1000$, simple between-subject design (e.g. UK Biobank) | **Parametric** — analytic tails are accurate, permutation is wasted compute |
+| Smooth Gaussian fields with strong theory (Worsley RFT) | **Parametric (RFT)** |
+| Small samples, non-Gaussian residuals | **Permutation** |
+| Mixed-effects with custom contrasts or rank-based statistics | **Permutation** |
+| TFCE on voxel/vertex maps | **Permutation** (TFCE has no parametric null) |
+| Complex within-subject correlation, multi-level designs | **Permutation** with carefully chosen exchangeability blocks |
+
+The cost is twofold. Compute: 5000 permutations × your full second-level pipeline. And exchangeability: you have to *think* about what's swappable and what must be held fixed — Winkler 2014[^palm] lays out the block structure for paired, repeated-measures, and multi-site designs. A naive `np.random.permutation` on a paired design gives you a confidently wrong p-value.
 
 ## Effect sizes — report them
 

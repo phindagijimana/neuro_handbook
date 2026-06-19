@@ -117,6 +117,47 @@ Other documented attack surfaces:
 
 Sweeney's classic result ([2002](https://doi.org/10.1142/S0218488502001648)) is the conceptual basis: 87% of the US population is uniquely identifiable by ZIP + birth-date + sex. Imaging cohorts often have all three after a sloppy Safe Harbor pass.
 
+## De-identification failure cases — when scrubbing isn't enough
+
+Safe Harbor + defacing is the floor, not the ceiling. The literature now documents at least five distinct ways a "de-identified" structural or functional MRI cohort can be re-identified or attacked. A PhD-level threat model treats each of them.
+
+### Brain shape as fingerprint
+
+The structural and functional architecture of an individual brain is itself a biometric. The functional connectome result of Finn et al. ([2015](https://doi.org/10.1038/nn.4135)) — 80%+ identification accuracy across sessions in a 126-subject cohort, with frontoparietal connections carrying most of the signal — was followed by Wachinger's **BrainPrint** ([2015](https://doi.org/10.1016/j.neuroimage.2015.06.025)), which uses Laplace-Beltrami spectral shape descriptors of cortical and subcortical surfaces and achieves >99% subject identification on ADNI and OASIS. Neither attack requires the face — Safe-Harbor scrubbing and aggressive defacing leave the surface-based features fully intact. The implication: identifier #16 ("biometric identifiers") is implicit in any high-resolution T1w volume, regardless of identifier #17 (face).
+
+### Face reconstruction from "de-identified" MRI
+
+Schwarz et al. ([2019](https://doi.org/10.1056/NEJMc1908881)) reconstructed recognisable 3D face renderings from research-grade T1w volumes and matched them against social-media photos with 70–83% accuracy depending on the defacing aggressiveness. The result quantified what privacy lawyers had assumed: an intact face on a 1 mm isotropic T1w is comparable to a full-face photograph (identifier #17). Modern defacing — [PyDeface](https://doi.org/10.5281/zenodo.3524401), [mri_deface](https://surfer.nmr.mgh.harvard.edu/), and the face-replacement [mri_reface](https://doi.org/10.1016/j.neuroimage.2021.117845) — closes most of the gap, but not all of it: "permissive" defacing that preserves the nose, orbital ridge, or ear cartilage to spare downstream pipelines is exactly what made the Schwarz attack so effective. The trade-off is real — aggressive defacing damages frontal-lobe cortical-surface reconstruction, orbital segmentation, and multi-modal MRI / PET / CT alignment — but the cost of preserving anatomy near the face is a residual re-identification surface.
+
+### Diffusion fingerprinting
+
+The fingerprinting problem extends beyond grey matter. Sarwate and colleagues ([Sarwate 2014](https://doi.org/10.3389/fninf.2014.00024) and the connectome-fingerprinting follow-ons) showed that diffusion-derived white-matter tract signatures — fibre orientations, tract volumes, connectivity matrices — are individually distinctive at high enough resolution. Shared diffusion derivatives are not as obviously biometric as a face, but they are not anonymous either, particularly when combined with cohort metadata.
+
+### Membership-inference attacks on models
+
+When you publish a model trained on a private cohort, you publish a function of the training data. Shokri et al. ([2017](https://doi.org/10.1109/SP.2017.41)) demonstrated **membership inference**: an adversary with black-box access to the model can determine, with non-trivial accuracy, whether a given record was in the training set. For a clinical imaging model trained on, say, a rare-disease cohort, a positive membership inference is itself a diagnosis. The attack succeeds best when models overfit; the imaging-AI norm of small-sample fine-tuning on rare diagnoses is exactly the regime where membership inference is most dangerous.
+
+### Linkage attacks
+
+The classical re-identification mode. Imaging metadata that survives a Safe-Harbor pass — site, scanner, acquisition date truncated to year, sex, age band, broad diagnosis — is often enough to single out a subject when joined against a public phenotype database. UK Biobank participant-ID leaks and the recurring "we matched the de-identified MRI cohort against the public genome cohort" demonstrations are the canonical examples. The defence is *contextual integrity*: control the metadata you release alongside the imaging, not just the imaging itself.
+
+### The mitigation hierarchy
+
+There is no single fix; defence in depth is the only honest answer.
+
+| Layer | Tool / practice | What it buys you |
+| --- | --- | --- |
+| **Aggressive defacing** | [PyDeface](https://doi.org/10.5281/zenodo.3524401), [mri_reface](https://doi.org/10.1016/j.neuroimage.2021.117845), AFNI `@afni_refacer_run` | Closes identifier #17; preserves downstream usability if you pick the right one |
+| **Metadata scrubbing** | `dcm2niix -ba y`, dedicated DICOM scrubbers, private-tag review, burnt-in-pixel check | Closes Safe Harbor identifiers and vendor leaks |
+| **Resolution reduction** | Downsample to 2-3 mm where the science permits | Reduces surface-based fingerprinting fidelity |
+| **DP training** | [DP-SGD](https://doi.org/10.1145/2976749.2978318) with calibrated $\epsilon$ | Bounds membership inference on the trained model |
+| **Federated learning** | Keep raw data in-institution; share gradients / updates | Avoids the export-then-defend problem entirely |
+| **Controlled access** | Controlled tier on [OpenNeuro](https://openneuro.org/), [NDA](https://nda.nih.gov/), [LONI IDA](https://ida.loni.usc.edu/) | Adds DUA + audit log on top of all of the above |
+
+### The honest disclaimer
+
+100% de-identification does not exist for high-resolution structural MRI. The Safe Harbor list is necessary; defacing is necessary; metadata hygiene is necessary; none of them are sufficient. Treat IRB authorisation, DUAs, and controlled-access repositories as the legal backstop that does the work technique cannot. A privacy-engineering plan for an imaging cohort that promises "fully anonymous" data is a plan that has not read the literature.
+
 ## Differential privacy — the short story
 
 **Differential privacy** ([Dwork 2006](https://doi.org/10.1007/11787006_1)) is the gold-standard mathematical privacy guarantee. A mechanism is $(\epsilon, \delta)$-differentially private if for any two datasets differing in one record, the output distribution changes by at most a factor of $e^\epsilon$ plus $\delta$. Smaller $\epsilon$ = stronger privacy = more noise.
@@ -191,3 +232,6 @@ For EU projects, add:
 8. **Abadi M, Chu A, Goodfellow I, et al.** Deep learning with differential privacy. *ACM CCS.* 2016. [doi:10.1145/2976749.2978318](https://doi.org/10.1145/2976749.2978318)
 9. **Gulban OF, Nielson D, Poldrack R, et al.** poldracklab/pydeface. *Zenodo.* 2019. [doi:10.5281/zenodo.3524401](https://doi.org/10.5281/zenodo.3524401)
 10. **Court of Justice of the European Union.** Schrems II (Case C-311/18). 2020. [https://curia.europa.eu/juris/document/document.jsf?docid=228677](https://curia.europa.eu/juris/document/document.jsf?docid=228677)
+11. **Wachinger C, Golland P, Kremen W, et al.** BrainPrint: a discriminative characterization of brain morphology. *NeuroImage.* 2015;109:232-248. [doi:10.1016/j.neuroimage.2015.06.025](https://doi.org/10.1016/j.neuroimage.2015.06.025)
+12. **Sarwate AD, Plis SM, Turner JA, et al.** Sharing privacy-sensitive access to neuroimaging and genetics data: a review and preliminary validation. *Front Neuroinform.* 2014;8:35. [doi:10.3389/fninf.2014.00024](https://doi.org/10.3389/fninf.2014.00024)
+13. **Shokri R, Stronati M, Song C, Shmatikov V.** Membership inference attacks against machine learning models. *IEEE S&P.* 2017. [doi:10.1109/SP.2017.41](https://doi.org/10.1109/SP.2017.41)
