@@ -48,6 +48,8 @@ Multi-site studies pay a hidden tax in scanner / site effects. The ComBat family
 | **[CovBat](https://github.com/andy1764/CovBat_Harmonization)** | Covariance harmonisation | When site affects between-feature covariance, not just means. |
 | **[dMRIharmonization](https://github.com/pnlbwh/dMRIharmonization)** | Diffusion harmonisation via RISH features | The right answer for cross-site DWI before tractography. |
 | **[HACA3](https://github.com/lianruizuo/haca3)** | Deep-learning harmonisation with disentangled reps | Image-level harmonisation when feature-level ComBat isn't enough. |
+| **[Harmonizer](https://github.com/Imaging-AI-for-Health-virtual-lab/harmonizer)** | scikit-learn-style transformer wrapping multiple harmonisation methods | Reach for it when you want pipeline-compatible objects you can slot into a `Pipeline` next to your downstream model. |
+| **[RISH-GLM](https://github.com/delucaal/RISH-GLM)** | RISH-feature-based dMRI harmonisation without matched-subject training | The right call for cross-site DWI when you can't acquire travelling-subject data. |
 
 ## Lesion and WMH segmentation
 

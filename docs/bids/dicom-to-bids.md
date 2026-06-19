@@ -118,12 +118,22 @@ Same idea, different config format. You write a JSON describing series matches; 
 dcm2bids -d raw/sub-001 -p 001 -c config.json -o bids/
 ```
 
+### BIDScoin — GUI-driven mapping ([source](https://github.com/Donders-Institute/bidscoin))
+
+BIDScoin is a DICOM → BIDS converter built around a GUI mapping editor, with an extensible plugin system so you can swap or extend the conversion steps. Same `dcm2niix` engine underneath; the difference is the authoring experience. Good fit if your team prefers click-through configuration over editing Python heuristic files — typical when a single methods lead writes the mapping and clinical collaborators review it.
+
+### ReproIn — convention at the scanner ([source](https://github.com/ReproNim/reproin))
+
+ReproIn is a scanner-side *convention* rather than a post-hoc converter: name your sequences at the scanner with the ReproIn convention and the dataset arrives BIDS-ready. In practice you combine it with HeuDiConv, which ships a ReproIn heuristic out of the box. The payoff is for multi-site studies — ReproIn reduces site-to-site `SeriesDescription` drift at the source rather than papering over it in per-site heuristics.
+
 ## Choosing between them
 
 | If you... | Use |
 | --- | --- |
 | Convert one site repeatedly, want versioning, write Python comfortably | **HeuDiConv** |
 | Convert ad-hoc data, prefer config files | **Dcm2Bids** |
+| Prefer a GUI mapping editor with plugins | **BIDScoin** |
+| Control the scanner protocol naming and want BIDS-ready output | **ReproIn** (+ HeuDiConv) |
 | Need the lowest-level control | `dcm2niix` directly + a custom wrapper |
 
 For multi-site studies, write **one heuristic per site**. Don't try to make one heuristic handle all sites — site-specific quirks dominate.

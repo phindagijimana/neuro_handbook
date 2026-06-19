@@ -157,6 +157,22 @@ Conferences worth attending (by relevance, not prestige):
 | **AAN / AHA / AHA-ISC** | Clinical. Best for clinician-scientist transitions. |
 | **CNS** (Cognitive Neuroscience Society) | Cognitive neuroscience. Best for psychology-flavoured neuroimaging jobs. |
 
+## Hackathons, summer schools, and community events
+
+Conferences are where the field gathers; hackathons and summer schools are where individual trainees actually build portfolios and meet collaborators outside their home lab. For someone preparing any of the four moves above, these events are the fastest way to acquire a public artefact, a working network, and a feel for who's hiring. They are also, hour-for-hour, the cheapest career investment a trainee makes.
+
+A short list of the events worth prioritising:
+
+| Event | URL | What it is |
+| --- | --- | --- |
+| **Neurohackademy** | <https://neurohackademy.org> | UW summer institute — 2 weeks intensive, project-based; the canonical entry point. |
+| **OHBM Brainhack** | <https://humanbrainmapping.org/26Brainhack/> | Annual OHBM-co-located hackathon. |
+| **Brainhack (global)** | <https://brainhack.org> | Year-round local + regional hackathons. |
+| **ISMRM Annual Meeting** | <https://www.ismrm.org/annual-meeting/> | The biggest MR community gathering — educational tracks for new entrants. |
+| **OHBM Annual Meeting** | <https://humanbrainmapping.org> | OHBM's main conference + educational courses. |
+
+Pick one hackathon and one summer school per year early in training, and one major conference per year once you have work to present. Quoting "co-led project X at Neurohackademy" on a CV reads very differently from "attended OHBM."
+
 ## When NOT to leave academia (and when NOT to stay)
 
 Cases where staying makes sense:

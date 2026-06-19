@@ -67,6 +67,19 @@ This is a curated list, not exhaustive. The [Landmark work → Foundational pape
 - **Neurostars community forum** — <https://neurostars.org>
 - **NeuroLibre reproducible preprints** — <https://neurolibre.org>
 
+## Communities & consortia
+
+The neuroimaging community runs on a handful of organisations that produce standards, training, infrastructure, and protocols you'll meet in almost every methods section. Knowing what each does — and where to follow them — pays back fast.
+
+| Org | URL | What they do |
+| --- | --- | --- |
+| **ENIGMA** | <https://enigma.ini.usc.edu> | Global neuroimaging-genetics consortium; 80+ working groups; protocols + meta-analytic infrastructure. |
+| **ReproNim** | <https://www.repronim.org> | NIH center for reproducible computation in neuroimaging — training + standards. |
+| **INCF** | <https://www.incf.org> | International Neuroinformatics Coordinating Facility — standards (BIDS, NIDM), training. |
+| **CONP** | <https://conp.ca> | Canadian Open Neuroscience Platform — data + tool infrastructure. |
+| **OHBM Open Science SIG** | <https://ossig.netlify.app> | OHBM Special Interest Group advancing open neuroimaging. |
+| **Brainhack** | <https://brainhack.org> | Worldwide network of open-neuroscience hackathons. |
+
 ## Standard reporting guidelines
 
 - **COBIDAS** (Committee on Best Practices in Data Analysis and Sharing) — Nichols TE, Das S, Eickhoff SB, et al. Best practices in data analysis and sharing in neuroimaging using MRI. *Nat Neurosci.* 2017;20(3):299-303. [doi:10.1038/nn.4500](https://doi.org/10.1038/nn.4500)

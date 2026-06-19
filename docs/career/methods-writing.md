@@ -107,6 +107,8 @@ A pre-registration is a time-stamped commitment to the design and analysis plan,
 - **[protocols.io](https://www.protocols.io)** — versioned, citable step-by-step research protocols; the right place for wet-lab and acquisition SOPs.
 - **[PROSPERO](https://www.crd.york.ac.uk/prospero)** — international systematic-review and meta-analysis registry; pre-register any review you plan to publish.
 - **[NeuroLibre](https://neurolibre.org)** — reproducible neuroscience preprints with executable code; complements OSF for the methods-and-figures layer.
+- **[bioRxiv](https://www.biorxiv.org)** — biology and neuroscience preprint server. Standard practice for neuroimaging methods preprints in 2025; post the preprint when you submit, not when you accept.
+- **[Zenodo](https://zenodo.org)** — DOI-archived data / code / posters; native GitHub integration for citable release archiving. Tag a release in GitHub, get a DOI for the methods supplement.
 
 What to lock down: the hypothesis, the contrast, the threshold, inclusion / exclusion criteria, the stopping rule. What to leave flexible: clearly-labelled exploratory analyses.
 
