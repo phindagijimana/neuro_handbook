@@ -155,19 +155,101 @@ if __name__ == "__main__":
     raise SystemExit(main())
 ```
 
-## Neuroimaging-specific stack
+## Python packages for neuroimaging analysis
 
-| Library | Use |
+This section is the *map* — every Python package you'll plausibly touch in a neuroimaging career, framed by what it does to your data. (For *how* to install and pin these, see [Computing → Python stack](../../computing/python-stack.md).)
+
+### Generic scientific stack — what each does for neuroimaging
+
+These are the libraries you'll touch on every project. Learn the ones flagged "use weekly" — NumPy, pandas, SciPy, Matplotlib, scikit-learn — first; the rest you reach for when the problem arises.
+
+| Package | Role in a neuroimaging pipeline | Where in NeuroStack |
+|---|---|---|
+| [NumPy](https://numpy.org) | The array backbone — every NIfTI you load becomes a NumPy array; voxel-wise stats, masks, and timeseries all live here. | This page above; [Mathematics](mathematics.md) |
+| [SciPy](https://scipy.org) | Statistics (`scipy.stats`), interpolation (resampling), morphology (`scipy.ndimage` for mask cleanup), optimisation (custom model fits). | Below; [Statistics](statistics.md) |
+| [pandas](https://pandas.pydata.org) | Cohort tables (`participants.tsv`), behavioural scores, QC summaries, manifests. The bridge between imaging and metadata. | Above |
+| [Matplotlib](https://matplotlib.org) | Publication-grade figures. Brain slice overlays via Nilearn delegate to it. | Above; [Figures](../../getting-started/first-figure.md) |
+| [Seaborn](https://seaborn.pydata.org) | Statistical plots on cohort tables — distplots, boxplots by site, regression overlays. | Below |
+| [scikit-learn](https://scikit-learn.org) | Classical ML — SVMs / random forests / pipelines / cross-validation. The decoding workhorse Nilearn wraps. | [Classical ML on volumetrics](../../ai/classical-ml.md) |
+| [scikit-image](https://scikit-image.org) | 2D / 3D image processing primitives — connected components for lesion volume, morphological operations on masks, edge detection. Often the right call for derivative-volume QC. | [Medical imaging → Segmentation](../medical-imaging/segmentation.md) |
+| [statsmodels](https://www.statsmodels.org) | Frequentist statistics — OLS, GLM, mixed models, design-matrix introspection. The Python equivalent of R's `lme4` for mixed-effects. | [Statistics](statistics.md), [Group statistics](../../analysis/group-stats.md), [Longitudinal](../../analysis/longitudinal.md) |
+| [pingouin](https://pingouin-stats.org) | Concise statistical tests with effect-size reporting; useful supplement to `scipy.stats` for clinical-style group comparisons. | [Statistics](statistics.md) |
+| [PyMC](https://www.pymc.io) | Bayesian hierarchical models — partial pooling for multi-site cohorts, sub-N=10 sites borrowing strength. | [Statistics](statistics.md) |
+| [bambi](https://bambinos.github.io/bambi/) | Formula-style Bayesian regression on top of PyMC; the R-`brms` analogue in Python. | [Statistics](statistics.md) |
+| [PyTorch](https://pytorch.org) | The default deep-learning backbone in neuroimaging research. MONAI / nnU-Net / TorchIO all build on it. | [Deep learning](../../ai/deep-learning.md), [Training mechanics](../../ai/training-mechanics.md) |
+| [TensorFlow](https://www.tensorflow.org) | The second deep-learning backbone — still common in clinical-product code, in nobrainer, and in older lab pipelines. | [Computing → Python stack](../../computing/python-stack.md) |
+| [Keras](https://keras.io) | High-level deep-learning API; Keras 3 runs on TensorFlow, PyTorch, or JAX. Useful for fast prototyping with a stable API across backends. | [Deep learning](../../ai/deep-learning.md) |
+| [Jupyter / IPython](https://jupyter.org) | Notebook-based exploration; the de-facto reading environment for every published analysis worth replicating. | [Tutorials](../../tutorials/index.md) |
+| [PyArrow / Parquet](https://arrow.apache.org/docs/python/) | Columnar storage for cohort tables; ~10× faster than CSV for large manifests. | [Data engineering → Foundations](../../data-engineering/foundations.md) |
+| [Polars](https://pola.rs/) | Modern, fast DataFrame library; usable alternative to pandas when cohorts grow into millions of rows. | [Data engineering → Performance](../../data-engineering/performance.md) |
+| [DuckDB](https://duckdb.org) | In-process SQL over Parquet / DataFrames; the right tool for cohort-level summaries and ad-hoc filtering. | [Data engineering → SQL](../../data-engineering/advanced/sql.md) |
+
+### Neuroimaging-specific packages
+
+Grouped by where they sit in a pipeline. The bold-name entries are the ones you'll import almost every project; the rest you pull in when the modality / method demands.
+
+**File I/O & format**
+
+| Package | Role |
 |---|---|
-| [`nibabel`](https://nipy.org/nibabel/) | Read/write NIfTI, GIFTI, CIFTI, MGH |
-| [`nilearn`](https://nilearn.github.io) | Masking, GLM, decoding, plotting |
-| [`pybids`](https://bids-standard.github.io/pybids/) | Query BIDS layouts |
-| [`dipy`](https://dipy.org) | Diffusion MRI modelling |
-| [`mne`](https://mne.tools) | MEG / EEG |
-| [`templateflow`](https://www.templateflow.org) | Versioned standard templates |
-| [`MONAI`](https://monai.io) | Medical-imaging deep learning |
+| [nibabel](https://nipy.org/nibabel/) | Read/write NIfTI, GIFTI, CIFTI, MGH, ANALYZE. The most-imported neuroimaging package in Python. |
+| [pydicom](https://pydicom.github.io/) | Read DICOM files in pure Python. Used by every modern conversion tool. |
+| [highdicom](https://highdicom.readthedocs.io/) | Write DICOM-compliant outputs (SEG, SR, PM) — essential for clinical-deployment pipelines. |
+| [dcm2niix](https://github.com/rordenlab/dcm2niix) | DICOM → NIfTI converter (C++ but called from Python). The de-facto standard. |
 
-A minimal NIfTI workflow:
+**General analysis**
+
+| Package | Role |
+|---|---|
+| [Nilearn](https://nilearn.github.io) | Masking, GLM, decoding, plotting, connectivity. Best entry point if you're coming from scikit-learn. |
+| [PyBIDS](https://bids-standard.github.io/pybids/) | Query BIDS layouts programmatically; never write glob patterns. |
+| [TemplateFlow](https://www.templateflow.org) | Versioned standard templates and atlases. Pin the version. |
+| [neuroCombat](https://github.com/Jfortin1/neuroCombat) | ComBat in Python — remove scanner / site batch effects from cortical measures. |
+
+**Diffusion**
+
+| Package | Role |
+|---|---|
+| [DIPY](https://dipy.org) | Diffusion MRI modelling, tractography, registration. The Python analogue of MRtrix3. |
+| [AMICO](https://github.com/daducci/AMICO) | Fast NODDI / SMT fitting. |
+
+**Functional / EEG-MEG**
+
+| Package | Role |
+|---|---|
+| [MNE-Python](https://mne.tools) | The canonical M/EEG analysis library; also handles EEG sensors aligned to MRI. |
+| [Brainiak](https://brainiak.org) | Advanced fMRI analysis (RSA, hyperalignment, ISFC). |
+| [rsatoolbox](https://rsatoolbox.readthedocs.io/) | Representational Similarity Analysis. |
+
+**Deep learning for medical imaging**
+
+| Package | Role |
+|---|---|
+| [MONAI](https://monai.io) | The PyTorch-based framework for medical-imaging DL — transforms, networks, losses, inference. |
+| [TorchIO](https://torchio.readthedocs.io/) | Medical-image augmentation and patch sampling for 3D networks. |
+| [nnU-Net](https://github.com/MIC-DKFZ/nnUNet) | Auto-configuring segmentation framework; the default for medical-imaging segmentation. |
+| [PyTorch Geometric](https://pyg.org/) | Graph neural networks — for connectome learning. See [GNN page](../../ai/gnn.md). |
+| [captum](https://captum.ai/) | Model interpretability for PyTorch (Grad-CAM, integrated gradients). See [Interpretability](../../ai/interpretability.md). |
+| [nobrainer](https://github.com/neuronets/nobrainer) | TensorFlow-based DL framework for brain MRI. |
+
+**Workflow / reproducibility**
+
+| Package | Role |
+|---|---|
+| [Nipype](https://nipype.readthedocs.io/) | Pipeline framework wrapping FSL / SPM / FreeSurfer with Python interfaces. |
+| [Pydra](https://github.com/nipype/pydra) | Next-generation dataflow engine; the Nipype successor. |
+| [DataLad](http://datalad.org) | Git-annex-based dataset versioning. |
+
+**Visualization**
+
+| Package | Role |
+|---|---|
+| [surfplot](https://surfplot.readthedocs.io/) | Cortical surface plots from CIFTI / GIFTI. |
+| [brainspace](https://brainspace.readthedocs.io/) | Gradient analysis and surface plotting. |
+| [niwidgets](https://github.com/nipy/niwidgets) | Jupyter widgets for interactive neuro visualization. |
+| [pyvista](https://pyvista.org/) | 3D visualization, used by some surface / mesh workflows. |
+
+A minimal NIfTI workflow using the foundational package:
 
 ```python
 import nibabel as nib
@@ -243,6 +325,9 @@ Run with `pytest -q`. See [Data engineering → Testing](../../data-engineering/
 4. **Virtanen P, Gommers R, Oliphant TE, et al.** SciPy 1.0: fundamental algorithms for scientific computing in Python. *Nat Methods.* 2020;17:261-272. [doi:10.1038/s41592-019-0686-2](https://doi.org/10.1038/s41592-019-0686-2)
 5. **Abraham A, Pedregosa F, Eickenberg M, et al.** Machine learning for neuroimaging with scikit-learn. *Front Neuroinform.* 2014;8:14. [doi:10.3389/fninf.2014.00014](https://doi.org/10.3389/fninf.2014.00014) — Nilearn.
 6. **Brett M, Markiewicz CJ, Hanke M, et al.** nipy/nibabel: documentation and software. *Zenodo.* Versioned. [https://doi.org/10.5281/zenodo.591597](https://doi.org/10.5281/zenodo.591597)
+7. **Cardoso MJ, Li W, Brown R, et al.** MONAI: an open-source framework for deep learning in healthcare. *arXiv.* 2022;2211.02701. [https://arxiv.org/abs/2211.02701](https://arxiv.org/abs/2211.02701)
+8. **Gramfort A, Luessi M, Larson E, et al.** MEG and EEG data analysis with MNE-Python. *Front Neurosci.* 2013;7:267. [doi:10.3389/fnins.2013.00267](https://doi.org/10.3389/fnins.2013.00267)
+9. **Garyfallidis E, Brett M, Amirbekian B, et al.** Dipy, a library for the analysis of diffusion MRI data. *Front Neuroinform.* 2014;8:8. [doi:10.3389/fninf.2014.00008](https://doi.org/10.3389/fninf.2014.00008)
 
 ## Where to next
 
