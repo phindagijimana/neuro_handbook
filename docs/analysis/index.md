@@ -1,4 +1,4 @@
-# Analysis
+# Neuroimaging Analysis
 
 > What you can compute from preprocessed neuroimaging data — organised by modality, with the statistics chapters that apply to all of them.
 

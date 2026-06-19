@@ -270,7 +270,7 @@ Dropouts in longitudinal cohorts are almost never MCAR. Patients whose cognition
 | **Inverse-probability weighting (IPW)** | MAR (correctly-specified propensity) | Reweights observed sample back to the target population; details below. |
 | **Pattern-mixture / selection models** | MNAR | Require an explicit, untestable assumption about the missingness mechanism; use as sensitivity analyses. |
 
-The longitudinal page has more on dropout in repeated-measures designs: see [Analysis → Longitudinal modelling](../../analysis/longitudinal.md).
+The longitudinal page has more on dropout in repeated-measures designs: see [Neuroimaging Analysis → Longitudinal modelling](../../analysis/longitudinal.md).
 
 ## Inverse-probability weighting in practice
 

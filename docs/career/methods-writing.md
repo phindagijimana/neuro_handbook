@@ -38,7 +38,7 @@ A clean methods section has five subsections, in this order. Length is rarely th
 - **Sample size** — number screened, enrolled, excluded post-hoc and why. A flow diagram (CONSORT-style) is rarely wrong.
 - **Power justification** — pilot d, simulation-based estimate, or pre-registered sequential-stopping rule. "Based on prior literature" is not a justification; cite the prior literature and the effect size you assumed.
 
-For the design and power-analysis specifics, see [Analysis → Task fMRI design and power](../analysis/design.md).
+For the design and power-analysis specifics, see [Neuroimaging Analysis → Task fMRI design and power](../analysis/design.md).
 
 ### 2. Acquisition
 

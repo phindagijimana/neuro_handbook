@@ -88,7 +88,7 @@ The Approach section is where grants are won or lost. The standard structure for
 1. **Rationale.** Why this experiment, this design, this analysis.
 2. **Experimental design.** Recruitment, acquisition, behavioural, intervention.
 3. **Analysis plan.** Pipelines (with versions), models, statistics, thresholds.
-4. **Power analysis.** A concrete sample-size justification. See [Analysis → Task fMRI design and power](../analysis/design.md).
+4. **Power analysis.** A concrete sample-size justification. See [Neuroimaging Analysis → Task fMRI design and power](../analysis/design.md).
 5. **Expected results and interpretation.** What success looks like; what the alternative outcomes mean.
 6. **Potential problems and fallback strategies.** Every aim. No exceptions.
 
@@ -141,7 +141,7 @@ n_per_group = analysis.solve_power(
 print(f"n per group = {n_per_group:.0f}")  # ~64 per group
 ```
 
-For voxelwise whole-brain inference at the same effect size, multiply the per-group N by 2–4 and justify the multiplier with simulation. For a defensible whole-brain power calculation see [Analysis → Task fMRI design and power](../analysis/design.md), which walks through the Mumford & Nichols (2008) and `neuropower` (Durnez et al., 2016) approaches.
+For voxelwise whole-brain inference at the same effect size, multiply the per-group N by 2–4 and justify the multiplier with simulation. For a defensible whole-brain power calculation see [Neuroimaging Analysis → Task fMRI design and power](../analysis/design.md), which walks through the Mumford & Nichols (2008) and `neuropower` (Durnez et al., 2016) approaches.
 
 ## Common reviewer criticisms — and how to pre-empt them
 

@@ -31,7 +31,7 @@ Communication failures at any of these three points cost more than any single me
 ## What this section is not
 
 - **A guide to academic politics.** That's a book, not a handbook chapter, and the politics are local enough that generic advice is misleading.
-- **A statistics or analysis-design chapter.** Power analysis lives in [Analysis → Task fMRI design and power](../analysis/design.md). This section will link to it, not duplicate it.
+- **A statistics or analysis-design chapter.** Power analysis lives in [Neuroimaging Analysis → Task fMRI design and power](../analysis/design.md). This section will link to it, not duplicate it.
 - **A data-engineering portfolio guide.** That lives in [Data engineering → Portfolio roadmap](../data-engineering/portfolio-roadmap.md), which already covers turning a Snakemake pipeline into an interview-ready artefact. The grant page links to it; the transitions page references it.
 - **An academia-vs-industry crusade.** Both are reasonable destinations; the transitions page treats them as choices, not verdicts.
 

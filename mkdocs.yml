@@ -134,7 +134,7 @@ nav:
       - Derivatives layout: bids/derivatives.md
       - Versioning with DataLad: bids/datalad.md
       - Common pitfalls: bids/pitfalls.md
-  - Analysis:
+  - Neuroimaging Analysis:
       - analysis/index.md
       - Task fMRI design & power: analysis/design.md
       - Quality control & outliers: analysis/qc.md

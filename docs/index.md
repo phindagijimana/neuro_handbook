@@ -50,7 +50,7 @@ Found something missing, wrong, or out of date? We'd love to know — every page
 
     [:octicons-arrow-right-24: Open the toolkit](bids/index.md)
 
--   :material-chart-line:{ .lg .middle } **Analysis**
+-   :material-chart-line:{ .lg .middle } **Neuroimaging Analysis**
 
     ---
 

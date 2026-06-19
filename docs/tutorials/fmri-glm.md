@@ -5,7 +5,7 @@
 ## Prerequisites
 
 - [Fundamentals → MRI sequences → EPI](../fundamentals/sequences/epi.md)
-- [Analysis → Functional connectivity](../analysis/functional.md), [Group-level statistics](../analysis/group-stats.md), [Multiple comparisons](../analysis/multiple-comparisons.md)
+- [Neuroimaging Analysis → Functional connectivity](../analysis/functional.md), [Group-level statistics](../analysis/group-stats.md), [Multiple comparisons](../analysis/multiple-comparisons.md)
 - fMRIPrep derivatives for a task dataset.
 
 ## Pipeline overview
@@ -115,7 +115,7 @@ corrected = non_parametric_inference(
 # corrected["t"] is the t-map; corrected["logp_max_size"] is the cluster-corrected p
 ```
 
-For a permutation-FWE alternative use FSL `randomise -T` via `nipype`, or PALM directly. See [Analysis → Multiple comparisons](../analysis/multiple-comparisons.md).
+For a permutation-FWE alternative use FSL `randomise -T` via `nipype`, or PALM directly. See [Neuroimaging Analysis → Multiple comparisons](../analysis/multiple-comparisons.md).
 
 ## 6. Publication figure
 

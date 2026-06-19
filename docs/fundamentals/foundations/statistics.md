@@ -92,7 +92,7 @@ m.fit(REML=True)
 print(m.ranef_var)   # variance components per random effect
 ```
 
-For repeated-measures designs in particular, see [Analysis → Longitudinal](../../analysis/longitudinal.md).
+For repeated-measures designs in particular, see [Neuroimaging Analysis → Longitudinal](../../analysis/longitudinal.md).
 
 ## Multiple comparisons — the wake-up call
 
@@ -106,7 +106,7 @@ A typical voxel-wise GLM is ≈ 10⁵ tests. At $\alpha = 0.05$, **5 000 false p
 | **Cluster-extent** | FWER on cluster size | Spatial effects; threshold p ≤ 0.001 |
 | **TFCE** | FWER on weighted clusters | The modern default for voxel-wise neuroimaging |
 
-See [Analysis → Multiple comparisons](../../analysis/multiple-comparisons.md) for the depth on each.
+See [Neuroimaging Analysis → Multiple comparisons](../../analysis/multiple-comparisons.md) for the depth on each.
 
 ## Permutation testing — the safe default
 
@@ -259,7 +259,7 @@ Model comparison uses **PSIS-LOO** (Vehtari et al., 2017) rather than raw devian
 
 If you can satisfy frequentist mixed-model assumptions, have enough sites for the variance components to be identifiable, and don't need per-site posteriors, `lme4::lmer` / `statsmodels.mixedlm` is faster to fit, easier to publish, and easier for reviewers to interpret. The Bayesian formulation buys you principled small-sample inference and explicit uncertainty on hierarchical parameters; pay that cost only when you need them.
 
-See [Analysis → Longitudinal modelling](../../analysis/longitudinal.md) for the repeated-measures structure that often layers on top, and [Analysis → Group statistics](../../analysis/group-stats.md) for the frequentist mixed-model alternative used most often in practice.
+See [Neuroimaging Analysis → Longitudinal modelling](../../analysis/longitudinal.md) for the repeated-measures structure that often layers on top, and [Neuroimaging Analysis → Group statistics](../../analysis/group-stats.md) for the frequentist mixed-model alternative used most often in practice.
 
 ## Clinical decision-making under heterogeneous effects
 

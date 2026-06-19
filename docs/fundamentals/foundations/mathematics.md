@@ -148,7 +148,7 @@ Useful for finding periodic structure (cardiac, respiratory artefact in fMRI; al
 
 ### Manifolds and surfaces
 
-The cortex is a 2D manifold embedded in 3D. Tools like FreeSurfer and HCP work with triangle meshes (vertices + edges + triangles). Surface-based analysis ([Analysis → Surface-based](../../analysis/surface.md)) respects geodesic distance on this mesh, not Euclidean distance through tissue.
+The cortex is a 2D manifold embedded in 3D. Tools like FreeSurfer and HCP work with triangle meshes (vertices + edges + triangles). Surface-based analysis ([Neuroimaging Analysis → Surface-based](../../analysis/surface.md)) respects geodesic distance on this mesh, not Euclidean distance through tissue.
 
 ### Diffeomorphisms — smooth invertible warps
 

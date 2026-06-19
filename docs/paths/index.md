@@ -16,8 +16,8 @@ You've taken some biology and statistics; you've written *some* Python; you've n
 6. [BIDS toolkit → DICOM to BIDS](../bids/dicom-to-bids.md)
 7. [BIDS toolkit → Validating a dataset](../bids/validation.md)
 8. [Tutorials → fMRI first/second-level GLM](../tutorials/fmri-glm.md)
-9. [Analysis → Group-level statistics](../analysis/group-stats.md)
-10. [Analysis → Multiple comparisons](../analysis/multiple-comparisons.md)
+9. [Neuroimaging Analysis → Group-level statistics](../analysis/group-stats.md)
+10. [Neuroimaging Analysis → Multiple comparisons](../analysis/multiple-comparisons.md)
 11. [Fundamentals → Foundations → Statistics](../fundamentals/foundations/statistics.md)
 12. [Landmark → Foundational papers](../landmark/papers.md)
 
@@ -53,7 +53,7 @@ You read radiology reports daily; you've never written a Bash script or a Python
 7. [BIDS toolkit → Common pitfalls](../bids/pitfalls.md)
 8. [Fundamentals → Medical imaging → Segmentation](../fundamentals/medical-imaging/segmentation.md)
 9. [AI/ML → Evaluation pitfalls](../ai/evaluation.md)
-10. [Analysis → Multiple comparisons](../analysis/multiple-comparisons.md)
+10. [Neuroimaging Analysis → Multiple comparisons](../analysis/multiple-comparisons.md)
 11. [Landmark → Datasets + Pipelines](../landmark/datasets.md)
 
 **Goal**: you can review a neuro-AI paper, replicate its pipeline, and spot the methodological problems.

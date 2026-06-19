@@ -4,7 +4,7 @@
 
 ## Prerequisites
 
-- Familiarity with [Fundamentals → MRI sequences → DWI](../fundamentals/sequences/dwi.md) and [Analysis → Diffusion & tractography](../analysis/diffusion.md).
+- Familiarity with [Fundamentals → MRI sequences → DWI](../fundamentals/sequences/dwi.md) and [Neuroimaging Analysis → Diffusion & tractography](../analysis/diffusion.md).
 - Apptainer or Docker installed.
 - ~50 GB free disk + ~16 GB RAM per subject.
 - Optional: FreeSurfer license if you want HSVS reconstruction.
@@ -155,7 +155,7 @@ reject, p_fdr, _, _ = multipletests(p, alpha=0.05, method="fdr_bh")
 print(f"{reject.sum()} edges survive FDR < 0.05")
 ```
 
-Real cohorts need: permutation-based FWE, the [Network-Based Statistic](https://doi.org/10.1016/j.neuroimage.2010.06.041), age/sex/motion covariates in a proper GLM. See [Analysis → Group-level statistics](../analysis/group-stats.md).
+Real cohorts need: permutation-based FWE, the [Network-Based Statistic](https://doi.org/10.1016/j.neuroimage.2010.06.041), age/sex/motion covariates in a proper GLM. See [Neuroimaging Analysis → Group-level statistics](../analysis/group-stats.md).
 
 ## 9. Visualise the result
 

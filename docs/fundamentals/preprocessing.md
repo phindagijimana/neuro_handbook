@@ -255,7 +255,7 @@ Preprocessing should *fail loudly* at gates and *warn quietly* elsewhere. A fail
 | Motion FD spikes (fMRI) | **Warn** | Mark for scrubbing downstream, do not exclude here |
 | `recon-all` exit code + `IsRunning.lh` flag | **Gate** | Surface reconstruction silently fails otherwise |
 
-Expose every gate decision to downstream code via a BIDS-derivatives sidecar (a `_desc-qc_bold.json` with `pass: false` and the reason) so cohort analyses can filter without re-deriving QC. See [Analysis → QC](../analysis/qc.md) for the cohort-level view.
+Expose every gate decision to downstream code via a BIDS-derivatives sidecar (a `_desc-qc_bold.json` with `pass: false` and the reason) so cohort analyses can filter without re-deriving QC. See [Neuroimaging Analysis → QC](../analysis/qc.md) for the cohort-level view.
 
 ## When preprocessing breaks the science
 

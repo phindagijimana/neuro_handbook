@@ -39,7 +39,7 @@ The moment you leave volumetric space, the viewer list narrows to two real optio
 | **Connectome Workbench (`wb_view`)** | CIFTI / GIFTI on fs_LR; HCP-style figures | The right answer for surface-based fMRI work |
 | **Freeview** | FreeSurfer's fsaverage / individual surfaces | Tighter integration with `recon-all` outputs |
 
-Workbench is the more polished tool for figures and the harder one to install correctly. Freeview ships with FreeSurfer and is the path of least resistance if you're already running `recon-all`. See [Analysis → Surface-based analysis](../analysis/surface.md) for the underlying space conventions.
+Workbench is the more polished tool for figures and the harder one to install correctly. Freeview ships with FreeSurfer and is the path of least resistance if you're already running `recon-all`. See [Neuroimaging Analysis → Surface-based analysis](../analysis/surface.md) for the underlying space conventions.
 
 ## Programmatic plotting
 
@@ -186,4 +186,4 @@ Replace any of these only when you have a specific reason — most "alternative"
 
 - [Clinical deployment](clinical-deployment.md) — viz that moves out of notebooks and into the clinical workflow.
 - [Decision trees](decision-trees.md) — the upstream tool choices that determine what you'll be plotting.
-- [Analysis → Surface-based analysis](../analysis/surface.md) — the conventions the surface viewers assume.
+- [Neuroimaging Analysis → Surface-based analysis](../analysis/surface.md) — the conventions the surface viewers assume.
