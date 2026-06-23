@@ -187,17 +187,26 @@ MRF ([Ma 2013](https://doi.org/10.1038/nature11971)) uses pseudorandom sequence 
 | **[SEPIA](https://sepia-documentation.readthedocs.io/)** | QSM toolbox covering background-field removal and dipole inversion |
 | **[MRiLab](http://mrilab.sourceforge.net/)** | Numerical Bloch simulator for sequence design |
 
-## 11. Use cases
+## 11. Medical / clinical relevance
 
-- **Multiple sclerosis**: T1 / R1 in NAWM tracks myelin loss; MTsat and MWF more specific. Lesion T2 / T2* differentiate iron-laden chronic active lesions.
+**Beginner.** Quantitative MRI replaces "T1-weighted bright/dark" with actual numbers (T1, T2, MT, susceptibility) so you can compare scanners, time points, and sites.
 
-- **Brain age**: cortical R1 / R2* trajectories tracked from MPM data (Callaghan 2014).
+**Routine clinical use.** qMRI is emerging — not yet routine — but two clinical workflows have crossed the deployment line. **Synthetic MRI** ([SyMRI / MAGiC](https://syntheticmr.com/)) products are FDA-cleared and deliver T1, T2, PD maps plus arbitrary synthesised weighted contrasts in ~5 min on Siemens and GE platforms, increasingly used in MS lesion follow-up, dementia work-up, and rapid paediatric brain MR. **R2\* / QSM** runs as a clinical add-on for iron-overload and movement-disorder protocols on most 3 T installations. Beyond those, qMRI is heavily used in MS clinical trials, paediatric myelination assessment, and tumour follow-up where vendor-harmonised numbers matter more than radiologist gestalt.
 
-- **Multi-site harmonisation**: T1 maps fed into ComBat residualise scanner effects better than weighted intensities.
+**Disease applications.**
 
-- **Paediatrics / development**: myelin proxies (MTsat, MWF, R1) track maturation.
+| Disease | Imaging finding | Clinical value | Cross-link |
+|---|---|---|---|
+| Multiple sclerosis | MTR / MTsat / qMT drop in normal-appearing WM; lesion T1 / T2 elongation; iron rim on QSM in chronic active lesions | Disease activity beyond FLAIR lesion count; remyelination trials | [doi:10.1212/WNL.61.5.733](https://doi.org/10.1212/WNL.61.5.733) (Filippi 2003); [clinical/multiple-sclerosis.md](../../clinical/multiple-sclerosis.md) |
+| Alzheimer's disease | Cortical T1 elongation precedes atrophy; entorhinal R1 drop in MCI | Early-stage biomarker before volume loss is detectable | [doi:10.1016/j.neuroimage.2018.04.054](https://doi.org/10.1016/j.neuroimage.2018.04.054) (Tang 2018); [clinical/alzheimers-and-dementia.md](../../clinical/alzheimers-and-dementia.md) |
+| Brain tumour grading | Quantitative T1 / T2 distributions separate low- and high-grade glioma | Pre-operative grading + treatment-response monitoring | See [mrf.md](mrf.md) for the MRF version of the same biomarker |
+| Iron-load disorders (haemochromatosis, NBIA) | R2* and QSM elevation in basal ganglia / liver | Quantitative iron in mg / g tissue; chelation monitoring | [doi:10.1002/jmri.20251](https://doi.org/10.1002/jmri.20251) (Haacke 2005) |
+| Parkinson's disease | Substantia nigra nigrosome-1 loss on QSM ("swallow-tail sign" inversion) | Early diagnostic biomarker | [doi:10.1016/j.jns.2017.07.013](https://doi.org/10.1016/j.jns.2017.07.013) (Lehéricy 2017); [clinical/parkinsons-and-movement.md](../../clinical/parkinsons-and-movement.md) |
+| Paediatric myelination | Myelin water fraction (MWF) trajectories | Quantitative developmental milestones, dysmyelination diagnosis | [doi:10.1002/mrm.21704](https://doi.org/10.1002/mrm.21704) (Deoni 2008) |
+| Hepatic iron / steatosis | PDFF (fat fraction) + T2* mapping | Replaced liver biopsy for steatosis grading; iron quantification | [doi:10.1148/radiol.2511101327](https://doi.org/10.1148/radiol.2511101327) (Reeder 2011) |
+| Brain age / development | Cortical R1 / R2* trajectories from MPM | Population-norm references | Callaghan 2014 |
 
-- **Iron quantification**: R2* and QSM in basal ganglia (Parkinson's, Huntington's).
+**PhD / research depth.** The hard problem is not the physics — the Bloch equations are settled — but **vendor harmonisation** in clinical deployment (see [Bane 2018](https://doi.org/10.1148/radiol.2018171748) for a brutally honest multi-vendor T1 phantom audit). Synthetic MRI products (SyMRI / MAGiC) have been clinically validated against conventional FLAIR / T2w ([Hagiwara 2017](https://doi.org/10.3174/ajnr.A5298)) but show systematic differences at CSF–parenchyma boundaries that radiologists must learn. **MWF as a clinical-trial endpoint** for myelin-repair therapies in MS is operational ([Mancini 2020](https://doi.org/10.1002/ana.25754) ISMRM-OAB consensus), with active trials in opicinumab, clemastine, and similar agents. **7 T qMRI** as a biomarker — laminar R1, cortical iron mapping, ultra-high-resolution MWF — is the next translational front, gated on vendor 7 T installations and pTx availability. **AI-accelerated qMRI** (single-shot multi-parameter sequences with neural reconstruction, DEEPTHRIVE, MR-STAT clinical trials, MR fingerprinting — see [mrf.md](./mrf.md)) is the most exciting near-term clinical translation. The unsolved problem at all levels is the unglamorous one: ISMRM/NIST premium phantom audits, vendor build-version tracking, and the patience to fight reproducibility losses one source at a time. Without that infrastructure, qMRI maps are pretty pictures, not biomarkers.
 
 ## 12. Pitfalls
 

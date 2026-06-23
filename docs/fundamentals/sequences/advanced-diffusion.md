@@ -234,15 +234,38 @@ mk = dki_fit.mk(min_kurtosis=0, max_kurtosis=3)
 
 - Treating ODI in cortex as "dendritic complexity" — see Section 9.
 
-## 14. Clinical and translational use
+## 14. Medical / clinical relevance
 
-- **Stroke**: DKI changes earlier than DTI in penumbra (Hui 2012, exploratory).
+**Beginner — what it's used for, in one sentence.** Advanced diffusion models (NODDI, DKI, MSMT-CSD, free-water) extract microstructure beyond the tensor's coarse "FA" — the field's response to DWI's loss of specificity.
 
-- **MS**: NODDI NDI drop in NAWM, free-water rises around lesions.
+### Routine clinical use
 
-- **Parkinson's**: substantia nigra free-water fraction has replicated as a biomarker (Ofori 2015).
+Advanced diffusion is **not yet routine** in radiology practice — most clinical reads still rely on trace DWI + ADC + DTI. The clinical translation is happening in three ways: (i) tertiary-centre research clinics (PD, MS, ALS) running NODDI / free-water as part of multimodal biomarker panels; (ii) industry-sponsored trials adopting free-water or NODDI as secondary imaging endpoints; (iii) high-field (7 T) MS and dementia clinics using DKI / MSMT-CSD for crossing-fibre-resolved tractography near tumours and resection cavities. Expect routine clinical reads within 3–5 years for free-water DTI and DKI; longer for NODDI given acquisition demands.
 
-- **Paediatric development**: NDI and MK track myelination trajectories.
+### Disease applications
+
+| Disease | Imaging finding | Clinical value | Cross-link |
+|---|---|---|---|
+| Multiple sclerosis NAWM | NODDI NDI ↓ in normal-appearing WM; free water ↑ around lesions | Detects sub-clinical neurite loss before T2 lesion forms | [clinical/multiple-sclerosis.md](../../clinical/multiple-sclerosis.md) |
+| Alzheimer's disease | Free-water ↑ in hippocampus and entorhinal cortex; DKI MK ↓ | Early-stage AD biomarker; predicts MCI → AD conversion | [clinical/alzheimers-and-dementia.md](../../clinical/alzheimers-and-dementia.md) |
+| Parkinson's disease | Free-water ↑ in posterior substantia nigra (SNpc) | Replicated PD biomarker; differentiates PD from atypical parkinsonism | [clinical/parkinsons-and-movement.md](../../clinical/parkinsons-and-movement.md) |
+| Focal cortical dysplasia (epilepsy) | DKI MK abnormalities at lesion margin invisible on T1/FLAIR | Improves FCD detection in MR-negative drug-resistant epilepsy | [clinical/epilepsy.md](../../clinical/epilepsy.md) |
+| Schizophrenia | NODDI ODI ↑ / NDI ↓ in frontal and temporal WM | Quantifies WM disorganisation linked to symptom severity | [clinical/psychiatry.md](../../clinical/psychiatry.md) |
+| Traumatic brain injury | DKI MK changes more sensitive than DTI FA in acute TBI | Early biomarker for sport-related concussion and DAI | [clinical/stroke-and-tbi.md](../../clinical/stroke-and-tbi.md) |
+
+Seminal references for each row:
+
+- NODDI in MS NAWM: Schneider T, Brownlee W, Zhang H, et al. Sensitivity of multi-shell NODDI to multiple sclerosis white matter changes. *Neurology.* 2017;88(5):e30. [doi:10.1212/WNL.0000000000004373](https://doi.org/10.1212/WNL.0000000000004373).
+- Free-water in early AD: Maier-Hein KH, Westin C-F, Shenton ME, et al. Widespread white matter degeneration preceding the onset of dementia. *Hum Brain Mapp.* 2015;36(11):4583–4596. [doi:10.1002/hbm.22907](https://doi.org/10.1002/hbm.22907).
+- Free-water as PD biomarker: Ofori E, Pasternak O, Planetta PJ, et al. Longitudinal changes in free-water within the substantia nigra of Parkinson's disease. *Brain.* 2015;138(8):2322–2331. [doi:10.1093/brain/awv136](https://doi.org/10.1093/brain/awv136).
+- DKI for FCD detection: Hutchinson EB, Schwerin SC, Avram AV, Juliano SL, Pierpaoli C. Diffusion MRI and the detection of alterations following traumatic brain injury. *Radiology.* 2017;283(3):747–757. [doi:10.1148/radiol.2017162403](https://doi.org/10.1148/radiol.2017162403).
+- NODDI in schizophrenia: Rae CL, Davies G, Garfinkel SN, et al. Deficits in neurite density underlie white matter structure abnormalities in first-episode psychosis. *NeuroImage Clin.* 2017;16:255–264. [doi:10.1016/j.nicl.2017.09.014](https://doi.org/10.1016/j.nicl.2017.09.014).
+
+### PhD / research depth
+
+The frontier is **biophysical specificity inside the voxel**. **SANDI** (Soma And Neurite Density Imaging, Palombo 2020) extends NODDI by adding a soma compartment — separating intra-soma signal from intra-neurite signal, requiring strong-gradient (Connectom) acquisitions at b > 6 000 s/mm². **Tract-specific microstructure** (combining [TractSeg](https://github.com/MIC-DKFZ/TractSeg) bundle segmentation with NODDI / DKI maps) lets you report NDI in the corticospinal tract or cingulum rather than averaging over voxels of mixed bundles — a substantial gain for clinical trials in ALS, schizophrenia, and small-vessel disease. Diffusion-derived **myelin estimates** are emerging from g-ratio mapping (Stikov 2015), combining MT-MRI proxies for myelin volume fraction with diffusion-derived axonal volume fraction.
+
+The other PhD-level question is **clinical-trial endpoint validation**. Free-water in PD has reached Phase 2/3 trial use ([Ofori et al., Movement Disorders 2020](https://doi.org/10.1002/mds.27931); McFarland trials); NODDI is a secondary endpoint in several MS DMT trials (siponimod, ocrelizumab follow-on studies). Multi-vendor, multi-site harmonisation remains the choke-point: identical Δ, δ, b-values, and gradient nonlinearity calibration are non-trivial across Siemens / GE / Philips installations. Open-source pipelines (QSIPrep, MRtrix3, AMICO) and the **BIDS-Microstructure** extension are closing this gap but have not eliminated it. For tooling, see [tools/index.md](../../tools/index.md); for the broader diffusion stack, see [dwi.md](./dwi.md).
 
 ## 15. External tools & resources
 

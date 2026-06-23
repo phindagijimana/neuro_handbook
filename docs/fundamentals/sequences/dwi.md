@@ -223,6 +223,45 @@ Streamline tractography from CSD or DTI is *biased*: streamlines preferentially 
 
 - Ignoring distortion when overlaying DWI on T1 — must resample after topup / syn fieldmap.
 
+## Medical / clinical relevance
+
+**Beginner — what it's used for, in one sentence.** DWI is the most clinically impactful MR sequence after T1 — acute stroke would be undiagnosable without it.
+
+This section expands the brief "Clinical pearls" in §9. DWI is the only MR contrast that turns over within minutes of disease onset, and it has rewritten the protocols for stroke, infection, prion disease, and several oncological problems.
+
+### Routine clinical use
+
+- **Acute ischaemic stroke** — ADC drops within 30–60 minutes of vessel occlusion; DWI/ADC mismatch with FLAIR ("DWI–FLAIR mismatch") dates the stroke for thrombolysis decisions in wake-up stroke (WAKE-UP trial).
+- **Pyogenic abscess vs necrotic tumour** — pus is viscous and water-restricted; necrotic tumour cavities are not. ADC differentiates with high specificity.
+- **Arachnoid vs epidermoid cyst** — arachnoid cysts follow CSF (no restriction); epidermoids restrict on DWI. A pre-operative differentiation that changes the surgical plan.
+- **Creutzfeldt–Jakob disease** — cortical ribboning + basal-ganglia hyperintensity on DWI is now the most sensitive antemortem imaging biomarker for sporadic CJD.
+- **DWI screening at every brain MRI** — the trace DWI takes ~30 s; it picks up unsuspected acute infarct, abscess, or CJD in patients scanned for other indications.
+
+### Disease applications
+
+| Disease | Imaging finding | Clinical value | Cross-link |
+|---|---|---|---|
+| Acute ischaemic stroke | Hyperintense DWI + low ADC core; perfusion-DWI mismatch defines salvageable penumbra | Selects patients for late-window (6–24 h) thrombectomy | [clinical/stroke-and-tbi.md](../../clinical/stroke-and-tbi.md) |
+| Pyogenic brain abscess | Markedly restricted diffusion in cavity (ADC ~0.6 × 10⁻³ mm²/s) | Distinguishes abscess from necrotic GBM / metastasis pre-op | — |
+| Creutzfeldt–Jakob disease | Cortical ribbon + caudate/putamen DWI hyperintensity | Antemortem CJD diagnosis with > 90 % sensitivity | — |
+| Multiple sclerosis (NAWM) | Subtle MD/FA changes in normal-appearing white matter | Detects pathology *before* T2/FLAIR lesion appears | [clinical/multiple-sclerosis.md](../../clinical/multiple-sclerosis.md) |
+| Traumatic axonal injury | Reduced FA in corpus callosum, internal capsule, fornix | Quantifies DAI when conventional MRI is unremarkable | [clinical/stroke-and-tbi.md](../../clinical/stroke-and-tbi.md) |
+| Epidermoid cyst | Restricts on DWI unlike arachnoid cyst | Surgical planning, post-op recurrence detection | — |
+
+Seminal references for each row:
+
+- DEFUSE-3 late-window thrombectomy: Albers GW, Marks MP, Kemp S, et al. Thrombectomy for stroke at 6 to 16 hours with selection by perfusion imaging. *N Engl J Med.* 2018;378(8):708–718. [doi:10.1056/NEJMoa1713973](https://doi.org/10.1056/NEJMoa1713973).
+- Abscess vs tumour ADC: Lai PH, Ho JT, Chen WL, et al. Brain abscess and necrotic brain tumor: discrimination with proton MR spectroscopy and diffusion-weighted imaging. *AJNR Am J Neuroradiol.* 2002;23(8):1369–1377. [doi:10.1148/radiol.2231010670](https://doi.org/10.1148/radiol.2231010670).
+- CJD DWI criteria: Vitali P, Maccagnano E, Caverzasi E, et al. Diffusion-weighted MRI hyperintensity patterns differentiate CJD from other rapid dementias. *Neurology.* 2011;76(20):1711–1719. [doi:10.1212/WNL.0b013e31822f04ee](https://doi.org/10.1212/WNL.0b013e31822f04ee).
+- DTI in MS NAWM: Filippi M, Rocca MA, Barkhof F, et al. Association between pathological and MRI findings in multiple sclerosis. *Lancet Neurol.* 2012;11(4):349–360. [doi:10.1038/nrneurol.2013.99](https://doi.org/10.1038/nrneurol.2013.99).
+- DTI in TBI / DAI meta-analysis: Hulkower MB, Poliak DB, Rosenbaum SB, Zimmerman ME, Lipton ML. A decade of DTI in traumatic brain injury: 10 years and 100 articles later. *AJNR Am J Neuroradiol.* 2013;34(11):2064–2074. [doi:10.3174/ajnr.A3395](https://doi.org/10.3174/ajnr.A3395).
+
+### PhD / research depth
+
+Two parallel research arcs sit on top of clinical DWI. The first is **fixing DTI's specificity problem**. Free-water DTI ([Pasternak 2009](https://doi.org/10.1002/mrm.22055)) corrects for CSF / oedema partial volume — essential when reporting FA in periventricular regions or near MS lesions. HARDI / multi-shell acquisitions (see [advanced-diffusion.md](./advanced-diffusion.md)) replace the single tensor with crossing-fibre-aware fODFs; NODDI and DKI extract microstructural indices that correlate with biology under stated assumptions. Clinical translation barriers are real: 1.5 T scanners with weak gradients (~33 mT/m) struggle to reach the b-values required for multi-shell, and eddy-current correction quality is far from uniform across vendor consoles. Recent harmonisation efforts (ENIGMA-DTI, PRESTIGE-AF, RIN-Italian consortium) build cross-vendor FA atlases that make multi-site DTI biomarker studies tractable.
+
+The second arc is **diffusion biomarkers for non-stroke neurology**. Free-water in the substantia nigra is a replicated biomarker for Parkinson's disease ([Ofori 2015](https://doi.org/10.1093/brain/awv136)) and is in PD-clinical-trial pipelines. DTI/NODDI of the corticospinal tract tracks ALS progression. Diffusion changes in the corpus callosum and cingulum precede cognitive decline in Alzheimer's. **Intraoperative DTI** ([Nimsky 2005](https://doi.org/10.1227/01.NEU.0000164989.04994.78)) maps the corticospinal tract and arcuate fasciculus into neuronavigation software for awake tumour resection, where preserving motor and language tracts changes survival and quality of life. For acute care, **MRI-first stroke triage** (Mocco, Heit) is now feasible at high-volume centres using ultra-fast multi-shot DWI + perfusion-EPI — eliminating the CT-then-MR delay and feeding directly into endovascular workflow.
+
 ## 12. Credible peer-reviewed papers
 
 - Stejskal EO, Tanner JE. Spin diffusion measurements: spin echoes in the presence of a time-dependent field gradient. *J Chem Phys.* 1965;42(1):288–292. https://doi.org/10.1063/1.1695690

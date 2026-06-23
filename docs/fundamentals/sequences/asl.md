@@ -142,17 +142,32 @@ Cost: longer scan (5–8 min for multi-PLD vs 4 min for single-PLD).
 | **[ASLPrep](https://aslprep.readthedocs.io/)** | [Nipype](https://nipype.readthedocs.io/)-based, BIDS-derivatives output |
 | **[ASL-MRICloud](https://braingps.mricloud.org/)** | Web / batch services |
 
-## 10. Clinical use
+## 10. Medical / clinical relevance
 
-- **Stroke**: CBF deficit, multi-PLD for delayed transit in penumbra; complementary to DSC perfusion without gadolinium.
+**Beginner.** ASL gives quantitative cerebral blood flow (CBF) without contrast — the only non-invasive perfusion technique that doesn't need gadolinium.
 
-- **Alzheimer's disease**: hypoperfusion in posterior cingulate, precuneus, temporoparietal — overlaps FDG-PET pattern.
+**Routine clinical use.**
 
-- **Vascular cognitive impairment**: global / watershed CBF reduction.
+- Paediatric perfusion where gadolinium is to be avoided.
+- Renal-insufficient patients (eGFR < 30) where DSC / DCE are contraindicated.
+- Repeat / longitudinal perfusion follow-up in tumour, MS, dementia.
+- Vascular reserve studies under acetazolamide / breath-hold.
+- Functional perfusion ("fASL") for clinical fMRI in clinically uncooperative populations.
 
-- **Epilepsy**: ictal hyperperfusion, interictal hypoperfusion at seizure focus.
+**Disease applications.**
 
-- **Paediatrics**: CBF normative ~2× adult — avoid Gd, ASL is the default perfusion modality.
+| Disease | Imaging finding | Clinical value | Cross-link |
+|---|---|---|---|
+| Acute ischaemic stroke | CBF deficit with multi-PLD ATT prolongation; DSC-equivalent in many cohorts | Triage when contrast contraindicated; penumbra estimate | [doi:10.1161/STROKEAHA.111.633917](https://doi.org/10.1161/STROKEAHA.111.633917) (Bokkers 2012); [clinical/stroke-and-tbi.md](../../clinical/stroke-and-tbi.md) |
+| Alzheimer's disease | Hypoperfusion in posterior cingulate / precuneus / temporoparietal — DMN signature, mirrors FDG-PET | Early biomarker without radiotracer | [doi:10.1212/WNL.0b013e31824365e1](https://doi.org/10.1212/WNL.0b013e31824365e1) (Wolk 2012); [clinical/alzheimers-and-dementia.md](../../clinical/alzheimers-and-dementia.md) |
+| Frontotemporal dementia | Frontal and anterior-temporal hypoperfusion | Distinguishes FTD from AD pattern | [doi:10.1212/01.wnl.0000236568.74858.eb](https://doi.org/10.1212/01.wnl.0000236568.74858.eb) (Du 2006) |
+| Brain tumour grading | High-grade glioma shows elevated tumour CBF; alternative to DSC | Pre-operative grading, treatment-response monitoring | [doi:10.1148/radiol.2282011007](https://doi.org/10.1148/radiol.2282011007) (Warmuth 2003) |
+| Cerebrovascular reserve | Acetazolamide-challenge ΔCBF maps watershed risk | Bypass surgery candidacy in Moyamoya, carotid occlusion | [doi:10.1038/jcbfm.2014.95](https://doi.org/10.1038/jcbfm.2014.95) (Donahue 2014) |
+| Migraine, vasospasm, vasculopathy | Transient hyper- or hypoperfusion in cortical territories | Confirm functional vs structural component | Yoon 2017 |
+| Sickle-cell disease | Chronic baseline hyperperfusion plus reserve failure | Stroke-risk stratification | [doi:10.1002/jmri.25801](https://doi.org/10.1002/jmri.25801) (Bush 2018) |
+| Epilepsy | Ictal hyperperfusion, interictal hypoperfusion at focus | Adjunct to MRI-negative work-up | Cross-link [clinical/epilepsy.md](../../clinical/epilepsy.md) |
+
+**PhD / research depth.** The 2015 [ISMRM consensus](https://doi.org/10.1002/mrm.25197) (Alsop 2015) cemented single-PLD pCASL with 3D readout as the clinical default and is the reason every vendor now ships an interoperable product implementation — clinical adoption tracks that single paper more than any other. Active research fronts: multi-delay ASL for **arterial-transit-time** mapping in cerebrovascular disease (essential anywhere the single-PLD assumption $\Delta t < w$ fails — Moyamoya, severe carotid stenosis, posterior-watershed elderly, neonatal HIE); 3D-pCASL clinical translation across vendors with harmonised CBF; functional ASL ("fASL") as a quantitative alternative to BOLD in clinical populations where baseline CBF differences confound the BOLD response; ASL-MRI in paediatric neurology including NICU CBF and chronic perfusion in sickle cell; and deep-learning-denoised single-PLD ASL ([Gong 2022](https://doi.org/10.1002/mrm.29009)-style architectures) to push clinical throughput by halving the number of averages needed for diagnostic SNR. Vendor-harmonised ASL CBF is a current target of the ISMRM Perfusion Study Group and a prerequisite for using CBF as a clinical-trial endpoint in dementia, paediatric stroke, and oncology.
 
 ## 11. Worked Python pseudocode
 

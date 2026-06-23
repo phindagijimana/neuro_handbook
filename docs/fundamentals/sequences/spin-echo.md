@@ -195,6 +195,31 @@ flowchart LR
 
 - Confusing with FLAIR — FLAIR uses inversion null of CSF ( FLAIR handout).
 
+## 12.5 Medical / clinical relevance
+
+**Beginner.** Conventional spin-echo (and its turbo / fast variants) is the workhorse for T2-weighted imaging — the bread and butter of brain MRI before FLAIR and DWI ever fire.
+
+**Routine clinical use.**
+
+- T2-weighted brain imaging for tumours, oedema, gliosis, white-matter disease (almost always TSE / FSE today).
+- Spine: sagittal T2-FSE for cord compression, MS plaques, disc pathology, cauda equina.
+- Musculoskeletal: T2 / PD-FSE for cartilage, menisci, ligaments, marrow oedema.
+- Abdominal / pelvic: T2-FSE for liver, kidney, prostate, uterus; HASTE / single-shot for breath-hold protocols.
+- Heavily T2-weighted CISS / FIESTA / DRIVE for cisternal anatomy and cranial-nerve imaging.
+
+**Disease applications.**
+
+| Disease | Imaging finding | Clinical value | Cross-link |
+|---|---|---|---|
+| Arachnoid / dermoid / epidermoid cysts | Bright T2 on TSE; restricted vs free diffusion on DWI separates them | Surgical planning, differential from solid tumour | Sener 1992 |
+| Hydrocephalus / aqueductal stenosis | Heavily T2-weighted CISS / FIESTA shows membranes and flow voids | Decide ventriculostomy vs shunt | [doi:10.3174/ajnr.A2197](https://doi.org/10.3174/ajnr.A2197) (Algin 2010) |
+| Trigeminal neuralgia, hemifacial spasm | 3D T2 CISS / FIESTA / DRIVE shows neurovascular conflict | Microvascular-decompression planning | [doi:10.1148/radiol.2520091638](https://doi.org/10.1148/radiol.2520091638) (Borges 2010) |
+| Spinal-cord MS plaques | Sagittal T2-FSE (PD/T2 dual echo) | Disease burden + activity | [doi:10.1016/S1474-4422(03)00466-9](https://doi.org/10.1016/S1474-4422(03)00466-9) (Lycklama 2003); [clinical/multiple-sclerosis.md](../../clinical/multiple-sclerosis.md) |
+| Pituitary microadenomas | T2-FSE + dynamic contrast — adenomas often T2-hypointense / hyperintense vs normal gland | Cushing's / acromegaly localisation | Bonneville 2005 |
+| Inner-ear / cerebellopontine-angle pathology | 3D T2 CISS for cochlear nerve, vestibular schwannoma | Cochlear-implant eligibility, tumour surveillance | Standard otology practice |
+
+**PhD / research depth.** Modern clinical practice is dominated not by 2D-FSE but by 3D isotropic variable-flip-angle TSE — Siemens **SPACE**, GE **CUBE**, Philips **VISTA** (Mugler 2014, [doi:10.1002/jmri.24542](https://doi.org/10.1002/jmri.24542)) — which delivers a single 4–6 min isotropic volume reformat-able in any plane and is rapidly displacing stacks of orthogonal 2D-FSE for brain, spine, and MSK. The trade is the magnetisation-transfer-like saturation discussed in § 5, which makes 3D-TSE T2w *not numerically equivalent* to single-echo SE in quantitative comparisons. Multi-echo SE remains the reference for T2 mapping — see [./qmri.md](./qmri.md) — and clinical T2-mapping (rather than T2-weighted reading) is reaching MS lesion characterisation, cardiac fibrosis, and prostate cancer protocols. MT-prepared T2 sequences for direct myelin assessment are an active translational area in MS imaging. HASTE / SSFSE single-shot TSE underpins foetal brain MRI and uncooperative-paediatric protocols where motion would destroy any multi-shot acquisition. Across all flavours, the historical reliability of spin-echo refocusing against $B_0$ inhomogeneity is what keeps SE-family contrast credible at 1.5 T and 3 T even as everything else in the protocol modernises.
+
 ## 13. Credible peer-reviewed papers
 
 - Hennig J, et al. RARE imaging: a fast imaging method for clinical MR. *Magn Reson Med.* 1986;3(6):823–833. https://doi.org/10.1002/mrm.1910030602

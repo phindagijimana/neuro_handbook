@@ -303,23 +303,36 @@ A minimal vocabulary to cross-reference:
 - **Aliasing.** If $f_s < 2 \times f_\text{max}$, high-frequency content folds into the band of interest. Anti-alias *before* downsampling, always.
 - **Mains hum coupling via subject capacitance.** Improves with shielded cabling, active electrodes, and a clean grounding strategy (driven-right-leg or driven common).
 
-## 8. Clinical and research uses
+## 8. Medical / clinical relevance
 
-### 8.1 Clinical EEG
+**Beginner.** EEG is the oldest neuroimaging modality and the only one that captures millisecond brain rhythms — irreplaceable for epilepsy, sleep, and consciousness.
 
-- **Epilepsy.** Diagnosis (ictal vs interictal spikes), seizure-focus localisation, surgical planning. Long-term video-EEG monitoring captures rare events. See [clinical/epilepsy.md](../../clinical/epilepsy.md).
-- **Sleep staging.** AASM scoring (NREM 1/2/3, REM, wake) from EEG + EMG + EOG.
-- **Coma / encephalopathy / brain death.** Continuous EEG (cEEG) in ICU; absence of cerebral activity supports brain-death determination.
-- **Anaesthesia depth.** BIS (bispectral index) and related derived indices from frontal EEG guide anaesthetic dosing.
+**Routine clinical use.**
 
-### 8.2 Research EEG
+- Epilepsy diagnosis and monitoring (outpatient EEG, 24–72 h video-EEG, intracranial ECoG / sEEG).
+- Sleep staging (PSG per AASM rules) for sleep apnoea, narcolepsy, RBD.
+- ICU monitoring: continuous EEG for non-convulsive status epilepticus, ischaemia, sedation depth.
+- Consciousness / coma assessment and prognostication after cardiac arrest.
+- Brain-death determination (30-min flat EEG as adjunct, not gold standard).
+- Neonatal cerebral function monitoring (aEEG) for therapeutic-hypothermia eligibility.
+- Anaesthesia depth (BIS and related frontal-EEG indices).
 
-- **Cognitive ERP studies.** P300 (oddball), N400 (semantic violation), ERN (error monitoring), feedback-related negativity.
-- **Brain-computer interfaces (BCI).** Motor imagery (μ / β desynchronisation), P300 spellers, SSVEP-based control. Benchmarks at [MOABB](https://github.com/NeuroTechX/moabb).
-- **Sleep and circadian.** Whole-night polysomnography; sleep-stage micro-architecture (spindles, K-complexes).
-- **Developmental.** Infant ERP (face / language processing); HD-EEG in toddlers despite movement.
+**Disease applications.**
 
-### 8.3 Combined modalities
+| Disease | Imaging finding | Clinical value | Cross-link |
+|---|---|---|---|
+| Epilepsy | Interictal spikes, ictal rhythmic onset; 24–72 h video-EEG captures rare events; intracranial ECoG / sEEG for surgical localisation | Diagnosis, classification, presurgical localisation | [doi:10.1212/WNL.0b013e3182574d76](https://doi.org/10.1212/WNL.0b013e3182574d76) (Téllez-Zenteno 2012); [clinical/epilepsy.md](../../clinical/epilepsy.md) |
+| Sleep disorders | PSG staging (NREM 1/2/3, REM, wake) per AASM; MSLT for narcolepsy diagnosis | Diagnosis of apnoea, narcolepsy, RBD; deep-learning auto-staging | [doi:10.1038/s41467-018-07229-3](https://doi.org/10.1038/s41467-018-07229-3) (Stephansen 2018) |
+| ICU monitoring | Continuous EEG for non-convulsive status epilepticus, ischaemia detection, sedation depth | Up to 20% of comatose ICU patients have NCSE missed without cEEG | [doi:10.1212/01.wnl.0000437304.49199.1d](https://doi.org/10.1212/01.wnl.0000437304.49199.1d) (Claassen 2013) |
+| Coma / DoC after cardiac arrest | Background pattern, reactivity, SSEPs; NIRP-style prognostication | Prognosis at 72 h informs withdrawal-of-care decisions | [doi:10.1212/WNL.0000000000001246](https://doi.org/10.1212/WNL.0000000000001246) (Hofmeijer 2015) |
+| Brain death | 30-min flat / electrocerebral-inactivity EEG as adjunct | Supports clinical brain-death determination (not gold standard) | [doi:10.1212/WNL.0000000000001999](https://doi.org/10.1212/WNL.0000000000001999) (AAN guideline update) |
+| Neonatal HIE | Amplitude-integrated EEG (aEEG) classification (continuous normal voltage → burst-suppression → flat) | Eligibility for therapeutic hypothermia within 6 h of birth | [doi:10.1542/peds.109.5.772](https://doi.org/10.1542/peds.109.5.772) (Toet 2002) |
+| Alzheimer's & dementia | Slowing of dominant α rhythm, increased θ power, decreased signal complexity | Emerging early biomarker; cheap and scalable | [doi:10.1016/j.neubiorev.2020.04.026](https://doi.org/10.1016/j.neubiorev.2020.04.026) (Babiloni 2020); [clinical/alzheimers-and-dementia.md](../../clinical/alzheimers-and-dementia.md) |
+| Schizophrenia / depression | P300 amplitude reduction, mismatch negativity (MMN) deficit, frontal α asymmetry | Research biomarkers in clinical-trial use, not yet diagnostic | [doi:10.1038/npp.2014.207](https://doi.org/10.1038/npp.2014.207) (Light 2015) |
+
+**PhD / research depth.** **Brain-computer interfaces** turn EEG into an output channel for people with severe motor impairment: P300 spellers for ALS, motor-imagery (μ / β desynchronisation) for prosthetic control, SSVEP-based interfaces ([Wolpaw 2002](https://doi.org/10.1016/S1388-2457(02)00057-3); benchmarks at [MOABB](https://github.com/NeuroTechX/moabb)). **HD-EEG source localisation** (128–256 channels + individual head model) is the cheap-and-portable alternative to MEG for presurgical epilepsy planning and routinely catches MRI-negative cases. **EEG-fMRI fusion** localises interictal spikes by triggering the haemodynamic response, despite gradient and BCG artefacts (see § 7). **Intracranial EEG** (ECoG subdural grids; sEEG depth electrodes) is the gold standard for source location once a patient is on the surgical track — millisecond resolution at millimetre spatial scale, the only modality that resolves single-trial cognitive electrophysiology in humans. **Closed-loop neuromodulation** is the most consequential recent translation: the NeuroPace **RNS** system ([Morrell 2011](https://doi.org/10.1212/WNL.0b013e3182302056)) is FDA-approved and detects ictal patterns to trigger responsive stimulation; closed-loop DBS, phase-locked TMS, and alertness-triggered stimulation are in active trials. **EEG microstate analysis** ([Lehmann 1987](https://doi.org/10.1016/0013-4694(87)90025-3); [Michel & Koenig 2018](https://doi.org/10.1016/j.neuroimage.2017.11.062)) treats four to seven quasi-stable scalp topographies as the temporal "atoms" of cognition and is emerging as a biomarker in schizophrenia, depression, dementia. **Foundation models for EEG** trained on the TUH EEG corpus and similar are the current hope for cross-subject generalisation — see [analysis/eeg-meg.md](../../analysis/eeg-meg.md) for the analysis-side discussion.
+
+### 8bis. Combined modalities
 
 - **Simultaneous EEG-fMRI.** Electrical + hemodynamic concurrent. Gradient + BCG artifact removal required.
 - **MEG + EEG fusion.** Tangential (MEG) + radial (EEG) sensitivity profiles are orthogonal; combined source localisation outperforms either alone.

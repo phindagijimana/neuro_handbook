@@ -254,13 +254,41 @@ Cartesian EPI is the universal default, but it is not the only fast readout. **S
 - **Revival at 7 T.** Modern variants — **spiral-in / spiral-in-out** ( [Glover & Law 2001](https://doi.org/10.1002/mrm.1208)), **cones** (3D radial-like), and **stack-of-spirals** — are part of HCP-style 7 T protocols where Cartesian EPI distortion is intolerable. Vendor support is uneven; most spiral work still runs on academic Pulseq / RTHawk pipelines rather than product sequences.
 - **When to consider it.** OFC- or brainstem-focused fMRI at ≥ 3 T, ultra-high-resolution 7 T BOLD, anywhere distortion is the limiting factor and reconstruction effort is acceptable.
 
-## 11. Clinical and research uses
+## 11. Medical / clinical relevance
 
-- DWI-EPI — acute ischemic stroke (restricted diffusion); interpretation requires clinical training.
+**Beginner — what it's used for, in one sentence.** EPI is the readout that made fMRI and DWI possible — and the source of every artifact that bedevils clinical interpretation.
 
-- fMRI-EPI — presurgical language/motor mapping ( protocol-specific); research vs clinical workflow separation.
+### Routine clinical use
 
-- Research parameters may not be diagnostic quality.
+- **DWI-EPI** for acute ischaemic stroke — the trace DWI sequence on every stroke MRI is an EPI readout (see [dwi.md](./dwi.md) for the diffusion-specific clinical picture).
+- **Task-based BOLD fMRI** for presurgical mapping of motor and language cortex — the FDA-cleared fMRI clinical workflow runs single-band or multi-band GRE-EPI with finger-tapping, verb-generation, and sentence-completion paradigms.
+- **Resting-state fMRI** for sensorimotor and language network localisation in tumour and epilepsy patients who cannot perform tasks.
+- **Body-EPI** for diffusion in prostate (PI-RADS), breast (BI-RADS), liver, and pancreas oncology — same physics, different anatomy.
+- **Spinal-cord DWI-EPI** for cord ischaemia, MS plaques, and post-radiation myelopathy — the most artefact-prone clinical EPI application.
+
+### Disease applications
+
+| Disease | Imaging finding | Clinical value | Cross-link |
+|---|---|---|---|
+| Drug-resistant epilepsy (presurgical workup) | Task-fMRI language lateralisation; motor mapping near the proposed resection | Wada-test replacement; informs resection extent | [clinical/epilepsy.md](../../clinical/epilepsy.md) |
+| Brain tumour (glioma, meningioma) | Task-fMRI for eloquent cortex; DWI-EPI for ADC characterisation | Neuronavigation overlay for awake craniotomy | — |
+| Acute ischaemic stroke | DWI-EPI restricted diffusion + perfusion-EPI mismatch | Defines salvageable penumbra for thrombectomy | [clinical/stroke-and-tbi.md](../../clinical/stroke-and-tbi.md) |
+| DBS targeting (Parkinson's, OCD, ET) | Resting-state EPI for STN / GPi / VIM connectivity profile | Connectomic targeting beyond stereotactic atlases | [clinical/parkinsons-and-movement.md](../../clinical/parkinsons-and-movement.md) |
+| Psychiatric disorders (depression, OCD) | Resting-state and task EPI for default-mode and salience network alterations | TMS / DBS target selection (e.g. SGC for depression) | [clinical/psychiatry.md](../../clinical/psychiatry.md) |
+| Multiple sclerosis | DWI-EPI sensitive to acute lesion oedema; fMRI for cognitive reserve studies | Differentiates acute vs chronic lesion activity | [clinical/multiple-sclerosis.md](../../clinical/multiple-sclerosis.md) |
+
+Seminal references for each row:
+
+- Presurgical fMRI guideline: Bauer PR, Reitsma JB, Houweling BM, Ferrier CH, Ramsey NF. Can fMRI safely replace the Wada test for preoperative assessment of language lateralisation? A meta-analysis and systematic review. *Neurology.* 2014;82(20):1763–1771. [doi:10.1212/WNL.0000000000000915](https://doi.org/10.1212/WNL.0000000000000915).
+- Presurgical fMRI clinical guideline (ACR/ASFNR): Black DF, Vachha B, Mian A, et al. American Society of Functional Neuroradiology recommendations for clinical performance of fMRI. *AJNR Am J Neuroradiol.* 2017;38(4):E27. [doi:10.3174/ajnr.A5188](https://doi.org/10.3174/ajnr.A5188).
+- DBS connectomic targeting: Horn A, Reich M, Vorwerk J, et al. Connectivity predicts deep brain stimulation outcome in Parkinson disease. *Ann Neurol.* 2017;82(1):67–78. [doi:10.1002/ana.24974](https://doi.org/10.1002/ana.24974).
+- TMS targeting for depression: Cash RFH, Cocchi L, Lv J, et al. Personalised connectivity-guided DLPFC-TMS for depression. *Hum Brain Mapp.* 2021;42(13):4155–4172. [doi:10.1002/hbm.25330](https://doi.org/10.1002/hbm.25330).
+
+### PhD / research depth
+
+The PhD-level conversation around clinical EPI is dominated by **distortion correction at the bedside**. Side-by-side comparisons of `topup` (reversed-PE), fieldmap-based ([Jezzard 1995](https://doi.org/10.1002/mrm.1910340111)), and ANTs-SyN structural-anchor methods in clinical OFC and brainstem fMRI show topup as the front-runner when AP/PA pairs were planned — but `Synb0-DisCo` ([Schilling 2019](https://doi.org/10.1016/j.mri.2019.05.008)) and the newer **SynBOLD-DisCo** ([Yu 2023](https://doi.org/10.1002/jmri.28709)) are the only options for legacy stroke datasets that lack reversed-PE acquisitions. Deep-learning distortion correction is moving fast: vendor pipelines (Siemens, GE, Philips) are starting to bundle DL-based EPI unwarping as standard. Clinical translation of **7 T EPI** is the harder frontier — distortion magnitudes 2-3× larger than at 3 T, and through-plane $B_0$ inhomogeneity that conventional `topup` cannot fully resolve. Spinal-cord EPI (HSV-interleaved, ZOOMit) is still a specialised research application despite obvious clinical value.
+
+The other research frontier is **accelerated 3D-EPI and multi-echo at high temporal resolution**. 3D-EPI (PRESTO, EPIK) trades distortion characteristics for whole-brain coverage at TR < 500 ms — opening clinical resting-state at higher network-decomposition resolution. Multi-band 6–8× pushed by HCP / Lifespan / UK Biobank is now feasible on 32–64-channel clinical head coils, but **g-factor noise** and slice leakage remain hidden quality issues that radiologists rarely inspect. Real-time EPI for **fMRI neurofeedback** is in clinical trials for OCD (Sukhodolsky 2020), depression (Mehler 2018), and ADHD — see [tools/clinical-deployment.md](../../tools/clinical-deployment.md) for the deployment infrastructure. For the analysis chain that consumes EPI outputs, see [../../analysis/functional.md](../../analysis/functional.md).
 
 ## 12. Worked examples (step-by-step)
 

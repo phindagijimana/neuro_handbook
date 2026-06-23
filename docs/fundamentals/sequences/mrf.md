@@ -236,14 +236,26 @@ Downstream uses:
 - **Vendor drift.** Pulse-shape, spoiler-gradient amplitude, and RF-amplifier non-linearity differ across vendors. The dictionary you simulated for vendor A does not transfer to vendor B without recalibration — see § 11.
 - **Spiral trajectory errors.** Gradient delays distort spiral k-space; uncorrected, they show up as off-centre artifacts in the parameter maps. Use trajectory measurement (Duyn 1998) or self-calibration.
 
-## 8. Clinical and research uses
+## 8. Medical / clinical relevance
 
-- **Brain tumour characterisation.** [Liao 2017](https://doi.org/10.1016/j.neuroimage.2017.08.030) demonstrated separability of glioma grades by joint $(T_1, T_2)$ distributions. Quantitative tumour follow-up is the clearest clinical niche.
-- **Multiple sclerosis.** Lesion T1 / T2 quantification tracks demyelination + remyelination longitudinally — beyond what conventional FLAIR can do. Cross-link to [clinical/multiple-sclerosis.md](../../clinical/multiple-sclerosis.md).
-- **Epilepsy.** Subtle focal cortical dysplasia may have intermediate T1 / T2 between cortex and WM that conventional images miss; MRF flags them quantitatively. See [clinical/epilepsy.md](../../clinical/epilepsy.md).
-- **Cardiac and hepatic MRF.** [Hamilton 2017, *MRM* 77:1446](https://doi.org/10.1002/mrm.26216) extended FISP-MRF to cardiac T1 / T2 mapping under ECG gating; abdominal MRF (Chen 2019) does liver iron + fibrosis in one breath-hold.
-- **Treatment-response monitoring.** Radiation oncology follow-up: T1 / T2 baselines + post-treatment quantitative deltas, immune to scanner-drift confounds.
-- **Synthetic contrast generation.** A single MRF scan produces T1w, T2w, FLAIR, STIR by Bloch playback — replaces a stack of conventional sequences and shortens total exam time.
+**Beginner.** MRF promises a single-acquisition quantitative T1, T2, M0 map per voxel — the most exciting near-term clinical translation in advanced MR.
+
+**Routine clinical use.** Mostly pre-clinical / research today, with vendor-product deployment growing. Siemens **MAGiC** (FISP-MRF, 2D brain) is shipping; the [synthetic-MRI MAGiC family](https://syntheticmr.com/) (separate physics, similar name) is FDA-cleared and clinically deployed for routine brain. Quantitative tumour follow-up and MS longitudinal monitoring are the clearest near-term clinical niches.
+
+**Disease applications.**
+
+| Disease | Imaging finding | Clinical value | Cross-link |
+|---|---|---|---|
+| Brain tumour grading | Joint (T1, T2) distributions separate low- vs high-grade glioma; AUC ≈ 0.8 in published cohorts | Pre-operative grading, treatment-response monitoring | [doi:10.3174/ajnr.A5035](https://doi.org/10.3174/ajnr.A5035) (Badve 2017); [doi:10.1016/j.neuroimage.2017.08.030](https://doi.org/10.1016/j.neuroimage.2017.08.030) (Liao 2017) |
+| Cardiac fibrosis | Simultaneous T1 / T2 mapping under ECG gating | Diffuse fibrosis quantification beyond LGE | [doi:10.1002/mrm.26216](https://doi.org/10.1002/mrm.26216) (Hamilton 2017) |
+| Multiple sclerosis | Pre-lesional T1 / T2 changes in normal-appearing WM; longitudinal demyelination / remyelination | Drug-trial endpoint beyond FLAIR count | [doi:10.1002/mrm.28467](https://doi.org/10.1002/mrm.28467) (Boss 2021); [clinical/multiple-sclerosis.md](../../clinical/multiple-sclerosis.md) |
+| Alzheimer's disease | Cortical T1 elongation precedes atrophy | Earlier-stage biomarker than volume loss | [doi:10.1002/mrm.30094](https://doi.org/10.1002/mrm.30094) (Coppock 2024); [clinical/alzheimers-and-dementia.md](../../clinical/alzheimers-and-dementia.md) |
+| Focal cortical dysplasia | Subtle intermediate T1 / T2 between cortex and WM that conventional images miss | Pre-surgical localisation in MRI-negative epilepsy | [doi:10.1093/brain/awz113](https://doi.org/10.1093/brain/awz113) (Ma 2019); [clinical/epilepsy.md](../../clinical/epilepsy.md) |
+| Prostate cancer | Quantitative T1 / T2 PI-RADS adjunct | Improves lesion conspicuity vs T2-only | Yu 2017 |
+| Hepatic disease | Liver iron + fibrosis in one breath-hold (Chen 2019) | Non-invasive multi-parametric liver assessment | Hamilton 2017 family |
+| Synthetic contrast generation | Single MRF scan → T1w / T2w / FLAIR / STIR by Bloch playback | Replaces a stack of conventional sequences, shorter total exam | Standard in vendor MAGiC implementations |
+
+**PhD / research depth.** See the analysis-side deep dive at [../../analysis/mrf.md](../../analysis/mrf.md). The PhD-level open problems are dominated by translational engineering rather than core physics: **vendor harmonisation** — dictionaries simulated for vendor A's pulse-shape and spoiler-gradient profile do not transfer to vendor B without recalibration; **deep-learning reconstruction quality** under distribution shift (vendor, anatomy, pathology) where out-of-grid voxels get confidently-wrong numbers; and **clinical-trial endpoint validation** — Centiloid-style cross-vendor harmonisation does not yet exist for MRF T1 / T2. **FDA-cleared MAGiC (synthetic MRI)** is the closest current production deployment and a useful benchmark for what clinical translation actually looks like. AI-MRF reconstruction trade-offs (dictionary matching vs CNN regression vs MR-STAT nonlinear-tomography — [Sbrizzi 2018](https://doi.org/10.1016/j.mri.2017.10.015)) are an active research front. **Partial-volume MRF** ([McGivney 2018](https://doi.org/10.1002/nbm.4140), Hamilton 2020) estimates GM / WM / CSF fractions instead of biased single-component point estimates — critical in atrophic brain. Bayesian uncertainty propagation through dictionary matching, scan-time reduction to sub-5-min whole-brain 3D, and the patient-throughput economics of replacing stacked weighted contrasts with a single MRF scan plus playback are the clinical-translation barriers, not the Bloch equations.
 
 ## 9. Software and tools
 

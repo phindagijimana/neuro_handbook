@@ -204,17 +204,36 @@ Allows pooling florbetapir, florbetaben, flutemetamol, PIB studies. The Centiloi
 | **[AMIDE](https://amide.sourceforge.net/)** | Open-source viewer and ROI analysis |
 | **[nibabel](https://nipy.org/nibabel/)** | NIfTI / Analyze / ECAT I/O in Python |
 
-## 10. Clinical use
+## 10. Medical / clinical relevance
 
-- **Alzheimer’s disease**: amyloid PET for plaque burden, tau PET for staging, FDG-PET for hypometabolism in temporoparietal cortex and posterior cingulate.
+**Beginner.** PET maps molecular targets — glucose metabolism (FDG), amyloid, tau, dopamine, neuroinflammation — that MR cannot see.
 
-- **FTD**: FDG hypometabolism in frontal and anterior temporal lobes; tau PET pattern depends on tauopathy subtype.
+**Routine clinical use.**
 
-- **Epilepsy**: interictal FDG hypometabolism lateralises temporal lobe epilepsy when MR is non-lesional.
+- Dementia work-up: combined FDG + amyloid PET, increasingly tau PET for staging.
+- Oncology staging, restaging, and treatment-response (FDG and tracer-specific).
+- Pre-surgical epilepsy localisation (interictal FDG hypometabolism).
+- Parkinson's disease and atypical parkinsonism (DAT-SPECT / PET, FDG patterns).
+- Anti-amyloid therapy monitoring (Centiloid drop as efficacy endpoint).
+- Brain tumour residual / recurrent disease (amino-acid tracers: FET, methionine).
 
-- **Movement disorders**: DAT-SPECT or [$^{18}$F]DOPA for nigrostriatal integrity.
+**Disease applications.**
 
-- **Oncology**: FDG for staging, tracer-specific for tumour biology.
+| Disease | Imaging finding | Clinical value | Cross-link |
+|---|---|---|---|
+| Alzheimer's disease | Amyloid PET (florbetapir, florbetaben, flutemetamol) → Centiloid scale; tau PET (flortaucipir, MK-6240) for staging; FDG hypometabolism in temporoparietal cortex and posterior cingulate | A/T/N framework biomarkers; anti-amyloid eligibility | [doi:10.1016/j.jalz.2014.07.003](https://doi.org/10.1016/j.jalz.2014.07.003) (Klunk 2015, Centiloid); [clinical/alzheimers-and-dementia.md](../../clinical/alzheimers-and-dementia.md) |
+| Frontotemporal dementia | FDG hypometabolism in frontal and anterior-temporal lobes; tau PET pattern depends on tauopathy subtype | Distinguishes from AD pattern | Standard FTD work-up |
+| Parkinson's disease | ¹⁸F-DOPA / ¹¹C-DTBZ: nigrostriatal dopamine loss; DAT-SPECT / PET (FP-CIT) for diagnosis | Diagnose PD vs essential tremor, drug-induced parkinsonism | [doi:10.1212/WNL.0b013e3181f2a16d](https://doi.org/10.1212/WNL.0b013e3181f2a16d) (Brooks 2010); [clinical/parkinsons-and-movement.md](../../clinical/parkinsons-and-movement.md) |
+| Multiple system atrophy / PSP | ¹⁸F-FDG cerebellar / striatal patterns; distinct from idiopathic PD | Atypical-parkinsonism differential | Standard movement-disorder PET |
+| Pre-surgical epilepsy | Interictal FDG hypometabolism lateralises temporal-lobe epilepsy when MR is non-lesional; FCD localisation | Adjunct to MRI in MRI-negative cases | [doi:10.1002/ana.21500](https://doi.org/10.1002/ana.21500) (Knowlton 2008); [clinical/epilepsy.md](../../clinical/epilepsy.md) |
+| Brain tumour residual / recurrent | ¹⁸F-FET, ¹¹C-methionine: amino-acid uptake delineates active tumour vs treatment effect | Treatment planning, radiation re-targeting | [doi:10.1093/neuonc/now058](https://doi.org/10.1093/neuonc/now058) (Albert 2016) |
+| Neuroinflammation | ¹⁸F-DPA-714, ¹¹C-PK11195 TSPO PET: microglial activation in MS, AD, ALS | Neuroinflammation biomarker; trial endpoint | [doi:10.1038/s41582-020-0395-6](https://doi.org/10.1038/s41582-020-0395-6) (Kreisl 2020) |
+| Anti-amyloid therapy | Centiloid drop on serial amyloid PET (lecanemab, donanemab) | Efficacy endpoint in trials and post-approval monitoring | Centiloid family; cross-link [clinical/alzheimers-and-dementia.md](../../clinical/alzheimers-and-dementia.md) |
+| Oncology staging | FDG: glucose metabolism for staging / restaging; tracer-specific for tumour biology | Treatment planning across haemato- and solid tumours | Standard oncology guidelines |
+
+**PhD / research depth.** **PET-MR vs PET-CT** integration — simultaneous PET-MR systems (Siemens Biograph mMR, GE Signa PET/MR) deliver perfusion-MRI + PET in one acquisition, but face the MR-attenuation-correction problem (no signal from cortical bone) addressed by UTE / ZTE / atlas-based / deep-learning AC. **Kinetic modelling** with arterial input function remains the gold standard for receptor and metabolic-rate quantification, but reference-tissue models ([Lammertsma 1996](https://doi.org/10.1006/nimg.1996.0066)) dominate clinical settings — picking the right strategy is tracer-biology-specific. **Partial-volume correction** is increasingly mandatory in atrophic brains for tau and dopamine quantification (20–40% underestimate without it). **Deep-learning PET image quality enhancement** (low-dose PET reconstruction, denoising, super-resolution) is reducing radiation dose and scan-time bottlenecks. The **PET radiotracer development pipeline** is the gating constraint: preclinical → first-in-human → clinical translation typically takes 5–10 years, and modern targets in active development include **synuclein PET** (no clinical tracer yet despite a decade of effort — the unmet need in Parkinson's and synucleinopathy diagnostics), **GLP-1 receptor PET** (metabolic / neurodegeneration crossover), SV2A synaptic-density imaging ([¹¹C-UCB-J](https://doi.org/10.1126/scitranslmed.aaf6667), Finnema 2016) for schizophrenia and AD, and next-generation tau tracers (PI-2620, MK-6240) with reduced off-target meningeal binding. Total-body PET scanners (uEXPLORER) deliver 40× sensitivity gain and enable previously impractical dynamic protocols at sub-mSv doses, opening paediatric and longitudinal applications.
+
+
 
 ## 11. Pitfalls
 

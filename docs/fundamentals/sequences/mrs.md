@@ -140,17 +140,32 @@ The **[MRSinMRS](https://www.mrshub.org/mrsinmrs)** checklist (Lin 2021) lists ~
 
 - **B1 inhomogeneity at 7T**: use adiabatic pulses (sLASER).
 
-## 12. Clinical use
+## 12. Medical / clinical relevance
 
-- **Epilepsy**: NAA reduction lateralises mesial temporal sclerosis.
+**Beginner.** MRS measures chemical concentrations (NAA, creatine, choline, lactate, lipids) in vivo — a non-invasive biopsy for tumours, mitochondrial disease, and metabolic disorders.
 
-- **Tumour grading**: high Cho/NAA, low NAA, lipid/lactate in high-grade gliomas; 2-HG at 2.25 ppm for IDH-mutant gliomas (Choi 2012).
+**Routine clinical use.**
 
-- **Mitochondrial disease**: elevated lactate at long TE in MELAS / Leigh.
+- Brain tumour grading and treatment-response monitoring.
+- Suspected mitochondrial disease (Leigh, MELAS, MERRF) — lactate at long TE.
+- Leukodystrophies and paediatric metabolic disorders.
+- Hepatic encephalopathy work-up.
+- Mesial-temporal-sclerosis lateralisation in pre-surgical epilepsy.
 
-- **Hepatic encephalopathy**: low mI, high Glx.
+**Disease applications.**
 
-- **Neurodegeneration**: NAA decline in AD, FTD, ALS; mI increase in MCI.
+| Disease | Imaging finding | Clinical value | Cross-link |
+|---|---|---|---|
+| Brain tumour grading | High Cho/NAA, low NAA, lipid + lactate ≈ high grade; 2-HG peak at 2.25 ppm → IDH-mutant glioma | Non-invasive grading + molecular pre-test | [doi:10.5114/wo.2013.38114](https://doi.org/10.5114/wo.2013.38114) (Bulik 2013); [doi:10.1038/nm.2682](https://doi.org/10.1038/nm.2682) (Choi 2012, 2-HG) |
+| Mitochondrial disease (Leigh, MELAS) | Elevated lactate doublet + reduced NAA in affected territories | Diagnosis and follow-up of treatment | [doi:10.1212/01.WNL.0000094322.31957.4D](https://doi.org/10.1212/01.WNL.0000094322.31957.4D) (Bianchi 2003) |
+| Leukodystrophies | Canavan: NAA elevated; Pelizaeus–Merzbacher: NAA reduced; vanishing white matter: lactate + low NAA | Subtype assignment in undiagnosed leukodystrophy | [doi:10.1148/radiol.2492072028](https://doi.org/10.1148/radiol.2492072028) (Bizzi 2008) |
+| Hepatic encephalopathy | Elevated glutamine, reduced myo-inositol | Severity tracking, treatment response | Kreis 1992 |
+| Multiple sclerosis | NAA reduction in normal-appearing WM; choline elevation in active lesions | Axonal-injury biomarker beyond lesion count | [doi:10.1212/WNL.0b013e31819b27a8](https://doi.org/10.1212/WNL.0b013e31819b27a8) (Sajja 2009); [clinical/multiple-sclerosis.md](../../clinical/multiple-sclerosis.md) |
+| Acute stroke | Lactate elevation in penumbra; NAA loss in infarct core | Penumbra vs core characterisation | [doi:10.1212/WNL.45.2.343](https://doi.org/10.1212/WNL.45.2.343) (Saunders 1995) |
+| Alzheimer's disease | Hippocampal NAA reduction, myo-inositol elevation | Adjunct biomarker; mI rises early in MCI | [doi:10.1212/01.wnl.0000256697.49263.61](https://doi.org/10.1212/01.wnl.0000256697.49263.61) (Kantarci 2007); [clinical/alzheimers-and-dementia.md](../../clinical/alzheimers-and-dementia.md) |
+| Mesial-temporal sclerosis | Asymmetric hippocampal NAA reduction | Lateralisation when MRI is non-lesional | Cross-link [clinical/epilepsy.md](../../clinical/epilepsy.md) |
+
+**PhD / research depth.** The next decade of clinical MRS is dominated by *edited* and *high-field* acquisitions. **MEGA-PRESS** and Hadamard-encoded extensions (HERMES, HERCULES) push GABA, glutathione, and NAAG into clinical psychiatry, addiction, and ageing research — see [Gannet](https://markmikkelsen.github.io/Gannet-docs/) for the de facto pipeline. **7 T MRS** separates glutamine from glutamate with sub-ppm resolution, opening glutamate excitotoxicity as a clinical-research target in schizophrenia, depression, and treatment-resistant psychiatry. Hetero-nuclear MRS — $^{31}$P (PCr / ATP, intracellular pH), $^{23}$Na (intracellular sodium), $^{13}$C dynamics — quantifies high-energy phosphates and ionic shifts in stroke, oncology, and muscle disease, though clinical hardware is restricted. MRS as a **clinical-trial endpoint** is operational in MS (NAA recovery on remyelinating agents), brain tumour (treatment-response prediction — [Hu 2014](https://doi.org/10.1093/neuonc/nou175)), and dementia (NAA / mI trajectories), and the [MRSinMRS](https://www.mrshub.org/mrsinmrs) checklist plus [Wilson 2019](https://doi.org/10.1002/mrm.27742) consensus are the standardisation work that lets multi-site MRS endpoints survive regulatory scrutiny. Vendor-harmonised basis sets ([MRSHub](https://www.mrshub.org/)) and modern fitters ([Osprey](https://schorschinengel.github.io/osprey/), [FSL-MRS](https://open.win.ox.ac.uk/pages/fsl/fsl_mrs/)) are closing the reproducibility gap that historically kept MRS out of large trials.
 
 ## 13. Worked example
 

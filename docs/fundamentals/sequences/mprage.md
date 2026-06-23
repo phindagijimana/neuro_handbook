@@ -113,6 +113,43 @@ Course map: Inversion prep → k-space ordering → TI / TD → contrast mechani
 
 - Using MP2RAGE without understanding UNI contrast — not the same as classic MPRAGE for visual QC habits.
 
+## Medical / clinical relevance
+
+**Beginner — what it's used for, in one sentence.** MPRAGE is the standard high-resolution 3D T1-weighted scan — the brain-anatomy backbone of nearly every neuro MRI exam.
+
+### Routine clinical use
+
+- **Anatomical reference** for every other sequence — DWI, FLAIR, fMRI, SWI, and PET are all coregistered to it because no other contrast resolves cortex, basal ganglia, and brainstem this cleanly at 1 mm isotropic.
+- **FreeSurfer / FastSurfer / SynthSeg input** for cortical surfaces, `aparc+aseg`, subcortical volumes, and cortical thickness — the substrate for every structural biomarker downstream.
+- **Surgical and neuromodulation planning** — DBS lead trajectory, tumour resection margins, epilepsy resection, focused-ultrasound targeting all key off the T1w volume.
+- **Atlas registration and parcellation** — MNI, Desikan-Killiany, HCP-MMP, Schaefer, Yeo all reach a subject's brain through the T1w → template warp.
+- **Pre- and post-gadolinium T1w** for blood-brain-barrier breakdown — tumour enhancement, active MS lesions, infection, vasculitis.
+
+### Disease applications
+
+| Disease | Imaging finding | Clinical value | Cross-link |
+|---|---|---|---|
+| Alzheimer's disease | Hippocampal and entorhinal atrophy; medial temporal lobe atrophy (MTA) score | Supports diagnosis (NIA-AA criteria); tracks progression; pre-screens for amyloid PET | [clinical/alzheimers-and-dementia.md](../../clinical/alzheimers-and-dementia.md) |
+| Multiple sclerosis | T1 "black holes" — chronic hypointense lesions reflecting axonal loss | Predicts disability progression beyond T2 lesion count | [clinical/multiple-sclerosis.md](../../clinical/multiple-sclerosis.md) |
+| Brain tumours (glioma, metastases) | Pre-contrast T1w for registration; post-contrast T1w for enhancing tumour | Standardised by BraTS / RANO criteria for response assessment | — |
+| Mesial temporal sclerosis (epilepsy) | Hippocampal atrophy, loss of internal architecture on T1w volumetry | Lateralises temporal lobe epilepsy for surgical workup | [clinical/epilepsy.md](../../clinical/epilepsy.md) |
+| Paediatric myelination | T1w GM/WM contrast reverses 6–12 months and matures by ~24 months | Detects delayed or arrested myelination, leukodystrophy screening | — |
+| Parkinson's disease | Substantia nigra / midbrain morphometry, cortical thinning in advanced PD | Differentiates PD from atypical parkinsonism with multimodal MRI | [clinical/parkinsons-and-movement.md](../../clinical/parkinsons-and-movement.md) |
+
+Seminal references for each row:
+
+- Alzheimer's hippocampal atrophy: Frisoni GB, Fox NC, Jack CR Jr, Scheltens P, Thompson PM. The clinical use of structural MRI in Alzheimer disease. *Nat Rev Neurol.* 2010;6(2):67–77. [doi:10.1038/nrneurol.2009.215](https://doi.org/10.1038/nrneurol.2009.215).
+- MS T1 black holes: van Walderveen MA, Kamphorst W, Scheltens P, et al. Histopathologic correlate of hypointense lesions on T1-weighted spin-echo MRI in multiple sclerosis. *Neurology.* 1998;50(5):1282–1288. [doi:10.1212/WNL.50.5.1282](https://doi.org/10.1212/WNL.50.5.1282).
+- Tumour response (RANO / BT-RADS extension): Ellingson BM, Bendszus M, Boxerman J, et al. Consensus recommendations for a standardized brain tumor imaging protocol in clinical trials. *Neuro Oncol.* 2015;17(9):1188–1198. [doi:10.1093/neuonc/nov095](https://doi.org/10.1093/neuonc/nov095).
+- Hippocampal volumetry in TLE: Bernasconi N, Bernasconi A, Caramanos Z, Antel SB, Andermann F, Arnold DL. Mesial temporal damage in temporal lobe epilepsy: a volumetric MRI study of the hippocampus, amygdala and parahippocampal region. *Brain.* 2003;126(2):462–469. [doi:10.1093/brain/awg250](https://doi.org/10.1093/brain/awg250).
+- Paediatric myelination on T1w: Barkovich AJ. MR imaging of the neonatal brain. *Radiology.* 2006;241(1):14–34. [doi:10.1148/radiol.2391050316](https://doi.org/10.1148/radiol.2391050316).
+
+### PhD / research depth
+
+Most current methodological work on MPRAGE is about **acquisition acceleration and quantitative substitutes**. Deep-learning-synthesised MPRAGE from under-sampled k-space, variable-flip-angle (VFA) acquisitions, and SynthMPRAGE-style cross-modal estimators (Iglesias et al., SynthSR) collapse 5-minute MPRAGE protocols toward sub-minute scans without losing FreeSurfer-compatible contrast — important for paediatric, intra-operative, and motion-prone populations. **MP2RAGE** (Marques 2010) and its companions (MP3RAGE, FLAWS) recover a self-bias-corrected unified T1 image plus a quantitative T1 map in a single acquisition, which is now the de facto 7 T anatomical scan and a research-grade myelination biomarker. At ultra-high field, MP2RAGE at 0.5–0.7 mm enables **laminar cortical imaging** — mapping cortical layers within the ~3 mm ribbon — opening structural correlates of layer-specific microcircuitry in psychiatry and small-vessel disease research.
+
+The other major research thread is **MPRAGE as a phenotype** — UK Biobank, ADNI, ABCD, HCP all pivot on the T1w volume. Harmonisation across vendors (ComBat, neuroHarmonize), longitudinal stability of FreeSurfer / SAMSEG outputs, and the reproducibility crisis around cortical thickness estimates (Madan 2019, Bhagwat 2021) are active controversies. Quantitative T1 maps derived from MP2RAGE or MPM protocols (Weiskopf 2013) are emerging as **myelin-sensitive biomarkers** in MS, schizophrenia, and ageing — see also [qmri.md](./qmri.md) for the broader quantitative-T1 / T2 / PD landscape, and [tools/index.md](../../tools/index.md) for FreeSurfer, FastSurfer, and SAMSEG implementations.
+
 ## 11. Credible peer-reviewed papers
 
 - Mugler JP 3rd, Brookeman JR. Three-dimensional magnetization-prepared rapid gradient-echo imaging (3D MP RAGE). *Magn Reson Med.* 1990;15(1):152–157. https://doi.org/10.1002/mrm.1910150117
