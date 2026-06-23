@@ -149,6 +149,8 @@ nav:
       - MRF analysis (quantitative maps): analysis/mrf.md
       - EEG / MEG analysis (overview): analysis/eeg-meg.md
       - EEG analysis (deep dive): analysis/eeg.md
+      - Network metrics (graph theory): analysis/network-metrics.md
+      - Asymmetry analysis (AI / laterality): analysis/asymmetry.md
       - Longitudinal & mixed-effects: analysis/longitudinal.md
       - Group-level statistics: analysis/group-stats.md
       - Multiple comparisons: analysis/multiple-comparisons.md
