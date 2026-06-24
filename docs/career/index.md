@@ -16,6 +16,8 @@ This is a short section by design. It exists because the rest of the handbook wo
 
 -   :material-swap-horizontal: **[Transitions](transitions.md)** — academia → industry, industry → clinical, MD → research, the chalk-talk vs system-design vs ML-coding interview formats, negotiation realities, and a one-liner taxonomy of roles you might land in.
 
+-   :material-calendar-multiple: **[Conferences, events, and networking](conferences.md)** — the annual cadence of neuroimaging and biomedical AI: which conferences matter, when papers are due, where to network year-round, and how to choose a venue for your work.
+
 </div>
 
 ## Why these three pages, and why now
