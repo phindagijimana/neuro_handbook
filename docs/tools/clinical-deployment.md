@@ -103,6 +103,8 @@ if __name__ == "__main__":
 
 Triton becomes the right answer when you're serving many models, need dynamic batching across requests, or want to mix PyTorch + ONNX + TensorRT in one server.
 
+The clearest deployed analogue of this pattern in neuroimaging today is the **CT stroke-triage stack**: FDA-cleared products like [RapidAI](https://www.rapidai.com), [Viz.ai](https://www.viz.ai), [Brainomix Brain-CTP](https://www.brainomix.com), and [OleaSphere](https://www.olea-medical.com) ingest NCCT / CTA / CTP DICOM, run automated ASPECTS, LVO detection, and core / penumbra estimation, and emit DICOM SR + smartphone alerts to on-call stroke teams. For the CT-side algorithms (HU calibration, ASPECTS, block-circulant deconvolution, mismatch thresholds) see [Analysis → CT](../analysis/ct.md); for the underlying physics see [Fundamentals → CT](../fundamentals/sequences/ct.md).
+
 ## Clinical workflow integration
 
 Once the model produces a result, the result has to land somewhere the clinician already looks. Two standards do this work.

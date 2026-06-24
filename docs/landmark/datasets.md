@@ -33,6 +33,21 @@
 | **ENIGMA cohorts** | Meta-analytic across disorders | varies | [Thompson et al., 2020](https://doi.org/10.1038/s41398-020-0705-1)[^12] |
 | **[ATLAS (stroke)](https://fcon_1000.projects.nitrc.org/indi/retro/atlas.html)** | Lesion-segmented stroke T1w | 1 453 | The reference cohort for stroke segmentation method development. |
 
+## CT-specific datasets
+
+| Dataset | Description | Size | Reference |
+|---|---|---|---|
+| **[RSNA Intracranial Hemorrhage Detection](https://www.kaggle.com/competitions/rsna-intracranial-hemorrhage-detection)** | Multi-class ICH detection (epidural, subdural, intraparenchymal, intraventricular, subarachnoid) on head CT slices | ~875k slices, ~25k studies | [Flanders 2020, *Radiology AI*](https://doi.org/10.1148/ryai.2020190211); 2019 Kaggle challenge. The de-facto pretraining cohort for any open ICH model. |
+| **[CQ500](http://headctstudy.qure.ai/dataset)** | Head CT scans from 491 patients labelled by 3 radiologists for haemorrhage, fracture, mass effect, midline shift | 491 scans (~200 GB) | [Chilamkurthy 2018, *Lancet*](https://doi.org/10.1016/S0140-6736(18)31645-3). Open externally-validated benchmark. |
+| **[INSTANCE (Intracranial Haemorrhage Segmentation)](https://instance.grand-challenge.org/)** | MICCAI challenge: ICH segmentation on head CT | 200 cases | [Li 2023, *Computer Methods and Programs in Biomedicine*](https://doi.org/10.1016/j.cmpb.2023.107524). |
+| **[ISLES 2018 / 2024](https://www.isles-challenge.org/)** | Stroke lesion segmentation; 2018 + 2024 editions include CT-perfusion and NCCT alongside MRI | varies (~100s) | [Hakim 2024](https://doi.org/10.1038/s41597-023-02828-2); the canonical stroke-segmentation benchmark. |
+| **[AISD (Acute Ischemic Stroke Dataset)](https://github.com/GriffinLiang/AISD)** | NCCT + DWI pairs with infarct masks | 397 | Open Chinese acute-stroke cohort; the rare open pairing of acute NCCT with ground-truth DWI infarct. |
+| **[Head CT-ICH (PhysioNet)](https://physionet.org/content/ct-ich/1.3.1/)** | Head CT scans with ICH segmentation and clinical metadata | 75 scans | [Hssayeni 2020, *Data*](https://doi.org/10.3390/data5010014). Small but fully open with permissive licence. |
+| **[CENTER-TBI Imaging](https://www.center-tbi.eu)** | Multi-site European TBI cohort — CT + MRI + clinical | ~5000 | [Maas 2015](https://doi.org/10.1227/NEU.0000000000000575); imaging arm is governed application. |
+| **[TRACK-TBI Imaging](https://tracktbi.ucsf.edu)** | North American TBI cohort — CT + MRI + biomarkers + outcomes | ~3000 | [Yue 2013](https://doi.org/10.1089/neu.2012.2802); CT is the first-line modality on enrolment. |
+
+Most published CT-AI work pretrains on RSNA-ICH (the only open dataset large enough to support modern architectures) and externally validates on CQ500. INSTANCE and ISLES are the segmentation benchmarks.
+
 ## Open repositories
 
 - **OpenNeuro** ([portal](https://openneuro.org), [docs](https://docs.openneuro.org)) — open BIDS datasets, versioned, browser + CLI. [Markiewicz et al., 2021](https://doi.org/10.7554/eLife.71774)[^13]. <https://openneuro.org>

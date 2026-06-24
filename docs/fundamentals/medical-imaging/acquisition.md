@@ -55,6 +55,8 @@ with $\vec k(t) = \tfrac{\gamma}{2\pi}\int_0^t \vec G(\tau)\,d\tau$. Multi-coil 
 
 ### CT forward model — the Radon transform
 
+For the full CT physics (Hounsfield Units, reconstruction families, NCCT / CTA / CTP variants, dose), see [Fundamentals → CT](../sequences/ct.md). The short version of the forward model follows.
+
 X-ray attenuation along a ray $L_{\theta, s}$ obeys Beer-Lambert:
 
 $$
@@ -125,6 +127,8 @@ For protocol details and physics, see [Fundamentals → MRI sequences](../sequen
 5. **Online recon** — filtered back-projection or iterative.
 6. **Hounsfield calibration** against air / water phantoms.
 7. **Contrast-enhanced phase** — arterial / venous / delayed if CT angiography or perfusion.
+
+For the full physics, reconstruction families, variants (NCCT / CTA / CTP / DECT / PCCT), and clinical relevance, see [Fundamentals → CT](../sequences/ct.md); for the downstream analysis pipeline see [Analysis → CT](../../analysis/ct.md).
 
 ### PET
 

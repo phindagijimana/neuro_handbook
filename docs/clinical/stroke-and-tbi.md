@@ -4,7 +4,7 @@
 
 Acute stroke imaging is the single best example of imaging *directly* selecting a treatment. DWI / perfusion-CT findings decide whether a patient gets tPA, thrombectomy, or neither — within minutes, on the basis of pictures that did not exist a generation ago. Chronic stroke and TBI imaging then take over a much longer timescale: lesion segmentation, lesion-symptom mapping, plasticity, outcome prediction.
 
-For the underlying vocabulary (ischemic vs haemorrhagic, DWI restriction, MTBI), see [Fundamentals → Neuroscience & neurology](../fundamentals/foundations/neuroscience.md). For DWI physics, see [Fundamentals → DWI](../fundamentals/sequences/dwi.md).
+For the underlying vocabulary (ischemic vs haemorrhagic, DWI restriction, MTBI), see [Fundamentals → Neuroscience & neurology](../fundamentals/foundations/neuroscience.md). For DWI physics, see [Fundamentals → DWI](../fundamentals/sequences/dwi.md). For the CT side of the modern stroke protocol (NCCT / CTA / CTP physics, HU calibration, beam hardening), see [Fundamentals → CT](../fundamentals/sequences/ct.md) and the analysis-side companion [Analysis → CT](../analysis/ct.md).
 
 ## Acute ischemic stroke
 
@@ -42,8 +42,9 @@ flowchart LR
 | **GRE / SWI** | Haemorrhage; clot susceptibility | Acute haematoma blooms; can show "clot sign" |
 | **DSC perfusion** | Tmax, MTT, CBF, CBV | Tmax > 6 s ≈ tissue at risk |
 | **ASL perfusion** | Quantitative CBF | Used where contrast contraindicated |
-| **CT-perfusion** | CBF, CBV, Tmax | Most common in acute workflow because faster than MRI |
-| **CT-angiography** | LVO identification | M1, ICA terminus, basilar = thrombectomy candidates |
+| **CT-perfusion** | CBF, CBV, Tmax | Most common in acute workflow because faster than MRI — see [Analysis → CT § CT perfusion](../analysis/ct.md#6-ct-perfusion-analysis) for the deconvolution math |
+| **CT-angiography** | LVO identification | M1, ICA terminus, basilar = thrombectomy candidates — see [Analysis → CT § CTA and LVO detection](../analysis/ct.md#7-cta-and-lvo-detection) |
+| **NCCT (non-contrast CT)** | ICH exclusion, ASPECTS, early ischaemic change | First-line in any acute stroke or trauma — see [Fundamentals → CT](../fundamentals/sequences/ct.md) for HU physics and [Analysis → CT § ASPECTS](../analysis/ct.md#5-aspects-the-alberta-stroke-program-early-ct-score) |
 
 ### Treatment-selection trials and windows
 
@@ -215,5 +216,7 @@ The biggest clinical-imaging gap. Conventional MRI is almost always negative. Qu
 
 - For the physics of DWI / ADC that underpin acute-stroke decisions, see [Fundamentals → DWI](../fundamentals/sequences/dwi.md).
 - For susceptibility-based detection of microbleeds and DAI, see [Fundamentals → SWI](../fundamentals/sequences/swi.md).
+- For the CT physics that drives NCCT / CTA / CTP, see [Fundamentals → CT](../fundamentals/sequences/ct.md).
+- For the CT analysis pipeline (HU → ASPECTS → CTP deconvolution → LVO detection), see [Analysis → CT](../analysis/ct.md).
 - For ISLES / ATLAS / TRACK-TBI access details, see [Landmark → Reference datasets](../landmark/datasets.md).
 - For nnU-Net and downstream segmentation infrastructure, see [Landmark → Major pipelines](../landmark/pipelines.md).

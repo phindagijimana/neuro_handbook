@@ -109,6 +109,7 @@ nav:
           - Quantitative MRI: fundamentals/sequences/qmri.md
           - MR Fingerprinting (MRF): fundamentals/sequences/mrf.md
           - PET: fundamentals/sequences/pet.md
+          - CT (Computed Tomography): fundamentals/sequences/ct.md
           - EEG fundamentals: fundamentals/sequences/eeg.md
       - Computational & math foundations:
           - fundamentals/foundations/index.md
@@ -147,6 +148,7 @@ nav:
           - swi — Susceptibility-weighted: bids/modalities/swi.md
           - qmri — Quantitative MRI: bids/modalities/qmri.md
           - pet — Positron Emission Tomography: bids/modalities/pet.md
+          - ct — Computed Tomography (BEP024 draft): bids/modalities/ct.md
           - eeg — Electroencephalography: bids/modalities/eeg.md
           - ieeg — Intracranial EEG: bids/modalities/ieeg.md
           - meg — Magnetoencephalography: bids/modalities/meg.md
@@ -165,6 +167,7 @@ nav:
       - RSA & encoding/decoding: analysis/rsa-decoding.md
       - Surface-based analysis: analysis/surface.md
       - MRF analysis (quantitative maps): analysis/mrf.md
+      - CT analysis (HU → ASPECTS / CTP): analysis/ct.md
       - EEG / MEG analysis (overview): analysis/eeg-meg.md
       - EEG analysis (deep dive): analysis/eeg.md
       - Network metrics (graph theory): analysis/network-metrics.md
