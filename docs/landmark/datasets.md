@@ -55,6 +55,161 @@ Three tiers:
 - **Generalisation tests.** Train on your cohort, test on HCP, report both.
 - **Baseline comparisons.** Most methods papers benchmark on these datasets; you should too.
 
+## Quick-start: how to actually load these
+
+The tables above tell you *what exists*. This section tells you *how to get bytes onto disk and into Python* for the five datasets you'll meet most often. Every one of them has a non-trivial access path; budget weeks, not minutes, for the paperwork on the gated ones.
+
+### 1. HCP Young Adult (1200 subjects)
+
+**Access.** Register on [ConnectomeDB](https://db.humanconnectome.org) and accept the open-access DUA (instant) or restricted DUA (institutional signature; covers family structure, handedness, etc.). Three data variants ship: **unprocessed** (raw DICOMs converted to NIfTI), **minimally-preprocessed** (`HCPpipelines` outputs — surfaces, registrations), **preprocessed** (task GLMs, ICA-FIX-denoised resting-state). Pick the variant *before* you start downloading; they have different S3 prefixes.
+
+**Download.** All three live in the [`hcp-openaccess` requester-pays S3 bucket](https://registry.opendata.aws/hcp-openaccess/). You pay egress; HCP pays storage.
+
+```bash
+# Single subject, T1w only, minimally-preprocessed
+aws s3 sync \
+  s3://hcp-openaccess/HCP_1200/100307/T1w/ \
+  ./HCP_1200/100307/T1w/ \
+  --request-payer requester
+
+# Whole-cohort manifest first (free listing, then targeted sync)
+aws s3 ls s3://hcp-openaccess/HCP_1200/ --request-payer requester > subjects.txt
+```
+
+**Python — walk the cohort.**
+
+```python
+from pathlib import Path
+import pandas as pd
+
+root = Path("HCP_1200")
+subjects = sorted(p.name for p in root.iterdir() if p.name.isdigit())
+
+# Behavioural / demographic table ships separately from ConnectomeDB
+demo = pd.read_csv("unrestricted_hcp_s1200.csv")  # 1206 rows, ~500 columns
+demo = demo.set_index("Subject")
+demo.loc[[int(s) for s in subjects], ["Age", "Gender", "PMAT24_A_CR"]].head()
+```
+
+**Pitfall.** Requester-pays means *you* pay egress: ~$0.09/GB out of `us-east-1`. The full unprocessed cohort is ~80 TB. Stage compute *inside* `us-east-1` (EC2, AWS Batch) so the bytes never leave the region. See [The cost math](../computing/cloud.md#the-cost-math) for the arithmetic.
+
+### 2. UK Biobank (~40k imaged so far, ~100k planned)
+
+**Access.** Application-only via the [UK Biobank Showcase](https://biobank.ndph.ox.ac.uk). The process is: register an institutional account → submit a scientific-merit application (3-6 months typical) → pay the access fee (tiered by data category) → sign the [Material Transfer Agreement](https://www.ukbiobank.ac.uk/enable-your-research/apply-for-access). Imaging is a sub-cohort; not every approved application includes it.
+
+**Download.** The official tool is [`ukbfetch`](https://biobank.ndph.ox.ac.uk/showcase/help.cgi?cd=accessing_data_guide). It reads a *bulk file* (subject IDs × field IDs) and an auth token.
+
+```bash
+# bulk.txt lines look like:  1234567 20252_2_0
+ukbfetch -bbulk.txt -aauthfile -ot1     # output prefix "t1"
+```
+
+**Python — parse the `.tab` clinical dump.**
+
+```python
+import pandas as pd
+
+# UKB .tab files are tab-separated with one column per (field_id, instance, array)
+df = pd.read_csv("ukb_main.tab", sep="\t", low_memory=False)
+df = df.rename(columns={"f.eid": "eid"})            # subject identifier
+df.filter(regex=r"^f\.25756").head()                # all T1 IDP fields
+```
+
+For BIDS conversion: [ukb2bids](https://github.com/AndrewBard/ukb2bids) is the community wrapper. The official [UKB Imaging Documentation](https://biobank.ndph.ox.ac.uk/showcase/showcase/docs/brain_mri.pdf) is the canonical reference.
+
+**Pitfall.** Field IDs (`20252` = T1, `20253` = T2 FLAIR, etc.) get renumbered between releases; always re-resolve from the showcase rather than hard-coding. And imaging is a *subset* of the cohort — joining naively on `eid` will silently produce 100k rows where only 40k have scans.
+
+### 3. ADNI (Alzheimer's, ~3000 subjects across ADNI 1/2/3/4)
+
+**Access.** Application + DUA via [ida.loni.usc.edu](https://ida.loni.usc.edu). Faster than UKB (weeks), still gated. Pick the imaging collection (ADNI 1 / GO / 2 / 3 / 4) before applying; merging across phases is non-trivial.
+
+**Download.** The IDA web client supports browser download for small collections; for cohort-scale grabs use the [`adnidata`](https://github.com/nipy/adnidata) Python tool or the [LONI Image Data Archive CLI](https://ida.loni.usc.edu/collaboration/access/appLicense.jsp).
+
+```bash
+# Browser pattern: search → add to collection → download as zip
+# CLI pattern (adnidata):
+adnidata fetch --collection ADNI3 --modality MRI --out ./adni3/
+```
+
+**Python — join clinical with imaging.**
+
+```python
+import pandas as pd
+
+merge = pd.read_csv("ADNIMERGE.csv")   # the canonical clinical-data table
+# RID = Roster ID, the stable subject key across visits and modalities
+merge.set_index(["RID", "VISCODE"]).head()
+
+# Cross-reference with imaging via RID
+imaging_idx = pd.read_csv("MRILIST.csv")
+joined = merge.merge(imaging_idx, on=["RID", "VISCODE"], how="inner")
+```
+
+**Pitfall.** ADNI 1 (1.5 T, MP-RAGE) and ADNI 2/3 (3 T, often MP2RAGE) acquire on materially different protocols; sequence parameters also drift mid-phase. Always read the [imaging protocol revision date](https://adni.loni.usc.edu/methods/mri-tool/mri-acquisition/) on each subject's `MRI3META.csv` row before pooling.
+
+### 4. ABCD (adolescent, ~12k subjects)
+
+**Access.** Application via the [NIMH Data Archive (NDA)](https://nda.nih.gov/abcd/). Need an NDA account, an institutional Data Access Request, and an IRB letter. Releases ship annually (3.0, 4.0, **5.0**, ...); pick a release and pin it — the field schemas change between them.
+
+**Download.** Use [`downloadcmd`](https://nda.nih.gov/nda/training-videos.html), NDA's command-line client.
+
+```bash
+downloadcmd -dp 1226 -t s3_links.txt   # data package 1226 = an ABCD release
+# Outputs land in ~/AbcdDownload/ by default
+```
+
+**Python — load BIDS + tabular phenotype.**
+
+```python
+from bids import BIDSLayout
+import pandas as pd
+
+layout = BIDSLayout("./abcd_bids/", validate=False)   # release is BIDS-compliant
+subs = layout.get_subjects()
+
+# Tabular phenotype lives outside BIDS, in NDA's "studies" tables
+pheno = pd.read_csv("abcd_lt01.txt", sep="\t", skiprows=[1])
+```
+
+The [`pyabcd`](https://github.com/ABCD-STUDY) toolkit wraps common derivative-loading patterns.
+
+**Pitfall.** ABCD 5.0 renamed many derivative fields from 4.0 (`smri_thick_cdk_*` → `mrisdp_*`, for example). Version-pin your analysis (`release == "5.0"`) and use a translation layer if you must cross-version. The [release notes PDFs](https://nda.nih.gov/abcd/abcd-annual-releases) document every rename.
+
+### 5. dHCP (developing, fetal + neonatal, ~800 subjects)
+
+**Access.** Open after [signing the DUA](http://www.developingconnectome.org/data-release/) (email-driven, days). No fee.
+
+**Download.** Hosted on the [GIN data server](https://gin.g-node.org/lana_pena/dHCP/) and managed with [DataLad](https://www.datalad.org/) — the metadata is small and instant; the bytes are pulled on demand.
+
+```bash
+datalad clone https://gin.g-node.org/lana_pena/dHCP
+cd dHCP
+datalad get sub-CC00060XX03/        # pull one subject
+datalad get .                       # pull everything (≈1 TB)
+```
+
+**Python — DataLad + PyBIDS work together.**
+
+```python
+from bids import BIDSLayout
+
+layout = BIDSLayout(".", validate=False)
+for img in layout.get(subject="CC00060XX03", suffix="T2w", extension="nii.gz"):
+    print(img.path)
+```
+
+**Pitfall.** Neonatal brains do *not* register cleanly to adult MNI templates — the cortex hasn't fully myelinated and the ventricles are disproportionate. Use the [dHCP volumetric atlas](https://brain-development.org/brain-atlases/atlases-from-the-dhcp-project/) (40-week template) and the per-week age atlases that ship with the release; the transforms between them and adult MNI are also shipped.
+
+### Which dataset pairs with which chapter
+
+| Dataset | Primary handbook chapter | Why |
+|---|---|---|
+| HCP Young Adult | [Resting-state analysis](../analysis/resting-state.md) | The dense rs-fMRI protocol is the field's reference for connectomics |
+| UK Biobank | [Reliability — BWAS](../analysis/reliability.md) | Sample size large enough to actually run BWAS |
+| ADNI | [Alzheimer's and dementia](../clinical/alzheimers-and-dementia.md) | The canonical longitudinal A/T/N cohort |
+| ABCD | [Psychiatry](../clinical/psychiatry.md) | The cohort that powers modern adolescent-psychiatry imaging work |
+| dHCP | [Paediatric BIDS / neonatal acquisition](../bids/modalities/index.md) | Neonatal protocols, neonatal templates |
+
 ## References
 
 [^1]: Van Essen DC, Smith SM, Barch DM, Behrens TEJ, Yacoub E, Ugurbil K. The WU-Minn Human Connectome Project: an overview. *NeuroImage.* 2013;80:62-79.

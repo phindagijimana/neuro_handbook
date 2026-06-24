@@ -136,6 +136,97 @@ mdl_me = fitlme(T, 'y ~ age + sex + (1 | scanner)');   % mixed-effects
 
 `fitlm` / `fitglm` / `fitlme` / `fitrm` cover the regression universe.
 
+## Modern MATLAB (R2018b+)
+
+> MATLAB modernised heavily after R2018b; if your mental model of MATLAB is pre-2018, this section is the update.
+
+Five capability shifts now blur the line between "MATLAB" and "the Python/PyTorch stack". You can do most of what NumPy + PyTorch + Dask + Slurm do, in MATLAB, on the same data, with one license.
+
+### 1. Deep Learning Toolbox / autodiff
+
+`dlnetwork`, `dlarray`, and `dlgradient` give you a first-class autodiff engine — conceptually identical to PyTorch's autograd, syntactically MATLAB.
+
+```matlab
+function [loss, grads] = mseLoss(net, X, Y)
+  Ypred = forward(net, X);
+  loss  = mean((Ypred - Y).^2, 'all');
+  grads = dlgradient(loss, net.Learnables);   % autodiff w.r.t. parameters
+end
+
+X = dlarray(rand(10, 32, 'single'), 'CB');    % 10-dim, batch=32, 'C'hannel/'B'atch
+Y = dlarray(rand(1,  32, 'single'), 'CB');
+net = dlnetwork(fullyConnectedLayer(1));
+
+[loss, grads] = dlfeval(@mseLoss, net, X, Y); % dlfeval traces the graph
+net = dlupdate(@(p, g) p - 0.01 * g, net, grads);
+```
+
+Same mental model as PyTorch: a *tape* records ops on `dlarray`s; `dlgradient` walks it backward. Reference: [MathWorks Deep Learning Toolbox](https://www.mathworks.com/products/deep-learning.html).
+
+### 2. GPU computing
+
+`gpuArray` makes the GPU transparent — wrap your array, MATLAB dispatches every supported op to the device.
+
+```matlab
+A = gpuArray(rand(10000, 'single'));     % uploads to GPU
+B = A * A';                              % runs on GPU
+C = gather(B);                           % brings result back to host
+
+gpuDevice(2);                            % select GPU #2 explicitly
+```
+
+**When GPU wins:** dense linear algebra on matrices >~1000×1000, FFTs, convolutions, anything that runs the GPU at >50% utilisation. **When it doesn't:** small tight loops dominated by host-device transfer (the upload-compute-download round trip kills you). Always benchmark before and after. Reference: [GPU Computing in MATLAB](https://www.mathworks.com/help/parallel-computing/gpu-computing.html).
+
+### 3. Out-of-core data — `tall` and `datastore`
+
+`datastore` reads a directory of files lazily; `tall` arrays let you operate on data larger than RAM with familiar matrix syntax, deferred until `gather`.
+
+```matlab
+ds = datastore('derivatives/sub-*_dk.csv', 'Type', 'tabulartext');
+T  = tall(ds);                              % rows on disk, not in RAM
+
+mu = gather( groupsummary(T, 'site', 'mean', 'thickness_mean') );
+```
+
+The above aggregates a 10-GB BIDS-derivatives table by site without ever loading more than a chunk into memory. Reference: [Tall Arrays](https://www.mathworks.com/help/matlab/tall-arrays.html).
+
+### 4. MEX for HPC
+
+`mex` compiles C / C++ / Fortran into a callable MATLAB function. Use it when:
+
+- You have a tight loop that *cannot* be vectorised (state-dependent, irregular branching).
+- You need to call a custom CUDA kernel from MATLAB.
+- You're calling into an existing C++ library and don't want to shell out.
+
+```matlab
+mex my_inner_loop.cpp                    % builds my_inner_loop.mexa64
+out = my_inner_loop(x, y);               % call like any MATLAB function
+```
+
+For most users the vectorised MATLAB path is already fast enough; reach for MEX when the profiler shows a single function dominating runtime. Reference: [MEX File Functions](https://www.mathworks.com/help/matlab/call-mex-functions.html).
+
+### 5. Parallel Computing Toolbox + Slurm
+
+`parfor`, `parfeval`, and `distributed` arrays cover three parallelism patterns:
+
+```matlab
+parpool('local', 8)                      % 8-worker pool on this machine
+parfor sub = 1:100
+  process_subject(subjects(sub));        % each iter on a separate worker
+end
+
+f = parfeval(@expensive_step, 1, x);     % async fire-and-forget
+result = fetchOutputs(f);
+```
+
+For multi-node Slurm clusters, [MATLAB Parallel Server](https://www.mathworks.com/help/matlab-parallel-server/index.html) lets a single `parfor` launch onto a Slurm cluster: configure a `parallel.cluster.Slurm` profile, then `parpool('slurm', 64)` and your loop runs across 64 nodes. The mental model is: same MATLAB code, larger pool.
+
+### 6. Live Editor
+
+The Live Editor (`.mlx` files) is MATLAB's notebook-style environment: code + formatted text + outputs + equations in one document, exportable to PDF / HTML. Useful for analysis writeups and teaching.
+
+**Reproducibility caveat.** `.mlx` is a binary XML format; it doesn't `git diff` cleanly the way `.ipynb` (after `nbstripout`) does. For pipeline code, prefer `.m` scripts + a separate `.mlx` writeup. The [Live Editor docs](https://www.mathworks.com/help/matlab/live-scripts-and-functions.html) cover the export workflow.
+
 ## Toolboxes commonly used in neuroimaging
 
 | Toolbox | Use | Docs |
